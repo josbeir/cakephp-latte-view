@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace LatteView\Tests\TestCase\View;
 
+use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
 use Latte\Engine;
 use Latte\Sandbox\SecurityPolicy;
@@ -66,6 +67,15 @@ class LatteViewTest extends TestCase
         $this->assertStringContainsString('I Like Latte', $output);
     }
 
+    public function testCustomLayoutFromTemplate(): void
+    {
+        $output = $this->view->render('extend');
+
+        $this->assertStringContainsString('I am custom !', $output);
+        $this->assertStringContainsString('Extended Template', $output);
+        $this->assertStringContainsString('This is the extended template content.', $output);
+    }
+
     public function testRenderTemplateWithData(): void
     {
         $this->view->set(['variable' => 'hello world']);
@@ -101,5 +111,23 @@ class LatteViewTest extends TestCase
 
         $this->view->set(['variable' => 'hello world']);
         $this->view->render('variable');
+    }
+
+    public function testGetAutoRefresh(): void
+    {
+        $this->assertTrue($this->view->getAutoRefresh());
+
+        $this->view->setConfig('autoRefresh', false);
+        $this->assertFalse($this->view->getAutoRefresh());
+
+        Configure::write('debug', false);
+
+        $this->view->setConfig('autoRefresh', null);
+        $this->assertFalse($this->view->getAutoRefresh());
+
+        $this->view->setConfig('autoRefresh', true);
+        $this->assertTrue($this->view->getAutoRefresh());
+
+        Configure::write('debug', true);
     }
 }

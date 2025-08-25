@@ -78,14 +78,14 @@ class LatteView extends View
      *
      * If not explicitly set, it will follow the debug mode.
      */
-    protected function getAutoRefresh(): bool
+    public function getAutoRefresh(): bool
     {
         $auto_refresh = $this->getConfig('autoRefresh');
         if ($auto_refresh === null) {
             $auto_refresh = Configure::read('debug');
         }
 
-        return $auto_refresh;
+        return $auto_refresh ?? true;
     }
 
     /**
