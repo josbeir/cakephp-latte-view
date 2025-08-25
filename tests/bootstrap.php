@@ -19,6 +19,8 @@ define('WWW_ROOT', PLUGIN_ROOT . DS . 'webroot' . DS);
 define('TESTS', __DIR__ . DS);
 define('CONFIG', TESTS . 'config' . DS);
 
+require_once CAKE_CORE_INCLUDE_PATH . DS . 'src' . DS . 'I18n' . DS . 'functions_global.php';
+
 Configure::write('debug', true);
 
 Configure::write('App', [
