@@ -11,10 +11,8 @@ use Latte\Essential\Nodes\DumpNode as LatteDumpNode;
 /**
  * {dump [$var]}
  */
-class DumpNode extends LatteDumpNode
+final class DumpNode extends LatteDumpNode
 {
-    public ?ExpressionNode $expression = null;
-
     /**
      * @inheritDoc
      */

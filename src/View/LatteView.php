@@ -58,7 +58,7 @@ class LatteView extends View
                 ->setAutoRefresh($this->getAutoRefresh())
                 ->setLocale(I18n::getLocale())
                 ->addProvider('coreParentFinder', $this->layoutLookup(...))
-                ->addExtension(new CakeExtension());
+                ->addExtension(new CakeExtension($this));
 
             if ($this->getConfig('cache')) {
                 $this->engine->setTempDirectory($this->getConfig('cachePath'));

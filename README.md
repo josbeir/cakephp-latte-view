@@ -9,11 +9,25 @@
 
 A CakePHP plugin providing [Latte](https://latte.nette.org/) template engine integration for CakePHP applications.
 
+## Table of Contents
+
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Accessing the View Object in Templates](#accessing-the-view-object-in-templates)
+- [Configuration Options](#configuration-options)
+- [Custom Tags and Functions](#custom-tags-and-functions)
+- [Extending](#extending)
+- [References](#references)
+- [Contributing](#contributing)
+- [License](#license)
+
 ## Features
 
 - Use `.latte` templates in your CakePHP app
 - Sandbox mode for secure template execution
 - Custom CakePHP tags: `{dump}` and `{debug}` override Nette dumper and use CakePHP's Debugger
+
 
 ## Installation
 
@@ -74,14 +88,40 @@ Set options via `ViewBuilder::setOption()` or `setOptions()`:
 | `cachePath`    | string  | `CACHE . 'latte_view'` | Path for compiled template cache                                            |
 | `sandbox`      | bool    | `false`                | Enable sandbox mode for secure template execution. When enabled, the security policy can be configured using `setSandboxPolicy()` and `getSandboxPolicy()`. |
 
-## Custom Tags
+## Custom Tags and Functions
 
-- `{dump $var}` or `{debug $var}`: Overrides the default Nette dumper and uses CakePHP's `Debugger::printVar()` for output
-- `{dump}`: Dumps all defined variables using CakePHP's dumper
+### CakePHP Debug Tags
 
-## TODO
+- `{dump $var}` or `{debug $var}`: Uses CakePHP's `Debugger::printVar()` instead of Nette's default dumper
+- `{dump}`: Dumps all defined variables using CakePHP's debugger
 
-CakePHP-specific tags, filters, and functions are in development and will be added in future releases.
+### Link Tag
+
+Generate HTML links using CakePHP's HtmlHelper:
+
+```latte
+{link 'Home', '/'}
+```
+
+Equivalent to `$this->Html->link('Home' '/')` in Cake.
+
+For additional options, use named arguments:
+
+```latte
+{link 'Profile' url: ['controller' => 'Users', 'action' => 'view', 1] options: ['class' => 'profile-link']}
+```
+
+### Helper Functions
+
+Access CakePHP's view layer from templates:
+
+- `view()`: Returns the current View instance
+- `helper('HelperName')`: Returns a specific helper (e.g., `Html`, `Form`)
+
+```latte
+{view()->getRequest()}
+{helper('Html')->link('Home', '/')|noescape}
+```
 
 ## Extending
 

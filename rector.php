@@ -16,6 +16,7 @@ return RectorConfig::configure()
         DisallowedEmptyRuleFixerRector::class,
         SimplifyIfElseToTernaryRector::class,
     ])
+    ->withImportNames()
     ->withParallel()
     ->withPreparedSets(
         deadCode: true,
