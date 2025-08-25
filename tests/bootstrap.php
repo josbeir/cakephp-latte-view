@@ -2,13 +2,17 @@
 declare(strict_types=1);
 
 use Cake\Cache\Cache;
+use Cake\Chronos\Chronos;
 use Cake\Core\Configure;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+if (!defined('DS')) {
+    define('DS', DIRECTORY_SEPARATOR);
+}
 
 define('PLUGIN_ROOT', dirname(__DIR__));
 define('ROOT', PLUGIN_ROOT . DS . 'tests' . DS . 'test_app');
-define('TMP', sys_get_temp_dir() . DS . 'LatteViewTmp' . DS);
+define('TMP', PLUGIN_ROOT . DS . 'tmp' . DS);
+define('LOGS', TMP . 'logs' . DS);
 define('CACHE', TMP . 'cache' . DS);
 define('APP', ROOT . DS . 'src' . DS);
 define('APP_DIR', 'src');
@@ -19,9 +23,9 @@ define('WWW_ROOT', PLUGIN_ROOT . DS . 'webroot' . DS);
 define('TESTS', __DIR__ . DS);
 define('CONFIG', TESTS . 'config' . DS);
 
-require_once CAKE_CORE_INCLUDE_PATH . DS . 'src' . DS . 'I18n' . DS . 'functions_global.php';
-
-Configure::write('debug', true);
+require_once PLUGIN_ROOT . '/vendor/autoload.php';
+require_once CORE_PATH . 'config/bootstrap.php';
+require_once CORE_PATH . 'src' . DS . 'I18n' . DS . 'functions_global.php';
 
 Configure::write('App', [
     'encoding' => 'UTF-8',
@@ -30,6 +34,9 @@ Configure::write('App', [
         'templates' => [ROOT . DS . 'templates' . DS],
     ],
 ]);
+
+Configure::write('debug', true);
+Chronos::setTestNow(Chronos::now());
 
 if (!is_dir(TMP)) {
     mkdir(TMP, 0770, true);

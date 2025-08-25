@@ -26,6 +26,8 @@ A CakePHP plugin providing [Latte](https://latte.nette.org/) template engine int
 
 - Use `.latte` templates in your CakePHP app
 - Sandbox mode for secure template execution
+- Template names are always relative to `App.path.templates` not the current file
+- Plugin templates can be loaded using `@MyPlugin.myTemplate`
 - Custom CakePHP tags and functions for seamless integration (see [Custom Tags and Functions](#custom-tags-and-functions))
 
 ## Requirements
@@ -64,6 +66,45 @@ class AppView extends LatteView
         $this->setConfig([]);
     }
 }
+```
+
+Create a layout template: `templates/layout/default.latte`
+
+```latte
+<html lang="en">
+<head>
+    <title>{block title}{/block}</title>
+</head>
+<body>
+    <div id="content">
+        {block content}{/block}
+    </div>
+    <div id="footer">
+        {block footer}&copy; Copyright 2008{/block}
+    </div>
+</body>
+</html>
+```
+
+Create a child template for your controller action with the default layout:
+
+```latte
+{block title}My page title{/block}
+{block content}
+    My page content {$variable}
+{/block}
+```
+
+Using another layout:
+```latte
+{layout '/layout/custom.latte'}
+...
+```
+
+Using a plugin layout:
+```latte
+{layout '@myPlugin./layout/custom.latte'}
+...
 ```
 
 ## Configuration Options

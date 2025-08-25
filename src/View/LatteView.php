@@ -10,6 +10,7 @@ use Latte\Engine;
 use Latte\Runtime\Template;
 use Latte\Sandbox\SecurityPolicy;
 use LatteView\Latte\Extension\CakeExtension;
+use LatteView\Latte\Loaders\FileLoader;
 
 /**
  * Class LatteView
@@ -58,6 +59,7 @@ class LatteView extends View
                 ->setAutoRefresh($this->getAutoRefresh())
                 ->setLocale(I18n::getLocale())
                 ->addProvider('coreParentFinder', $this->layoutLookup(...))
+                ->setLoader(new FileLoader())
                 ->addExtension(new CakeExtension($this));
 
             if ($this->getConfig('cache')) {
