@@ -47,7 +47,7 @@ final class CakeExtension extends Extension
      */
     public function getFunctions(): array
     {
-        $functions = [
+        return [
             'debug' => debug(...),
             'view' => fn(): ?View => $this->view,
             'helper' => fn(string $name): ?Helper => $this->view->{$name},
@@ -58,7 +58,5 @@ final class CakeExtension extends Extension
             '__dn' => fn(...$args) => __dn(...$args),
             '__n' => fn(...$args) => __n(...$args),
         ];
-
-        return $functions;
     }
 }
