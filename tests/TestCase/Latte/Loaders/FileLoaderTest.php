@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace LatteView\Tests\TestCase\Latte\Loaders;
 
 use Cake\TestSuite\TestCase;
-use Latte\TemplateNotFoundException;
+use LatteView\Exception\TemplateNotFoundException;
 use LatteView\Latte\Loaders\FileLoader;
 use LatteView\TestApp\Plugin\ChildTestApp\ChildTestAppPlugin;
 use PHPUnit\Framework\Attributes\DataProvider;

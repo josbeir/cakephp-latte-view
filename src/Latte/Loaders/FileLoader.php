@@ -6,7 +6,7 @@ namespace LatteView\Latte\Loaders;
 use Cake\Core\App;
 use Cake\Core\Plugin;
 use Latte\Loaders\FileLoader as LatteFileLoader;
-use Latte\TemplateNotFoundException;
+use LatteView\Exception\TemplateNotFoundException;
 use function Cake\Core\pluginSplit;
 
 /**
