@@ -22,6 +22,7 @@ define('CONFIG', TESTS . 'config' . DS);
 Configure::write('debug', true);
 
 Configure::write('App', [
+    'encoding' => 'UTF-8',
     'namespace' => 'TestApp',
     'paths' => [
         'templates' => [ROOT . DS . 'templates' . DS],

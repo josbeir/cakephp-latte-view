@@ -22,13 +22,11 @@ class DumpNode extends LatteDumpNode
     {
         return $this->expression instanceof ExpressionNode
             ? $context->format(
-                Debugger::class . '::printVar(%node) %line;',
+                Debugger::class . '::printVar(%node);',
                 $this->expression,
-                $this->position,
             )
             : $context->format(
-                Debugger::class . '::printVar(get_defined_vars()) %line;',
-                $this->position,
+                Debugger::class . '::printVar(get_defined_vars());',
             );
     }
 }

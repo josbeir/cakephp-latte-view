@@ -8,6 +8,7 @@ use Cake\I18n\I18n;
 use Cake\View\View;
 use Latte\Engine;
 use Latte\Runtime\Template;
+use Latte\Sandbox\SecurityPolicy;
 use LatteView\Latte\Extension\CakeExtension;
 
 /**
@@ -17,23 +18,34 @@ class LatteView extends View
 {
     protected ?Engine $engine = null;
 
+    protected ?SecurityPolicy $sandboxPolicy = null;
+
+    /**
+     * Default configuration settings.
+     *
+     * Use ViewBuilder::setOption()/setOptions() in your controller to set these options.
+     *
+     * `cache` - Whether to cache compiled templates. Defaults to true.
+     *
+     * `autoRefresh` - Whether to check for template updates on each request. Defaults to false.
+     *   If not explicitly set and debug is enabled, it will be true.
+     *
+     * `fallbackBlock` - The name of the fallback block to use when auto layout is disabled.
+     *
+     * @var array<string, mixed>
+     */
+    protected array $_defaultConfig = [
+        'cache' => true,
+        'autoRefresh' => null,
+        'fallbackBlock' => 'content',
+        'cachePath' => CACHE . 'latte_view' . DS,
+        'sandbox' => false,
+    ];
+
     /**
      * @inheritDoc
      */
     protected string $_ext = '.latte';
-
-    /**
-     * Enables caching.
-     */
-    protected bool $cache = true;
-
-    /**
-     * Disables caching.
-     */
-    protected function disableCache(): void
-    {
-        $this->cache = false;
-    }
 
     /**
      * Get the Latte engine instance.
@@ -42,31 +54,63 @@ class LatteView extends View
     {
         if (!$this->engine instanceof Engine) {
             $this->engine = new Engine();
+            $this->engine
+                ->setAutoRefresh($this->getAutoRefresh())
+                ->setLocale(I18n::getLocale())
+                ->addProvider('coreParentFinder', $this->layoutLookup(...))
+                ->addExtension(new CakeExtension());
 
-            if ($this->cache) {
-                $this->engine->setTempDirectory(CACHE . 'latte_view' . DS);
+            if ($this->getConfig('cache')) {
+                $this->engine->setTempDirectory($this->getConfig('cachePath'));
             }
 
-            $this->engine->setAutoRefresh($this->getDebug());
-            $this->engine->setLocale(I18n::getLocale());
-
-            $this->engine->addProvider('coreParentFinder', $this->layoutLookup(...));
-            $this->engine->addExtension(new CakeExtension());
+            if ($this->getConfig('sandbox')) {
+                $this->engine->setPolicy($this->getSandboxPolicy());
+                $this->engine->setSandboxMode();
+            }
         }
 
         return $this->engine;
     }
 
     /**
-     * @inheritDoc
+     * Get whether auto refresh is enabled.
+     *
+     * If not explicitly set, it will follow the debug mode.
      */
-    protected function _evaluate(string $template, array $data): string
+    protected function getAutoRefresh(): bool
     {
-        // We need to let Latte handle auto layout.
-        // @see self::layoutLookup()
-        $this->disableAutoLayout();
+        $auto_refresh = $this->getConfig('autoRefresh');
+        if ($auto_refresh === null) {
+            $auto_refresh = Configure::read('debug');
+        }
 
-        return $this->getEngine()->renderToString($template, $this->prepareData($data));
+        return $auto_refresh;
+    }
+
+    /**
+     * Renders a template file with the provided data.
+     *
+     * Note: When auto layout is enabled (default), Latte handles layout resolution automatically.
+     * When auto layout is disabled, the template is rendered within the specified fallback block.
+     *
+     * @param string $templateFile Filename of the template.
+     * @param array $dataForView Data to include in rendered view.
+     * @return string Rendered output
+     */
+    protected function _evaluate(string $templateFile, array $dataForView): string
+    {
+        $block = $this->getConfig('fallbackBlock');
+        if ($this->isAutoLayoutEnabled()) {
+            $this->disableAutoLayout();
+            $block = null;
+        }
+
+        return $this->getEngine()->renderToString(
+            $templateFile,
+            $this->prepareData($dataForView),
+            $block,
+        );
     }
 
     /**
@@ -97,10 +141,26 @@ class LatteView extends View
     }
 
     /**
-     * Get the debug mode status.
+     * Set the security policy for the sandbox.
      */
-    protected function getDebug(): bool
+    public function setSandboxPolicy(SecurityPolicy $policy): self
     {
-        return Configure::read('debug');
+        $this->sandboxPolicy = $policy;
+
+        return $this;
+    }
+
+    /**
+     * Get the security policy for the sandbox.
+     *
+     * Defaults to the safe policy. (see `SecurityPolicy::createSafePolicy()`)
+     */
+    public function getSandboxPolicy(): SecurityPolicy
+    {
+        if (!$this->sandboxPolicy instanceof SecurityPolicy) {
+            $this->sandboxPolicy = SecurityPolicy::createSafePolicy();
+        }
+
+        return $this->sandboxPolicy;
     }
 }
