@@ -5,6 +5,7 @@
 [![codecov](https://codecov.io/github/josbeir/cakephp-latte-view/graph/badge.svg?token=4VGWJQTWH5)](https://codecov.io/github/josbeir/cakephp-latte-view)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PHP Version](https://img.shields.io/badge/php-8.2%2B-blue.svg)](https://www.php.net/releases/8.2/en.php)
+[![Packagist Downloads](https://img.shields.io/packagist/dt/josbeir/cakephp-latte-view.svg)](https://packagist.org/packages/josbeir/cakephp-latte-view)
 
 A CakePHP plugin providing [Latte](https://latte.nette.org/) template engine integration for CakePHP applications.
 
@@ -22,7 +23,7 @@ composer require josbeir/cakephp-latte-view
 
 ## Usage
 
-Enable the plugin in your `Application.php`:
+Enable the plugin in your `Application.php` or in plugins.php:
 
 ```php
 use LatteView\LatteViewPlugin;
@@ -93,6 +94,11 @@ use Latte\Sandbox\SecurityPolicy;
 $view->getEngine()->addExtension(new YourExtension());
 $view->setSandboxPolicy($yourPolicy);
 ```
+
+## References
+
+- [Latte Official Website](https://latte.nette.org/)
+- [Latte Documentation](https://latte.nette.org/en/guide)
 
 ## Contributing
 
