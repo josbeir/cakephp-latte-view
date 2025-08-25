@@ -146,4 +146,4 @@ Contributions, issues, and feature requests are welcome! Feel free to open a pul
 
 ## License
 
-MIT
+[MIT](LICENSE.md)
