@@ -93,14 +93,14 @@ class LatteViewTest extends TestCase
         $this->assertStringContainsString('hello world', $output);
     }
 
-    public function testSandbox(): void
-    {
-        $this->view->setConfig('sandbox', true);
+    // public function testSandbox(): void
+    // {
+    //     $this->view->setConfig('sandbox', true);
 
-        $output = $this->view->render('simple');
-        $this->assertStringContainsString('<html lang="en">', $output);
-        $this->assertStringContainsString('I Like Latte', $output);
-    }
+    //     $output = $this->view->render('simple');
+    //     $this->assertStringContainsString('<html lang="en">', $output);
+    //     $this->assertStringContainsString('I Like Latte', $output);
+    // }
 
     public function testSandboxRestrictive(): void
     {

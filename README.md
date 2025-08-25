@@ -95,6 +95,28 @@ Set options via `ViewBuilder::setOption()` or `setOptions()`:
 - `{dump $var}` or `{debug $var}`: Uses CakePHP's `Debugger::printVar()` instead of Nette's default dumper
 - `{dump}`: Dumps all defined variables using CakePHP's debugger
 
+### Helper Tags, Filters, Functions
+
+Access CakePHP's view layer from templates:
+| Function | Description |
+|----------|-------------|
+| `view()` | Returns the current View instance |
+| `helper('HelperName')` | Returns a specific helper instance (e.g., `Html`, `Form`) |
+| `url()` | Url generation - See Router::url() |
+| `rurl()` | Reverse url generation - See Router::reverse() |
+| `__()` `__d()` `__dn()` `__n()` | Cake's translations functions |
+| `{link 'title' url options}` | Generate HTML links using CakePHP's HtmlHelper |
+
+```latte
+{* Some examples *}
+
+{link 'Click me' '/'}
+{view()->getRequest()}
+{helper('Html')->link('Home', '/')|noescape}
+{url(['controller' => 'Pages', 'action' => 'home'])}
+{__('Bonjour')}
+```
+
 ### Link Tag
 
 Generate HTML links using CakePHP's HtmlHelper:
@@ -109,18 +131,6 @@ For additional options, use named arguments:
 
 ```latte
 {link 'Profile' url: ['controller' => 'Users', 'action' => 'view', 1] options: ['class' => 'profile-link']}
-```
-
-### Helper Functions
-
-Access CakePHP's view layer from templates:
-
-- `view()`: Returns the current View instance
-- `helper('HelperName')`: Returns a specific helper (e.g., `Html`, `Form`)
-
-```latte
-{view()->getRequest()}
-{helper('Html')->link('Home', '/')|noescape}
 ```
 
 ## Extending

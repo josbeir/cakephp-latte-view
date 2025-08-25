@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace LatteView\Latte\Extension;
 
+use Cake\Routing\Router;
 use Cake\View\Helper;
 use Cake\View\View;
 use Latte\Extension;
@@ -46,9 +47,18 @@ final class CakeExtension extends Extension
      */
     public function getFunctions(): array
     {
-        return [
+        $functions = [
+            'debug' => debug(...),
             'view' => fn(): ?View => $this->view,
             'helper' => fn(string $name): ?Helper => $this->view->{$name},
+            'url' => Router::url(...),
+            'rurl' => Router::reverse(...),
+            '__' => fn(...$args) => __(...$args),
+            '__d' => fn(...$args) => __d(...$args),
+            '__dn' => fn(...$args) => __dn(...$args),
+            '__n' => fn(...$args) => __n(...$args),
         ];
+
+        return $functions;
     }
 }
