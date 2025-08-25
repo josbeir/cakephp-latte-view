@@ -2,6 +2,7 @@
 
 [![PHPStan Level 8](https://img.shields.io/badge/PHPStan-level%208-brightgreen)](https://github.com/josbeir/cakephp-latte-view)
 [![Build Status](https://github.com/josbeir/cakephp-latte-view/actions/workflows/ci.yml/badge.svg)](https://github.com/josbeir/cakephp-latte-view/actions)
+[![codecov](https://codecov.io/github/josbeir/cakephp-latte-view/graph/badge.svg?token=4VGWJQTWH5)](https://codecov.io/github/josbeir/cakephp-latte-view)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PHP Version](https://img.shields.io/badge/php-8.2%2B-blue.svg)](https://www.php.net/releases/8.2/en.php)
 
@@ -51,7 +52,7 @@ class AppView extends LatteView
 The current view object is always available in your Latte templates as `View`. You can use it to access helpers and other view methods:
 
 ```latte
-{var $html = View->Html->link('Home', '/')}
+{$View->getRequest()}
 ```
 
 **Note:** If you use helpers this way, remember to disable escaping for the output if they return markup:
@@ -68,7 +69,7 @@ Set options via `ViewBuilder::setOption()` or `setOptions()`:
 |----------------|---------|------------------------|-----------------------------------------------------------------------------|
 | `cache`        | bool    | `true`                 | Enable/disable template caching. Caching is always enabled except when explicitly set to `false`. |
 | `autoRefresh`  | bool    | `false` (or `true` in debug) | Automatically refresh templates. Auto-refresh is always enabled in debug mode. |
-| `fallbackBlock`| string  | `'content'`            | Block name used when auto layout is disabled                                |
+| `fallbackBlock`| string  | `'content'`            | Block name used when auto layout is disabled. Unlike CakePHP views, a Latte child template always requires a block definition. When auto layout is disabled, you must specify which block should be rendered by the renderer. |
 | `cachePath`    | string  | `CACHE . 'latte_view'` | Path for compiled template cache                                            |
 | `sandbox`      | bool    | `false`                | Enable sandbox mode for secure template execution. When enabled, the security policy can be configured using `setSandboxPolicy()` and `getSandboxPolicy()`. |
 
