@@ -12,9 +12,9 @@ A CakePHP plugin providing [Latte](https://latte.nette.org/) template engine int
 ## Table of Contents
 
 - [Features](#features)
+- [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Accessing the View Object in Templates](#accessing-the-view-object-in-templates)
 - [Configuration Options](#configuration-options)
 - [Custom Tags and Functions](#custom-tags-and-functions)
 - [Extending](#extending)
@@ -28,6 +28,10 @@ A CakePHP plugin providing [Latte](https://latte.nette.org/) template engine int
 - Sandbox mode for secure template execution
 - Custom CakePHP tags: `{dump}` and `{debug}` override Nette dumper and use CakePHP's Debugger
 
+## Requirements
+
+- **PHP**: 8.2 or higher
+- **CakePHP**: 5.x
 
 ## Installation
 
@@ -60,20 +64,6 @@ class AppView extends LatteView
         $this->setConfig([]);
     }
 }
-```
-
-## Accessing the View Object in Templates
-
-The current view object is always available in your Latte templates as `View`. You can use it to access helpers and other view methods:
-
-```latte
-{$View->getRequest()}
-```
-
-**Note:** If you use helpers this way, remember to disable escaping for the output if they return markup:
-
-```latte
-{$View->Html->link('Home', '/')|noescape}
 ```
 
 ## Configuration Options
