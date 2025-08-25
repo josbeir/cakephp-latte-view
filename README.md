@@ -26,7 +26,7 @@ A CakePHP plugin providing [Latte](https://latte.nette.org/) template engine int
 
 - Use `.latte` templates in your CakePHP app
 - Sandbox mode for secure template execution
-- Custom CakePHP tags: `{dump}` and `{debug}` override Nette dumper and use CakePHP's Debugger
+- Custom CakePHP tags and functions for seamless integration (see [Custom Tags and Functions](#custom-tags-and-functions))
 
 ## Requirements
 
