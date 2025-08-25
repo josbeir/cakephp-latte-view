@@ -32,6 +32,12 @@ class LatteView extends View
      *   If not explicitly set and debug is enabled, it will be true.
      *
      * `fallbackBlock` - The name of the fallback block to use when auto layout is disabled.
+     *   Defaults to 'content'.
+     *
+     * `cachePath` - The directory path where compiled templates are cached.
+     *   Defaults to CACHE . 'latte_view' . DS.
+     *
+     * `sandbox` - Whether to enable sandbox mode for template security. Defaults to false.
      *
      * @var array<string, mixed>
      */
