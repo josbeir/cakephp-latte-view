@@ -8,8 +8,7 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 
 define('PLUGIN_ROOT', dirname(__DIR__));
 define('ROOT', PLUGIN_ROOT . DS . 'tests' . DS . 'test_app');
-define('TMP', PLUGIN_ROOT . DS . 'tmp' . DS);
-define('LOGS', TMP . 'logs' . DS);
+define('TMP', sys_get_temp_dir() . DS . 'LatteViewTmp' . DS);
 define('CACHE', TMP . 'cache' . DS);
 define('APP', ROOT . DS . 'src' . DS);
 define('APP_DIR', 'src');
@@ -28,6 +27,14 @@ Configure::write('App', [
         'templates' => [ROOT . DS . 'templates' . DS],
     ],
 ]);
+
+if (!is_dir(TMP)) {
+    mkdir(TMP, 0770, true);
+}
+
+if (!is_dir(CACHE)) {
+    mkdir(CACHE, 0770, true);
+}
 
 $cache = [
     'default' => [
