@@ -57,7 +57,7 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          slug: josbeir/cakephp-elastickit
+          slug: josbeir/cakephp-latte-view
 
   static-analysis:
     runs-on: ubuntu-latest
