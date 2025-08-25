@@ -3,7 +3,6 @@
     "description": "Latte view plugin for CakePHP",
     "type": "cakephp-plugin",
     "license": "MIT",
-    "version": "0.1.0",
     "require": {
         "php": ">=8.2",
         "cakephp/cakephp": "^5.0",

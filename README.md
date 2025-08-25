@@ -86,7 +86,7 @@ Create a layout template: `templates/layout/default.latte`
 </html>
 ```
 
-Create a child template for your controller action with the default layout:
+Create a child template for your controller action with the default layout `templates/Controller/action.latte`:
 
 ```latte
 {block title}My page title{/block}
@@ -97,13 +97,13 @@ Create a child template for your controller action with the default layout:
 
 Using another layout:
 ```latte
-{layout '/layout/custom.latte'}
+{layout '/layout/custom'}
 ...
 ```
 
-Using a plugin layout:
+Using a plugin template/layout:
 ```latte
-{layout '@myPlugin./layout/custom.latte'}
+{layout '@myPlugin./layout/custom'}
 ...
 ```
 

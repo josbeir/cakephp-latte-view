@@ -20,6 +20,8 @@ use function Cake\Core\pluginSplit;
  */
 class FileLoader extends LatteFileLoader
 {
+    protected const EXT = '.latte';
+
     /**
      * Returns template source code.
      */
@@ -39,6 +41,11 @@ class FileLoader extends LatteFileLoader
     {
         if (file_exists($name)) {
             return $name;
+        }
+
+        // Remove extension if present
+        if (str_ends_with($name, self::EXT)) {
+            $name = substr($name, 0, -strlen(self::EXT));
         }
 
         // Detect plugin names using the '@' symbol
@@ -101,7 +108,7 @@ class FileLoader extends LatteFileLoader
      */
     protected function addExtension(string $path): string
     {
-        return $path . '.latte';
+        return $path . self::EXT;
     }
 
     /**

@@ -25,12 +25,20 @@ class FileLoaderTest extends TestCase
                 '/test_app/templates/simple.latte',
             ],
             [
+                'simple.latte',
+                '/test_app/templates/simple.latte',
+            ],
+            [
                 '/simple',
                 '/test_app/templates/simple.latte',
             ],
             [
                 '/Page/home',
                 '/test_app/templates/Page/home.latte',
+            ],
+            [
+                '@ChildTestApp.plugin.latte',
+                '/test_app/plugins/ChildTestApp/templates/plugin.latte',
             ],
             [
                 '@ChildTestApp.plugin',
