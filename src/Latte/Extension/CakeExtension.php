@@ -4,20 +4,38 @@ declare(strict_types=1);
 namespace LatteView\Latte\Extension;
 
 use Cake\Routing\Router;
-use Cake\View\Helper;
 use Cake\View\View;
+use Latte\Compiler\Tag;
 use Latte\Extension;
 use LatteView\Latte\Nodes\DumpNode;
+use LatteView\Latte\Nodes\HelperNode;
 use LatteView\Latte\Nodes\LinkNode;
 
 final class CakeExtension extends Extension
 {
     /**
+     * List of helper names to be registered.
+     */
+    protected array $helperNames = [
+        'Breadcrumbs',
+        'Flash',
+        'Form',
+        'Html',
+        'Number',
+        'Paginator',
+        'Text',
+        'Time',
+        'Url',
+    ];
+
+    /**
      * CakeExtension constructor.
      */
-    public function __construct(
-        protected ?View $view = null,
-    ) {
+    public function __construct(protected View $view)
+    {
+        foreach ($this->view->helpers() as $name => $helper) {
+            $this->helperNames[] = $name;
+        }
     }
 
     /**
@@ -26,7 +44,7 @@ final class CakeExtension extends Extension
     public function getProviders(): array
     {
         return [
-            'view' => $this->view,
+            'cakeView' => $this->view,
         ];
     }
 
@@ -35,11 +53,18 @@ final class CakeExtension extends Extension
      */
     public function getTags(): array
     {
-        return [
+        $tags = [
             'dump' => DumpNode::create(...),
             'debug' => DumpNode::create(...),
             'link' => LinkNode::create(...),
         ];
+
+        foreach ($this->helperNames as $helperName) {
+            $tagName = 'c' . ucfirst($helperName);
+            $tags[$tagName] = fn(Tag $tag): HelperNode => HelperNode::create($helperName, $tag);
+        }
+
+        return $tags;
     }
 
     /**
@@ -49,8 +74,7 @@ final class CakeExtension extends Extension
     {
         return [
             'debug' => debug(...),
-            'view' => fn(): ?View => $this->view,
-            'helper' => fn(string $name): ?Helper => $this->view->{$name},
+            'view' => fn(): View => $this->view,
             'url' => Router::url(...),
             'rurl' => Router::reverse(...),
             '__' => fn(...$args) => __(...$args),

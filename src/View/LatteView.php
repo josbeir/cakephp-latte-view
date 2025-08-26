@@ -116,22 +116,9 @@ class LatteView extends View
 
         return $this->getEngine()->renderToString(
             $templateFile,
-            $this->prepareData($dataForView),
+            $dataForView,
             $block,
         );
-    }
-
-    /**
-     * Prepare data for rendering.
-     *
-     * @param array $data The data to be passed to the template.
-     * @return array The prepared data.
-     */
-    protected function prepareData(array $data): array
-    {
-        $data['View'] = $this;
-
-        return $data;
     }
 
     /**

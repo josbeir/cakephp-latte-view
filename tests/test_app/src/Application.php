@@ -5,7 +5,7 @@ namespace LatteView\TestApp;
 
 use Cake\Http\BaseApplication;
 use Cake\Http\MiddlewareQueue;
-use LatteView\TestApp\Plugin\ChildTestApp\ChildTestAppPlugin;
+use LatteView\TestPlugin\TestPluginPlugin;
 
 class Application extends BaseApplication
 {
@@ -17,6 +17,6 @@ class Application extends BaseApplication
     public function bootstrap(): void
     {
         parent::bootstrap();
-        $this->addPlugin(ChildTestAppPlugin::class);
+        $this->addPlugin(TestPluginPlugin::class);
     }
 }

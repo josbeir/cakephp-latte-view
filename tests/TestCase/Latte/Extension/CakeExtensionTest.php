@@ -26,13 +26,6 @@ class CakeExtensionTest extends TestCase
         $this->latte = null;
     }
 
-    public function testHelperFunction(): void
-    {
-        $compiled = $this->latte->compile("{helper('Html')->link('Label', '/')}");
-        $expected = '($this->global->fn->helper)($this, \'Html\'))';
-        $this->assertStringContainsString($expected, $compiled);
-    }
-
     public function testViewFunction(): void
     {
         $compiled = $this->latte->compile('{view()->getRequest()}');

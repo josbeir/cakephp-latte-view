@@ -10,21 +10,25 @@ use Latte\Compiler\Nodes\StatementNode;
 use Latte\Compiler\PrintContext;
 use Latte\Compiler\Tag;
 
-final class LinkNode extends StatementNode
+final class HelperNode extends StatementNode
 {
-    protected ?ExpressionNode $title = null;
+    protected ?ExpressionNode $method = null;
 
     protected ?ArrayNode $arguments = null;
+
+    protected ?string $helperName;
 
     /**
      * Constructor.
      */
-    public static function create(Tag $tag): static
+    public static function create(string $helperName, Tag $tag): static
     {
         $node = new self();
 
+        $node->helperName = $helperName;
+
         if (!$tag->parser->isEnd()) {
-            $node->title = $tag->parser->parseExpression();
+            $node->method = $tag->parser->parseUnquotedStringOrExpression();
             $node->arguments = $tag->parser->parseArguments();
         }
 
@@ -36,8 +40,8 @@ final class LinkNode extends StatementNode
      */
     public function &getIterator(): Generator
     {
-        if ($this->title instanceof ExpressionNode) {
-            yield $this->title;
+        if ($this->method instanceof ExpressionNode) {
+            yield $this->method;
         }
     }
 
@@ -47,8 +51,9 @@ final class LinkNode extends StatementNode
     public function print(PrintContext $context): string
     {
         return $context->format(
-            'echo $this->global->cakeView->Html->link(%node, %args);',
-            $this->title,
+            'echo $this->global->cakeView->%raw->{%node}(%args);',
+            $this->helperName,
+            $this->method,
             $this->arguments,
         );
     }

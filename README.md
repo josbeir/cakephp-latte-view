@@ -1,4 +1,4 @@
-# LatteView for CakePHP
+# LatteView for CakePHP 🍰
 
 [![PHPStan Level 8](https://img.shields.io/badge/PHPStan-level%208-brightgreen)](https://github.com/josbeir/cakephp-latte-view)
 [![Build Status](https://github.com/josbeir/cakephp-latte-view/actions/workflows/ci.yml/badge.svg)](https://github.com/josbeir/cakephp-latte-view/actions)
@@ -132,36 +132,51 @@ Access CakePHP's view layer from templates:
 | Function | Description |
 |----------|-------------|
 | `view()` | Returns the current View instance |
-| `helper('HelperName')` | Returns a specific helper instance (e.g., `Html`, `Form`) |
 | `url()` | Url generation - See Router::url() |
 | `rurl()` | Reverse url generation - See Router::reverse() |
 | `__()` `__d()` `__dn()` `__n()` | Cake's translations functions |
 | `{link 'title' url options}` | Generate HTML links using CakePHP's HtmlHelper |
+| `{cHelperName method arg1 arg2}` | Access any CakePHP helper using the `c` (🍰)  prefix followed by the helper name |
+
+### CakePHP helpers
+
+All CakePHP helpers are automatically available as Latte tags using the `{c[HelperName] ...}` syntax:
+
+```latte
+{* Html helper examples *}
+{cHtml link 'My link', '/'}
+{cHtml link 'My link', ['controller' => 'Pages', 'action' => 'home']}
+{cHtml css 'style.css'}
+{cHtml script 'app.js'}
+
+{* Form helper examples *}
+{cForm create}
+{cForm control 'title'}
+{cForm button 'Submit'}
+{cForm end}
+
+{* Text helper examples *}
+{cText truncate $longText, 100}
+{cText excerpt $text, 'keyword', 50}
+
+{* Number helper examples *}
+{cNumber currency $price, 'USD'}
+{cNumber format $number, 2}
+
+...
+```
+
+Be sure to [add your helpers](https://book.cakephp.org/5/en/views/helpers.html#configuring-helpers) in your view to make them available. By default, only CakePHP's core helpers are automatically loaded.
+
+### Functions
 
 ```latte
 {* Some examples *}
 
 {link 'Click me' '/'}
-{view()->getRequest()}
-{helper('Html')->link('Home', '/')|noescape}
+{view()}
 {url(['controller' => 'Pages', 'action' => 'home'])}
 {__('Bonjour')}
-```
-
-### Link Tag
-
-Generate HTML links using CakePHP's HtmlHelper:
-
-```latte
-{link 'Home', '/'}
-```
-
-Equivalent to `$this->Html->link('Home' '/')` in Cake.
-
-For additional options, use named arguments:
-
-```latte
-{link 'Profile' url: ['controller' => 'Users', 'action' => 'view', 1] options: ['class' => 'profile-link']}
 ```
 
 ## Extending

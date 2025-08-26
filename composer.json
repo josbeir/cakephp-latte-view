@@ -23,7 +23,7 @@
     "autoload-dev": {
         "psr-4": {
             "LatteView\\TestApp\\": "tests/test_app/src/",
-            "LatteView\\TestApp\\Plugin\\ChildTestApp\\": "tests/test_app/plugins/ChildTestApp/src/",
+            "LatteView\\TestPlugin\\": "tests/test_app/plugins/TestPlugin/src/",
             "LatteView\\Test\\": "tests/",
             "Cake\\Test\\": "vendor/cakephp/cakephp/tests/"
         }

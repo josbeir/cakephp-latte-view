@@ -29,7 +29,7 @@ require_once CORE_PATH . 'src' . DS . 'I18n' . DS . 'functions_global.php';
 
 Configure::write('App', [
     'encoding' => 'UTF-8',
-    'namespace' => 'TestApp',
+    'namespace' => 'LatteView\TestApp',
     'paths' => [
         'templates' => [ROOT . DS . 'templates' . DS],
     ],
@@ -50,7 +50,7 @@ $cache = [
     'default' => [
         'engine' => 'File',
     ],
-    '_cake_core_' => [
+    '_cake_translations_' => [
         'className' => 'File',
         'prefix' => '_cake_core_',
         'path' => CACHE . 'persistent/',

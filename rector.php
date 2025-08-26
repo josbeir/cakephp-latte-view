@@ -16,7 +16,12 @@ return RectorConfig::configure()
         DisallowedEmptyRuleFixerRector::class,
         SimplifyIfElseToTernaryRector::class,
     ])
-    ->withImportNames()
+    ->withImportNames(
+        importNames: true,
+        importDocBlockNames: false,
+        importShortClasses: false,
+        removeUnusedImports: true,
+    )
     ->withParallel()
     ->withPreparedSets(
         deadCode: true,
