@@ -143,6 +143,8 @@ Access CakePHP's view layer from templates:
 
 All CakePHP helpers are automatically available as Latte tags using the `{c[HelperName] ...}` syntax:
 
+> **Note:** Latte comes with a comprehensive list of functions and filters, making many CakePHP helper functions possibly obsolete. Using Latte's built-in functionality is preferred. Check the [filter](https://latte.nette.org/en/filters), [function](https://latte.nette.org/en/functions) and [tags](https://latte.nette.org/en/tags) documentation for what is available out of the box.
+
 ```latte
 {* Html helper examples *}
 {cHtml link 'My link', '/'}
