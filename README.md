@@ -245,6 +245,7 @@ Access CakePHP's view layer from templates:
 | `request()`| Returns the current request instance |
 | `url()` | Url generation - See Router::url() |
 | `rurl()` | Reverse url generation - See Router::reverse() |
+| `{fetch 'name'}`| Cake's `View::fetch()` method, introduced to keep legacy functionality of helpers that use view blocks.
 | `{link 'title' url options}` | Generate HTML links using CakePHP's HtmlHelper |
 | `{cHelperName method arg1, arg2}` | Access any CakePHP helper using the `c` (🍰)  prefix followed by the helper name |
 

@@ -205,4 +205,11 @@ class LatteViewTest extends TestCase
         $this->assertStringContainsString('Item: Item A', $output);
         $this->assertStringContainsString('Item: Item B', $output);
     }
+
+    public function testFetch(): void
+    {
+        $this->view->assign('test', 'Hello world');
+        $content = $this->view->render('fetch');
+        $this->assertStringContainsString('<h1>Hello world</h1>', $content);
+    }
 }

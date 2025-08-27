@@ -9,6 +9,7 @@ use Cake\View\View;
 use Latte\Compiler\Tag;
 use Latte\Extension;
 use LatteView\Latte\Nodes\DumpNode;
+use LatteView\Latte\Nodes\FetchNode;
 use LatteView\Latte\Nodes\HelperNode;
 use LatteView\Latte\Nodes\LinkNode;
 
@@ -58,6 +59,7 @@ final class CakeExtension extends Extension
             'dump' => DumpNode::create(...),
             'debug' => DumpNode::create(...),
             'link' => LinkNode::create(...),
+            'fetch' => FetchNode::create(...),
         ];
 
         foreach ($this->helperNames as $helperName) {
