@@ -7,6 +7,7 @@ use Cake\Core\Configure;
 use Cake\I18n\I18n;
 use Cake\TestSuite\TestCase;
 use Latte\Engine;
+use Latte\RuntimeException;
 use Latte\Sandbox\SecurityPolicy;
 use Latte\SecurityViolationException;
 use LatteView\TestApp\View\AppView;
@@ -130,6 +131,27 @@ class LatteViewTest extends TestCase
         $this->assertTrue($this->view->getAutoRefresh());
 
         Configure::write('debug', true);
+    }
+
+    public function testMultiBlockRendering(): void
+    {
+        $this->view->disableAutoLayout();
+        $this->view->setConfig('blocks', ['block1', 'block2']);
+
+        $output = $this->view->render('multi_block');
+
+        $this->assertStringContainsString('Block 1 content', $output);
+        $this->assertStringContainsString('Block 2 content', $output);
+        $this->assertStringNotContainsString('Block 3 content', $output);
+    }
+
+    public function testUnknownBlockName(): void
+    {
+        $this->expectException(RuntimeException::class);
+
+        $this->view->disableAutoLayout();
+        $this->view->setConfig('blocks', ['unknown']);
+        $this->view->render('multi_block');
     }
 
     public function testTranslations(): void

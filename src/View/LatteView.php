@@ -32,8 +32,8 @@ class LatteView extends View
      * `autoRefresh` - Whether to check for template updates on each request. Defaults to false.
      *   If not explicitly set and debug is enabled, it will be true.
      *
-     * `fallbackBlock` - The name of the fallback block to use when auto layout is disabled.
-     *   Defaults to 'content'.
+     * `blocks` - An array of block names to render when auto layout is disabled.
+     *   Defaults to ['content'].
      *
      * `cachePath` - The directory path where compiled templates are cached.
      *   Defaults to CACHE . 'latte_view' . DS.
@@ -45,7 +45,7 @@ class LatteView extends View
     protected array $_defaultConfig = [
         'cache' => true,
         'autoRefresh' => null,
-        'fallbackBlock' => 'content',
+        'blocks' => ['content'],
         'cachePath' => CACHE . 'latte_view' . DS,
         'sandbox' => false,
     ];
@@ -111,17 +111,24 @@ class LatteView extends View
      */
     protected function _evaluate(string $templateFile, array $dataForView): string
     {
-        $block = $this->getConfig('fallbackBlock');
         if ($this->isAutoLayoutEnabled()) {
             $this->disableAutoLayout();
-            $block = null;
+
+            return $this->getEngine()->renderToString($templateFile, $dataForView);
         }
 
-        return $this->getEngine()->renderToString(
-            $templateFile,
-            $dataForView,
-            $block,
-        );
+        $blocks = $this->getConfig('blocks', []);
+
+        $content = '';
+        foreach ($blocks as $blockName) {
+            $content .= $this->getEngine()->renderToString(
+                $templateFile,
+                $dataForView,
+                $blockName,
+            );
+        }
+
+        return $content;
     }
 
     /**
