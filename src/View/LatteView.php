@@ -4,12 +4,13 @@ declare(strict_types=1);
 namespace LatteView\View;
 
 use Cake\Core\Configure;
-use Cake\I18n\I18n;
 use Cake\View\View;
 use Latte\Engine;
+use Latte\Essential\TranslatorExtension;
 use Latte\Runtime\Template;
 use Latte\Sandbox\SecurityPolicy;
 use LatteView\Latte\Extension\CakeExtension;
+use LatteView\Latte\Extension\CakeTranslator;
 use LatteView\Latte\Loaders\FileLoader;
 
 /**
@@ -60,13 +61,15 @@ class LatteView extends View
     public function getEngine(): Engine
     {
         if (!$this->engine instanceof Engine) {
+            $translator = new CakeTranslator();
+
             $this->engine = new Engine();
             $this->engine
                 ->setAutoRefresh($this->getAutoRefresh())
-                ->setLocale(I18n::getLocale())
                 ->addProvider('coreParentFinder', $this->layoutLookup(...))
                 ->setLoader(new FileLoader())
-                ->addExtension(new CakeExtension($this));
+                ->addExtension(new CakeExtension($this))
+                ->addExtension(new TranslatorExtension($translator->translate(...)));
 
             if ($this->getConfig('cache')) {
                 $this->engine->setTempDirectory($this->getConfig('cachePath'));

@@ -30,8 +30,11 @@ require_once CORE_PATH . 'src' . DS . 'I18n' . DS . 'functions_global.php';
 Configure::write('App', [
     'encoding' => 'UTF-8',
     'namespace' => 'LatteView\TestApp',
+    'defaultLocale' => 'en_US',
     'paths' => [
+        'plugins' => [ROOT . 'plugins' . DS],
         'templates' => [ROOT . DS . 'templates' . DS],
+        'locales' => [ROOT . DS . 'resources' . DS . 'locales' . DS],
     ],
 ]);
 

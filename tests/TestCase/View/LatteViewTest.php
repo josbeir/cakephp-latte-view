@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace LatteView\Tests\TestCase\View;
 
 use Cake\Core\Configure;
+use Cake\I18n\I18n;
 use Cake\TestSuite\TestCase;
 use Latte\Engine;
 use Latte\Sandbox\SecurityPolicy;
@@ -129,5 +130,25 @@ class LatteViewTest extends TestCase
         $this->assertTrue($this->view->getAutoRefresh());
 
         Configure::write('debug', true);
+    }
+
+    public function testTranslations(): void
+    {
+        $view = new AppView();
+
+        I18n::setLocale('en_US');
+        $output = $view->render('translate');
+        $this->assertStringContainsString('I like that color', $output);
+        $this->assertStringContainsString('I organize code', $output);
+
+        I18n::setLocale('en_GB');
+        $output = $view->render('translate');
+        $this->assertStringContainsString('I like that colour', $output);
+        $this->assertStringContainsString('I organise code', $output);
+        $this->assertStringContainsString('Hello from custom domain', $output);
+        $this->assertStringContainsString('1 item', $output);
+        $this->assertStringContainsString('2 items', $output);
+        $this->assertStringContainsString('2 items with myarg', $output);
+        $this->assertStringContainsString('I like that color from domain', $output);
     }
 }

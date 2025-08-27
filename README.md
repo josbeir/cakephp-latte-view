@@ -135,7 +135,6 @@ Access CakePHP's view layer from templates:
 | `request()`| Returns the current request instance |
 | `url()` | Url generation - See Router::url() |
 | `rurl()` | Reverse url generation - See Router::reverse() |
-| `__()` `__d()` `__dn()` `__n()` | Cake's translation functions |
 | `{link 'title' url options}` | Generate HTML links using CakePHP's HtmlHelper |
 | `{cHelperName method arg1, arg2}` | Access any CakePHP helper using the `c` (🍰)  prefix followed by the helper name |
 
@@ -170,6 +169,30 @@ All CakePHP helpers are automatically available as Latte tags using the `{c[Help
 ```
 
 Be sure to [add your helpers](https://book.cakephp.org/5/en/views/helpers.html#configuring-helpers) in your view to make them available. By default, only CakePHP's core helpers are automatically loaded.
+
+### I18n functionality
+
+The plugin provides seamless integration with CakePHP's I18n system through Latte's built-in translation tags and filters:
+
+> **Note:** Translation functions use the `sprintf` formatter by default to prevent conflicts with Latte's syntax. This differs from CakePHP's default ICU formatter. See [CakePHP's I18n documentation](https://book.cakephp.org/5/en/core-libraries/internationalization-and-localization.html#using-different-formatters) for more details on formatters.
+
+```latte
+{* Basic translation *}
+{_'Hello, World!'}
+{'Welcome back'|translate}
+
+{* Translation with domain *}
+{_'Admin Panel', domain: 'admin'}
+
+{* Translation with placeholders *}
+{translate $username, $email}Welcome %s, your email %s has been verified{/translate}
+
+{* Pluralization *}
+{translate $count, singular: '%s item'}%s items{/translate}
+{_'%s items', $count, singular: '%s item'}
+```
+
+All translation calls automatically use CakePHP's `__()`, `__d()`, `__n()`, and related I18n functions under the hood, ensuring full compatibility with your existing translation workflow and message files.
 
 ### Other examples
 

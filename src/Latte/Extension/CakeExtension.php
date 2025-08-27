@@ -79,10 +79,6 @@ final class CakeExtension extends Extension
             'request' => fn(): ServerRequest => $this->view->getRequest(),
             'url' => Router::url(...),
             'rurl' => Router::reverse(...),
-            '__' => fn(...$args) => __(...$args),
-            '__d' => fn(...$args) => __d(...$args),
-            '__dn' => fn(...$args) => __dn(...$args),
-            '__n' => fn(...$args) => __n(...$args),
         ];
     }
 }

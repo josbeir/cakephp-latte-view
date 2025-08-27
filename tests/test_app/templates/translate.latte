@@ -1,0 +1,24 @@
+{block content}
+    {_'I like that color'}
+    <br>
+    {='I organize code'|translate}
+    <br />
+
+    {_'I like that color', domain: 'custom'}
+    <br />
+
+    {translate 'token', 'token2'}These are some tokens: %s %s{/translate}
+    <br>
+
+    {translate domain: 'custom'}I need translation{/translate}
+    <br />
+
+    {_'%s items', 1, singular: '%s item'}
+    <br />
+
+    {foreach [1,2] as $count}
+        {translate $count, 'myarg', singular: '%s item'}%s items with %s{/translate}
+    {/foreach}
+
+    {_('I like that color')}
+</content>
