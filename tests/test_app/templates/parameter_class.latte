@@ -1,0 +1,8 @@
+{templateType LatteView\TestApp\View\Parameter\MyTemplateParams}
+
+{block content}
+Data: {$name}<br>
+Additional: {$additional}<br>
+{foreach $items as $item}
+    Item: {$item}<br>
+{/foreach}

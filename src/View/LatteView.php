@@ -111,6 +111,8 @@ class LatteView extends View
      */
     protected function _evaluate(string $templateFile, array $dataForView): string
     {
+        $dataForView = $this->prepareData($dataForView);
+
         if ($this->isAutoLayoutEnabled()) {
             $this->disableAutoLayout();
 
@@ -129,6 +131,47 @@ class LatteView extends View
         }
 
         return $content;
+    }
+
+    /**
+     * Prepare data for the template.
+     *
+     * If a value in the data array is an instance of TemplateInterface,
+     * it will be instantiated with the its data values as constructor arguments.
+     *
+     * Examples:
+     * 1. Regular data array (returned as-is):
+     *    `$data = ['title' => 'Hello', 'content' => 'World'];`
+     *    // Returns: `['title' => 'Hello', 'content' => 'World']`
+     *
+     * 2. Array containing ParameterInterface instance:
+     *    `$data = ['user' => new UserParameter('John', 25)];`
+     *    // Returns: `UserParameter` instance
+     *
+     * 3. Array with class name as key and constructor args as value:
+     *    `$data = [UserParameter::class => ['John', 25]];`
+     *    // Returns: `new UserParameter('John', 25)`
+     *
+     * @param array $data The data array to prepare.
+     * @return array The prepared data array.
+     */
+    protected function prepareData(array $data): array|ParameterInterface
+    {
+        foreach ($data as $key => $value) {
+            if ($value instanceof ParameterInterface) {
+                return $value;
+            }
+
+            if (
+                is_string($key) &&
+                is_subclass_of($key, ParameterInterface::class) &&
+                is_array($value)
+            ) {
+                return new $key(...array_values($value));
+            }
+        }
+
+        return $data;
     }
 
     /**

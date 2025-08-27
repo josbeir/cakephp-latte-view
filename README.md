@@ -15,6 +15,7 @@ A CakePHP plugin providing [Latte](https://latte.nette.org/) template engine int
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Using the Latte type system](#using-the-latte-type-system)
 - [Configuration Options](#configuration-options)
 - [Custom Tags and Functions](#custom-tags-and-functions)
 - [Extending](#extending)
@@ -105,6 +106,69 @@ Using a plugin template/layout:
 ```latte
 {layout '@myPlugin./layout/custom'}
 ...
+```
+
+## Using the Latte [type system](https://latte.nette.org/en/type-system)
+
+One of the great things about Latte is its integration with various IDEs through the `{templateType}` and `{varType}` tags.
+
+This plugin allows you to pass typed objects to templates, enabling you to utilize this powerful feature for better IDE support and type safety.
+
+To make use of this feature, you need to pass a class that implements `LatteView\View\ParameterInterface`.
+
+First, create a class that implements this interface:
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App\View\Parameter;
+
+use LatteView\View\ParameterInterface;
+
+class MyTemplateParams implements ParameterInterface
+{
+    public function __construct(
+        public string $name = 'Default Name',
+        public string $additional = 'Default Additional',
+        public ?EntityInterface $entity = null,
+    ) {
+    }
+}
+```
+
+Now, when passing data to your view (e.g., from inside your controller method), you can pass an instance of this class as an argument. Please note that all other arguments will be ignored as the class instance is the only object passed to your view.
+
+```php
+// MyController.php
+
+$entity = $users->get(1);
+
+// Pass data to create an instance
+$this->set(MyTemplateParams::class, [
+    'name' => 'John',
+    'additional' => 'Doe',
+    'entity' => $entity,
+]);
+
+// Or pass an instance of your ParameterInterface class
+$params = new MyTemplateParams(
+    name: 'Hello',
+    additional: 'World',
+    entity: $entity
+);
+
+$this->set('parameters', $instance);
+```
+
+Then in your template
+
+```latte
+{templateType App\View\Parameter\MyTemplateParams}
+
+Name: {$name}
+Additional: {$additional}
+Entity param: {$entity->id}
 ```
 
 ## Configuration Options

@@ -11,6 +11,7 @@ use Latte\RuntimeException;
 use Latte\Sandbox\SecurityPolicy;
 use Latte\SecurityViolationException;
 use LatteView\TestApp\View\AppView;
+use LatteView\TestApp\View\Parameter\MyTemplateParams;
 
 class LatteViewTest extends TestCase
 {
@@ -172,5 +173,36 @@ class LatteViewTest extends TestCase
         $this->assertStringContainsString('2 items', $output);
         $this->assertStringContainsString('2 items with myarg', $output);
         $this->assertStringContainsString('I like that color from domain', $output);
+    }
+
+    public function testWithParameterClass(): void
+    {
+        $this->view->set(MyTemplateParams::class, [
+            'name' => 'Custom Name',
+            'additional' => 'Custom Additional',
+            'items' => ['Item 1', 'Item 2'],
+        ]);
+
+        $output = $this->view->render('parameter_class');
+        $this->assertStringContainsString('Data: Custom Name', $output);
+        $this->assertStringContainsString('Additional: Custom Additional', $output);
+        $this->assertStringContainsString('Item: Item 1', $output);
+        $this->assertStringContainsString('Item: Item 2', $output);
+    }
+
+    public function testWithParameterClassInstance(): void
+    {
+        $parameter = new MyTemplateParams(
+            name: 'Instance Name',
+            additional: 'Instance Additional',
+            items: ['Item A', 'Item B'],
+        );
+        $this->view->set('params', $parameter);
+
+        $output = $this->view->render('parameter_class');
+        $this->assertStringContainsString('Data: Instance Name', $output);
+        $this->assertStringContainsString('Additional: Instance Additional', $output);
+        $this->assertStringContainsString('Item: Item A', $output);
+        $this->assertStringContainsString('Item: Item B', $output);
     }
 }
