@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace LatteView\Latte\Extension;
 
+use Cake\Http\ServerRequest;
 use Cake\Routing\Router;
 use Cake\View\View;
 use Latte\Compiler\Tag;
@@ -75,6 +76,7 @@ final class CakeExtension extends Extension
         return [
             'debug' => debug(...),
             'view' => fn(): View => $this->view,
+            'request' => fn(): ServerRequest => $this->view->getRequest(),
             'url' => Router::url(...),
             'rurl' => Router::reverse(...),
             '__' => fn(...$args) => __(...$args),

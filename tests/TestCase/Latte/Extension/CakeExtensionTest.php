@@ -6,6 +6,7 @@ namespace LatteView\Tests\TestCase\View;
 use Cake\TestSuite\TestCase;
 use Latte\Engine;
 use Latte\Loaders\StringLoader;
+use LatteView\Latte\Extension\CakeExtension;
 use LatteView\TestApp\View\AppView;
 
 class CakeExtensionTest extends TestCase
@@ -31,5 +32,28 @@ class CakeExtensionTest extends TestCase
         $compiled = $this->latte->compile('{view()->getRequest()}');
         $expected = '$this->global->fn->view)($this, ))->getRequest()';
         $this->assertStringContainsString($expected, $compiled);
+    }
+
+    public function testHelpers(): void
+    {
+        $extension = new CakeExtension(new AppView());
+
+        $tags = $extension->getTags();
+        $expected = [
+            'cBreadcrumbs',
+            'cFlash',
+            'cForm',
+            'cHtml',
+            'cNumber',
+            'cPaginator',
+            'cText',
+            'cTime',
+            'cUrl',
+            'cCustom',
+        ];
+
+        foreach ($expected as $tag) {
+            $this->assertArrayHasKey($tag, $tags);
+        }
     }
 }

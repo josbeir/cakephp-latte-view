@@ -132,11 +132,12 @@ Access CakePHP's view layer from templates:
 | Function | Description |
 |----------|-------------|
 | `view()` | Returns the current View instance |
+| `request()`| Returns the current request instance |
 | `url()` | Url generation - See Router::url() |
 | `rurl()` | Reverse url generation - See Router::reverse() |
-| `__()` `__d()` `__dn()` `__n()` | Cake's translations functions |
+| `__()` `__d()` `__dn()` `__n()` | Cake's translation functions |
 | `{link 'title' url options}` | Generate HTML links using CakePHP's HtmlHelper |
-| `{cHelperName method arg1 arg2}` | Access any CakePHP helper using the `c` (🍰)  prefix followed by the helper name |
+| `{cHelperName method arg1, arg2}` | Access any CakePHP helper using the `c` (🍰)  prefix followed by the helper name |
 
 ### CakePHP helpers
 
@@ -168,13 +169,14 @@ All CakePHP helpers are automatically available as Latte tags using the `{c[Help
 
 Be sure to [add your helpers](https://book.cakephp.org/5/en/views/helpers.html#configuring-helpers) in your view to make them available. By default, only CakePHP's core helpers are automatically loaded.
 
-### Functions
+### Other examples
 
 ```latte
 {* Some examples *}
 
 {link 'Click me' '/'}
-{view()}
+{view()->viewMethod()}
+{request()->getQuery('search)}
 {url(['controller' => 'Pages', 'action' => 'home'])}
 {__('Bonjour')}
 ```
