@@ -110,6 +110,8 @@ Using a plugin template/layout:
 
 ## Using the Latte [type system](https://latte.nette.org/en/type-system)
 
+> **Note:** Using the type system is completely optional. You can continue using traditional variable passing (e.g., `$this->set('variable', $value)`) as you would with any CakePHP view. The type system is an additional feature that enhances IDE support and type safety when desired.
+
 One of the great things about Latte is its integration with various IDEs through the `{templateType}` and `{varType}` tags.
 
 This plugin allows you to pass typed objects to templates, enabling you to utilize this powerful feature for better IDE support and type safety.

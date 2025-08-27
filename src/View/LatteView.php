@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace LatteView\View;
 
 use Cake\Core\Configure;
+use Cake\I18n\I18n;
 use Cake\View\View;
 use Latte\Engine;
 use Latte\Essential\TranslatorExtension;
@@ -68,6 +69,7 @@ class LatteView extends View
                 ->setAutoRefresh($this->getAutoRefresh())
                 ->addProvider('coreParentFinder', $this->layoutLookup(...))
                 ->setLoader(new FileLoader())
+                ->setLocale(I18n::getLocale())
                 ->addExtension(new CakeExtension($this))
                 ->addExtension(new TranslatorExtension($translator->translate(...)));
 
