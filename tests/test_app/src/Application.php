@@ -5,6 +5,7 @@ namespace LatteView\TestApp;
 
 use Cake\Http\BaseApplication;
 use Cake\Http\MiddlewareQueue;
+use Cake\Routing\RouteBuilder;
 use LatteView\TestPlugin\TestPluginPlugin;
 
 class Application extends BaseApplication
@@ -18,5 +19,11 @@ class Application extends BaseApplication
     {
         parent::bootstrap();
         $this->addPlugin(TestPluginPlugin::class);
+    }
+
+    public function routes(RouteBuilder $routes): void
+    {
+        parent::routes($routes);
+        $routes->connect('/display', ['controller' => 'Pages', 'action' => 'display']);
     }
 }

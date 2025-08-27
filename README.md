@@ -311,6 +311,7 @@ All translation calls automatically use CakePHP's `__()`, `__d()`, `__n()`, and 
 {* Some examples *}
 
 {link 'Click me' '/'}
+{link 'Click me' url: ['controller' => 'Pages', 'action' => 'home'], options: ['class' => 'button]}
 {view()->viewMethod()}
 {request()->getQuery('search)}
 {url(['controller' => 'Pages', 'action' => 'home'])}
