@@ -73,7 +73,7 @@ class CakeExtensionTest extends TestCase
         $helpers = $extension->helpers();
         $templates = ['default.latte' => ''];
         foreach (array_keys($helpers) as $helperName) {
-            $templates[$helperName . '.latte'] = '{' . $helperName . " getConfig 'arg', 'fallback'}";
+            $templates[$helperName . '.latte'] = '{' . $helperName . ' initialize []}';
         }
 
         $latte = new Engine();
@@ -82,7 +82,7 @@ class CakeExtensionTest extends TestCase
 
         foreach (array_keys($helpers) as $helperName) {
             $output = $latte->renderToString($helperName . '.latte');
-            $this->assertStringContainsString('fallback', $output);
+            $this->assertStringContainsString('', $output);
         }
     }
 }

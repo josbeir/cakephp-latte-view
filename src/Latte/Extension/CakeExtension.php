@@ -28,15 +28,16 @@ final class CakeExtension extends Extension
      */
     public function helpers(): array
     {
+        $names = [];
         $tags = [];
-        $names = $this->view->getConfig('defaultHelpers', []);
-        $defined_names = $this->view->helpers();
-
-        foreach ($defined_names as $name => $helper) {
-            $names[] = $name;
+        foreach ($this->view->helpers() as $helperName => $helper) {
+            $names[] = $helperName;
         }
 
-        foreach ($names as $name) {
+        $helpers = $this->view->getConfig('defaultHelpers', []);
+        $helpers = array_merge($helpers, $names);
+
+        foreach ($helpers as $name) {
             $tags[$name] = fn(Tag $tag): HelperNode => HelperNode::create($name, $tag);
         }
 

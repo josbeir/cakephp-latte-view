@@ -82,15 +82,12 @@ class LatteView extends View
                 ->setLoader(new FileLoader())
                 ->setLocale(I18n::getLocale())
                 ->addExtension(new CakeExtension($this))
-                ->addExtension(new TranslatorExtension($translator->translate(...)));
+                ->addExtension(new TranslatorExtension($translator->translate(...)))
+                ->setSandboxMode($this->getConfig('sandbox', false))
+                ->setPolicy($this->getSandboxPolicy());
 
             if ($this->getConfig('cache')) {
                 $this->engine->setTempDirectory($this->getConfig('cachePath'));
-            }
-
-            if ($this->getConfig('sandbox')) {
-                $this->engine->setPolicy($this->getSandboxPolicy());
-                $this->engine->setSandboxMode();
             }
         }
 
