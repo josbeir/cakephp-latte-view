@@ -32,14 +32,14 @@ class HelperNodeTest extends TestCase
 
     public function testMethodBuilding(): void
     {
-        $compiled = $this->latte->compile("{cHtml link 'Label', '/'}");
+        $compiled = $this->latte->compile("{Html link 'Label', '/'}");
         $expected = "global->cakeView->Html->{'link'}('Label', '/')";
         $this->assertStringContainsString($expected, $compiled);
     }
 
     public function testMultiArgument(): void
     {
-        $compiled = $this->latte->compile("{cForm control 'myfield', label: 'test'}");
+        $compiled = $this->latte->compile("{Form control 'myfield', label: 'test'}");
         $expected = "echo \$this->global->cakeView->Form->{'control'}('myfield', label: 'test');";
         $this->assertStringContainsString($expected, $compiled);
     }

@@ -222,5 +222,6 @@ class LatteViewTest extends TestCase
         $content = $this->view->render('link');
         $this->assertStringContainsString('<a href="/">Home</a>', $content);
         $this->assertStringContainsString('<a href="/test">Controller</a>', $content);
+        $this->assertStringContainsString('<a href="/" class="my-class">Class</a>', $content);
     }
 }

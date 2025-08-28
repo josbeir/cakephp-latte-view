@@ -8,16 +8,20 @@ use Latte\Engine;
 use Latte\Loaders\StringLoader;
 use LatteView\Latte\Extension\CakeExtension;
 use LatteView\TestApp\View\AppView;
+use LatteView\View\LatteView;
 
 class CakeExtensionTest extends TestCase
 {
+    protected ?LatteView $view = null;
+
     protected ?Engine $latte = null;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->latte = (new AppView())->getEngine();
+        $this->view = new AppView();
+        $this->latte = $this->view->getEngine();
         $this->latte->setLoader(new StringLoader());
     }
 
@@ -25,6 +29,7 @@ class CakeExtensionTest extends TestCase
     {
         parent::tearDown();
         $this->latte = null;
+        $this->view = null;
     }
 
     public function testViewFunction(): void
@@ -36,24 +41,48 @@ class CakeExtensionTest extends TestCase
 
     public function testHelpers(): void
     {
-        $extension = new CakeExtension(new AppView());
-
+        $extension = new CakeExtension($this->view);
         $tags = $extension->getTags();
+
         $expected = [
-            'cBreadcrumbs',
-            'cFlash',
-            'cForm',
-            'cHtml',
-            'cNumber',
-            'cPaginator',
-            'cText',
-            'cTime',
-            'cUrl',
-            'cCustom',
+            'Breadcrumbs',
+            'Flash',
+            'Form',
+            'Html',
+            'Number',
+            'Paginator',
+            'Text',
+            'Time',
+            'Url',
+            'Custom',
         ];
 
         foreach ($expected as $tag) {
             $this->assertArrayHasKey($tag, $tags);
+        }
+    }
+
+    /**
+     * This function tests if injected helper tags execute correctly.
+     *
+     * We do this by executing a helper function that is shared across all helpers.
+     */
+    public function testHelperExecution(): void
+    {
+        $extension = new CakeExtension($this->view);
+        $helpers = $extension->helpers();
+        $templates = ['default.latte' => ''];
+        foreach ($helpers as $helperName => $helperTag) {
+            $templates[$helperName . '.latte'] = '{' . $helperName . " getConfig 'arg', 'fallback'}";
+        }
+
+        $latte = new Engine();
+        $latte->setLoader(new StringLoader($templates));
+        $latte->addExtension(new CakeExtension($this->view));
+
+        foreach (array_keys($helpers) as $helperName) {
+            $output = $latte->renderToString($helperName . '.latte');
+            $this->assertStringContainsString('fallback', $output);
         }
     }
 }

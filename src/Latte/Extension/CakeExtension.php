@@ -16,28 +16,30 @@ use LatteView\Latte\Nodes\LinkNode;
 final class CakeExtension extends Extension
 {
     /**
-     * List of helper names to be registered.
-     */
-    protected array $helperNames = [
-        'Breadcrumbs',
-        'Flash',
-        'Form',
-        'Html',
-        'Number',
-        'Paginator',
-        'Text',
-        'Time',
-        'Url',
-    ];
-
-    /**
      * CakeExtension constructor.
      */
-    public function __construct(protected View $view)
+    public function __construct(
+        protected View $view,
+    ) {
+    }
+
+    /**
+     * Initialize the list of helper helper names.
+     */
+    public function helpers(): array
     {
-        foreach ($this->view->helpers() as $name => $helper) {
-            $this->helperNames[] = $name;
+        $names = $this->view->getConfig('defaultHelpers', []);
+        $defined_names = $this->view->helpers();
+
+        foreach ($defined_names as $name => $helper) {
+            $names[] = $name;
         }
+
+        foreach ($names as $name) {
+            $tags[$name] = fn(Tag $tag): HelperNode => HelperNode::create($name, $tag);
+        }
+
+        return $tags;
     }
 
     /**
@@ -62,12 +64,7 @@ final class CakeExtension extends Extension
             'fetch' => FetchNode::create(...),
         ];
 
-        foreach ($this->helperNames as $helperName) {
-            $tagName = 'c' . ucfirst($helperName);
-            $tags[$tagName] = fn(Tag $tag): HelperNode => HelperNode::create($helperName, $tag);
-        }
-
-        return $tags;
+        return array_merge($tags, $this->helpers());
     }
 
     /**

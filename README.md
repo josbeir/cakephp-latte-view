@@ -247,34 +247,34 @@ Access CakePHP's view layer from templates:
 | `rurl()` | Reverse url generation - See Router::reverse() |
 | `{fetch 'name'}`| Cake's `View::fetch()` method, introduced to keep legacy functionality of helpers that use view blocks.
 | `{link 'title' url options}` | Generate HTML links using CakePHP's HtmlHelper |
-| `{cHelperName method arg1, arg2}` | Access any CakePHP helper using the `c` (🍰)  prefix followed by the helper name |
+| `{HelperName method arg1, arg2}` | Access any CakePHP helper using the helper name followed by its methodname args |
 
 ### CakePHP helpers
 
-All CakePHP helpers are automatically available as Latte tags using the `{c[HelperName] ...}` syntax:
+All CakePHP helpers are automatically available as Latte tags using the `{HelperName ...}` syntax. Be sure to always check that your name does not clash with other Latte tags:
 
 > **Note:** Latte comes with a comprehensive list of functions and filters, making many CakePHP helper functions possibly obsolete. Using Latte's built-in functionality is preferred. Check the [filter](https://latte.nette.org/en/filters), [function](https://latte.nette.org/en/functions) and [tags](https://latte.nette.org/en/tags) documentation for what is available out of the box.
 
 ```latte
 {* Html helper examples *}
-{cHtml link 'My link', '/'}
-{cHtml link 'My link', ['controller' => 'Pages', 'action' => 'home']}
-{cHtml css 'style.css'}
-{cHtml script 'app.js'}
+{Html link 'My link', '/'}
+{Html link 'My link', ['controller' => 'Pages', 'action' => 'home']}
+{Html css 'style.css'}
+{Html script 'app.js'}
 
 {* Form helper examples *}
-{cForm create}
-{cForm control 'title'}
-{cForm button 'Submit'}
-{cForm end}
+{Form create}
+{Form control 'title'}
+{Form button 'Submit'}
+{Form end}
 
 {* Text helper examples *}
-{cText truncate $longText, 100}
-{cText excerpt $text, 'keyword', 50}
+{Text truncate $longText, 100}
+{Text excerpt $text, 'keyword', 50}
 
 {* Number helper examples *}
-{cNumber currency $price, 'USD'}
-{cNumber format $number, 2}
+{Number currency $price, 'USD'}
+{Number format $number, 2}
 
 ...
 ```

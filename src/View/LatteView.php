@@ -49,6 +49,17 @@ class LatteView extends View
         'blocks' => ['content'],
         'cachePath' => CACHE . 'latte_view' . DS,
         'sandbox' => false,
+        'defaultHelpers' => [
+            'Breadcrumbs',
+            'Flash',
+            'Form',
+            'Html',
+            'Number',
+            'Paginator',
+            'Text',
+            'Time',
+            'Url',
+        ],
     ];
 
     /**
