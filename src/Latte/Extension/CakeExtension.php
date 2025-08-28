@@ -28,6 +28,7 @@ final class CakeExtension extends Extension
      */
     public function helpers(): array
     {
+        $tags = [];
         $names = $this->view->getConfig('defaultHelpers', []);
         $defined_names = $this->view->helpers();
 
