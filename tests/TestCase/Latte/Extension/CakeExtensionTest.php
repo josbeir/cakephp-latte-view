@@ -72,7 +72,7 @@ class CakeExtensionTest extends TestCase
         $extension = new CakeExtension($this->view);
         $helpers = $extension->helpers();
         $templates = ['default.latte' => ''];
-        foreach ($helpers as $helperName => $helperTag) {
+        foreach (array_keys($helpers) as $helperName) {
             $templates[$helperName . '.latte'] = '{' . $helperName . " getConfig 'arg', 'fallback'}";
         }
 
