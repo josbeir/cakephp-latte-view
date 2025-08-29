@@ -242,13 +242,14 @@ This approach is particularly useful for:
 Access CakePHP's view layer from templates:
 | Function | Description |
 |----------|-------------|
-| `view()` | Returns the current View instance |
-| `request()`| Returns the current request instance |
-| `url()` | Url generation - See Router::url() |
-| `rurl()` | Reverse url generation - See Router::reverse() |
+| `view()` | Returns the current View instance. |
+| `request()`| Returns the current request instance. |
+| `url()` | Url generation - See `Router::url()`. |
+| `rurl()` | Reverse url generation - See `Router::reverse()`. |
 | `{fetch 'name'}`| Cake's `View::fetch()` method, introduced to keep legacy functionality of helpers that use view blocks.
-| `{link 'title' url options}` | Generate HTML links using CakePHP's HtmlHelper |
-| `{HelperName method arg1, arg2}` | Access any CakePHP helper using the helper name followed by its methodname args |
+| `{link 'title' url options}` | Generate HTML links using CakePHP's HtmlHelper. |
+| `{HelperName method arg1, arg2}` | Access any CakePHP helper using the helper name followed by its methodname args. |
+| `helper('Html')` | Returns a helper instance object. Depending on your needs you can decide to use the function or the tag. |
 
 ### CakePHP helpers
 
@@ -277,6 +278,9 @@ All CakePHP helpers are automatically available as Latte tags using the `{Helper
 {Number currency $price, 'USD'}
 {Number format $number, 2}
 
+{* Access a helper using the helper() function *}
+{var $first_name = helper('Identity')->get('first_name')}
+{_'Hello %s !', $first_name}
 ...
 ```
 

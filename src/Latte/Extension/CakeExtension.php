@@ -5,6 +5,7 @@ namespace LatteView\Latte\Extension;
 
 use Cake\Http\ServerRequest;
 use Cake\Routing\Router;
+use Cake\View\Helper;
 use Cake\View\View;
 use Latte\Compiler\Tag;
 use Latte\Extension;
@@ -77,6 +78,7 @@ final class CakeExtension extends Extension
         return [
             'debug' => debug(...),
             'view' => fn(): View => $this->view,
+            'helper' => fn(string $name): ?Helper => $this->view->helpers()->{$name} ?? null,
             'request' => fn(): ServerRequest => $this->view->getRequest(),
             'url' => Router::url(...),
             'rurl' => Router::reverse(...),

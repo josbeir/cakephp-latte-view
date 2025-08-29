@@ -55,4 +55,10 @@ class HelperNodeTest extends TestCase
         $compiled = $this->view->render('helpers');
         $this->assertStringContainsString('form method="post"', $compiled);
     }
+
+    public function testHelperFunction(): void
+    {
+        $compiled = $this->view->render('helpers');
+        $this->assertStringContainsString('World from CustomHelper!', $compiled);
+    }
 }

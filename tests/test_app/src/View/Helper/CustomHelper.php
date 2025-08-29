@@ -11,4 +11,9 @@ class CustomHelper extends Helper
     {
         return 'Hello from CustomHelper!';
     }
+
+    public function world(): string
+    {
+        return 'World from CustomHelper!';
+    }
 }
