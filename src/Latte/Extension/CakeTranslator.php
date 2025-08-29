@@ -9,16 +9,6 @@ use InvalidArgumentException;
 class CakeTranslator
 {
     /**
-     * Constructor.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        I18n::setDefaultFormatter('sprintf');
-    }
-
-    /**
      * Translate a message.
      */
     public function translate(string $message, mixed ...$args): string

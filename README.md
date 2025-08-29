@@ -286,8 +286,13 @@ Be sure to [add your helpers](https://book.cakephp.org/5/en/views/helpers.html#c
 
 The plugin provides seamless integration with CakePHP's I18n system through Latte's built-in translation tags and filters:
 
-> **Note:** Translation functions use the `sprintf` formatter by default to prevent conflicts with Latte's syntax. This differs from CakePHP's default ICU formatter. See [CakePHP's I18n documentation](https://book.cakephp.org/5/en/core-libraries/internationalization-and-localization.html#using-different-formatters) for more details on formatters.
+**Tokens:** By default, [CakePHP uses the ICU formatter](https://book.cakephp.org/5/en/core-libraries/internationalization-and-localization.html#using-different-formatters) to handle tokens in its translation functions. Although this works when using `{_'Hello {0}', 'world'}`, it would clash with the Latte pattern when doing `{translate 'world'}Hello {0}{/translate}`. It is therefore recommended to use the sprintf formatter which you can enable by setting the following in your application (bootstrap for instance).
 
+```php
+I18n::setDefaultFormatter('sprintf');
+```
+
+Examples:
 ```latte
 {* Basic translation *}
 {_'Hello, World!'}
@@ -296,7 +301,8 @@ The plugin provides seamless integration with CakePHP's I18n system through Latt
 {* Translation with domain *}
 {_'Admin Panel', domain: 'admin'}
 
-{* Translation with placeholders *}
+{* Translation with tokens *}
+{_'Hello from %s', 'Brussels'}
 {translate $username, $email}Welcome %s, your email %s has been verified{/translate}
 
 {* Pluralization *}
@@ -304,7 +310,9 @@ The plugin provides seamless integration with CakePHP's I18n system through Latt
 {_'%s items', $count, singular: '%s item'}
 ```
 
-All translation calls automatically use CakePHP's `__()`, `__d()`, `__n()`, and related I18n functions under the hood, ensuring full compatibility with your existing translation workflow and message files.
+All translation calls automatically use CakePHP's I18n functions under the hood, ensuring full compatibility with your existing translation workflow and message files. 
+
+Please note that no __x() related functions are implemented.
 
 ### Other examples
 

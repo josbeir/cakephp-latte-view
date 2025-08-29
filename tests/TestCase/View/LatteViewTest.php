@@ -160,6 +160,8 @@ class LatteViewTest extends TestCase
     {
         $view = new AppView();
 
+        I18n::setDefaultFormatter('sprintf');
+
         I18n::setLocale('en_US');
         $output = $view->render('translate');
         $this->assertStringContainsString('I like that color', $output);
