@@ -247,6 +247,7 @@ Access CakePHP's view layer from templates:
 | `url()` | Url generation - See `Router::url()`. |
 | `rurl()` | Reverse url generation - See `Router::reverse()`. |
 | `{fetch 'name'}`| Cake's `View::fetch()` method, introduced to keep legacy functionality of helpers that use view blocks.
+| `{cell name}` | Cake's `View::cell()` method
 | `{link 'title' url options}` | Generate HTML links using CakePHP's HtmlHelper. |
 | `{HelperName method arg1, arg2}` | Access any CakePHP helper using the helper name followed by its methodname args. |
 | `helper('Html')` | Returns a helper instance object. Depending on your needs you can decide to use the function or the tag. |
@@ -328,7 +329,9 @@ Please note that no __x() related functions are implemented.
 {view()->viewMethod()}
 {request()->getQuery('search)}
 {url(['controller' => 'Pages', 'action' => 'home'])}
-{__('Bonjour')}
+{_'Bonjour'}
+{fetch 'cakeBlockName'}
+{cell cellName argument1, argument2, element: 'myEl', options: [option1 => 'value]}
 ```
 
 ## Extending

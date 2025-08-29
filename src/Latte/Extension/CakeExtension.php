@@ -9,6 +9,7 @@ use Cake\View\Helper;
 use Cake\View\View;
 use Latte\Compiler\Tag;
 use Latte\Extension;
+use LatteView\Latte\Nodes\CellNode;
 use LatteView\Latte\Nodes\DumpNode;
 use LatteView\Latte\Nodes\FetchNode;
 use LatteView\Latte\Nodes\HelperNode;
@@ -65,6 +66,7 @@ final class CakeExtension extends Extension
             'debug' => DumpNode::create(...),
             'link' => LinkNode::create(...),
             'fetch' => FetchNode::create(...),
+            'cell' => CellNode::create(...),
         ];
 
         return array_merge($tags, $this->helpers());
