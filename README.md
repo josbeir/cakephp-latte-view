@@ -10,7 +10,6 @@
 A CakePHP plugin providing [Latte](https://latte.nette.org/) template engine integration for CakePHP applications.
 
 ## Table of Contents
-
 - [Features](#features)
 - [Requirements](#requirements)
 - [Installation](#installation)
@@ -18,6 +17,7 @@ A CakePHP plugin providing [Latte](https://latte.nette.org/) template engine int
 - [Using the Latte type system](#using-the-latte-type-system)
 - [Configuration Options](#configuration-options)
 - [Custom Tags and Functions](#custom-tags-and-functions)
+- [Console commands](#console-commands)
 - [Extending](#extending)
 - [References](#references)
 - [Contributing](#contributing)
@@ -332,6 +332,19 @@ Please note that no __x() related functions are implemented.
 {_'Bonjour'}
 {fetch 'cakeBlockName'}
 {cell cellName argument1, argument2, element: 'myEl', options: [option1 => 'value]}
+```
+
+## Console commands
+
+This plugin ships with a console command for clearing the cache.
+
+The command will use the class path configured in your view settings.
+
+Usage:
+```bash
+bin/cake latte clear
+bin/cake latte clear -c MyView # For custom view classes
+bin/cake latte clear -c MyPlugin.View # For plugin view classes
 ```
 
 ## Extending
