@@ -7,7 +7,7 @@ use Cake\Http\BaseApplication;
 use Cake\Http\MiddlewareQueue;
 use Cake\Routing\RouteBuilder;
 use LatteView\LatteViewPlugin;
-use LatteView\TestPlugin\TestPluginPlugin;
+use LatteView\TestPlugin\TestPlugin;
 
 class Application extends BaseApplication
 {
@@ -18,9 +18,8 @@ class Application extends BaseApplication
 
     public function bootstrap(): void
     {
-        //parent::bootstrap();
         $this->addPlugin(LatteViewPlugin::class);
-        $this->addPlugin(TestPluginPlugin::class);
+        $this->addPlugin(TestPlugin::class);
     }
 
     public function routes(RouteBuilder $routes): void

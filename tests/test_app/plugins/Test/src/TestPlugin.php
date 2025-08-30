@@ -8,7 +8,7 @@ use Cake\Core\BasePlugin;
 /**
  * Plugin for TestPlugin
  */
-class TestPluginPlugin extends BasePlugin
+class TestPlugin extends BasePlugin
 {
-    public ?string $name = 'TestPlugin';
+    public ?string $name = 'Test';
 }

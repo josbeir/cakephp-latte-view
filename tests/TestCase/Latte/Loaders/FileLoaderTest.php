@@ -6,7 +6,7 @@ namespace LatteView\Tests\TestCase\Latte\Loaders;
 use Cake\TestSuite\TestCase;
 use LatteView\Exception\TemplateNotFoundException;
 use LatteView\Latte\Loaders\FileLoader;
-use LatteView\TestPlugin\TestPluginPlugin;
+use LatteView\TestPlugin\TestPlugin;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 class FileLoaderTest extends TestCase
@@ -14,7 +14,7 @@ class FileLoaderTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->loadPlugins([TestPluginPlugin::class]);
+        $this->loadPlugins([TestPlugin::class]);
     }
 
     public static function pathProvider(): array
@@ -37,16 +37,16 @@ class FileLoaderTest extends TestCase
                 '/test_app/templates/Page/home.latte',
             ],
             [
-                '@TestPlugin.plugin.latte',
-                '/test_app/plugins/TestPlugin/templates/plugin.latte',
+                '@Test.plugin.latte',
+                '/test_app/plugins/Test/templates/plugin.latte',
             ],
             [
-                '@TestPlugin.plugin',
-                '/test_app/plugins/TestPlugin/templates/plugin.latte',
+                '@Test.plugin',
+                '/test_app/plugins/Test/templates/plugin.latte',
             ],
             [
-                '@TestPlugin./layout/pluginlayout',
-                '/test_app/plugins/TestPlugin/templates/layout/pluginlayout.latte',
+                '@Test./layout/pluginlayout',
+                '/test_app/plugins/Test/templates/layout/pluginlayout.latte',
             ],
         ];
     }
@@ -74,6 +74,6 @@ class FileLoaderTest extends TestCase
         $loader = new FileLoader();
 
         $this->expectException(TemplateNotFoundException::class);
-        $loader->findTemplate('@TestPlugin.invalid');
+        $loader->findTemplate('@Test.invalid');
     }
 }
