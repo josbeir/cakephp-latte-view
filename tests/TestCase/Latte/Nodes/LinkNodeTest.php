@@ -29,21 +29,21 @@ class LinkNodeTest extends TestCase
     public function testLinkNodeWithStringRoute(): void
     {
         $compiled = $this->latte->compile("{link 'Label' '/'}");
-        $expected = 'echo $this->global->cakeView->Html->link(\'Label\', \'/\');';
+        $expected = 'echo $this->global->cakeView->Html->link(\'Label\', \'/\')';
         $this->assertStringContainsString($expected, $compiled);
     }
 
     public function testLinkNodeWithArrayRoute(): void
     {
         $compiled = $this->latte->compile("{link 'Label' url: ['controller' => 'Pages', 'action' => 'display', 'home']}");
-        $expected = 'echo $this->global->cakeView->Html->link(\'Label\', url: [\'controller\' => \'Pages\', \'action\' => \'display\', \'home\']);';
+        $expected = 'echo $this->global->cakeView->Html->link(\'Label\', url: [\'controller\' => \'Pages\', \'action\' => \'display\', \'home\'])';
         $this->assertStringContainsString($expected, $compiled);
     }
 
     public function testLinkNodeWithOptions(): void
     {
         $compiled = $this->latte->compile("{link 'Label' '/', options: [class: 'my-class']}");
-        $expected = 'echo $this->global->cakeView->Html->link(\'Label\', \'/\', options: [\'class\' => \'my-class\']);';
+        $expected = 'echo $this->global->cakeView->Html->link(\'Label\', \'/\', options: [\'class\' => \'my-class\'])';
         $this->assertStringContainsString($expected, $compiled);
     }
 }

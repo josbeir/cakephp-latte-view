@@ -47,9 +47,10 @@ final class LinkNode extends StatementNode
     public function print(PrintContext $context): string
     {
         return $context->format(
-            'echo $this->global->cakeView->Html->link(%node, %args);',
+            'echo $this->global->cakeView->Html->link(%node, %args) %line;',
             $this->title,
             $this->arguments,
+            $this->position,
         );
     }
 }

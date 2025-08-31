@@ -12,6 +12,7 @@ use Latte\Extension;
 use LatteView\Latte\Nodes\CellNode;
 use LatteView\Latte\Nodes\DumpNode;
 use LatteView\Latte\Nodes\FetchNode;
+use LatteView\Latte\Nodes\Form\FormNContextNode;
 use LatteView\Latte\Nodes\HelperNode;
 use LatteView\Latte\Nodes\LinkNode;
 
@@ -67,6 +68,7 @@ final class CakeExtension extends Extension
             'link' => LinkNode::create(...),
             'fetch' => FetchNode::create(...),
             'cell' => CellNode::create(...),
+            'n:context' => FormNContextNode::create(...),
         ];
 
         return array_merge($tags, $this->helpers());

@@ -29,7 +29,7 @@ class FetchNodeTest extends TestCase
     public function testFetch(): void
     {
         $compiled = $this->latte->compile("{fetch 'test'}");
-        $expected = 'echo $this->global->cakeView->fetch(\'test\');';
+        $expected = 'echo $this->global->cakeView->fetch(\'test\')';
         $this->assertStringContainsString($expected, $compiled);
     }
 }

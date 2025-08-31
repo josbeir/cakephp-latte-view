@@ -43,8 +43,9 @@ final class FetchNode extends StatementNode
     public function print(PrintContext $context): string
     {
         return $context->format(
-            'echo $this->global->cakeView->fetch(%node);',
+            'echo $this->global->cakeView->fetch(%node) %line;',
             $this->name,
+            $this->position,
         );
     }
 }

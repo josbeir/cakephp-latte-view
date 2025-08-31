@@ -40,7 +40,7 @@ class HelperNodeTest extends TestCase
     public function testMultiArgument(): void
     {
         $compiled = $this->latte->compile("{Form control 'myfield', label: 'test'}");
-        $expected = "echo \$this->global->cakeView->Form->{'control'}('myfield', label: 'test');";
+        $expected = "echo \$this->global->cakeView->Form->{'control'}('myfield', label: 'test')";
         $this->assertStringContainsString($expected, $compiled);
     }
 

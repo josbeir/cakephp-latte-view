@@ -1,0 +1,16 @@
+<div n:block="content">
+    <form n:context=$form>
+        {Form control 'name'}
+        {Form control 'email'}
+        {Form control 'body'}
+    </form>
+
+    <form n:context=null>
+        Null context
+    </form>
+
+    {var $url = url(['_name' => 'display'])}
+    <form n:context=$form type="file" url="$url">
+        File form
+    </form>  
+</div>

@@ -24,6 +24,10 @@ class Application extends BaseApplication
 
     public function routes(RouteBuilder $routes): void
     {
-        $routes->connect('/display', ['controller' => 'Pages', 'action' => 'display']);
+        $routes->connect(
+            '/display',
+            ['controller' => 'Pages', 'action' => 'display'],
+            ['_name' => 'display'],
+        );
     }
 }

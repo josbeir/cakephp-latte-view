@@ -16,7 +16,14 @@ A CakePHP plugin providing [Latte](https://latte.nette.org/) template engine int
 - [Usage](#usage)
 - [Using the Latte type system](#using-the-latte-type-system)
 - [Configuration Options](#configuration-options)
+    - [The `blocks` option](#the-blocks-option)
 - [Custom Tags and Functions](#custom-tags-and-functions)
+    - [Helper Tags, Filters, Functions](#helper-tags-filters-functions)
+    - [CakePHP helpers](#cakephp-helpers)
+    - [I18n functionality](#i18n-functionality)
+    - [Forms](#forms)
+    - [Other examples](#other-examples)
+    - [CakePHP Debug Tags](#cakephp-debug-tags)
 - [Console commands](#console-commands)
 - [Extending](#extending)
 - [References](#references)
@@ -216,13 +223,13 @@ When configuring the ViewBuilder to return only specific blocks, you can generat
 
 ```php
 // Disable autoLayout first
-$this->getViewBuilder()->disableAutoLayout();
+$this->viewBuilder()->disableAutoLayout();
 
 // Return only table rows for dynamic content updates
-$this->getViewBuilder()->setConfig('blocks', ['tableRows']);
+$this->viewBuilder()->setConfig('blocks', ['tableRows']);
 
 // Return multiple fragments for complex partial updates
-$this->getViewBuilder()->setConfig('blocks', ['tableRows', 'otherFragment']);
+$this->viewBuilder()->setConfig('blocks', ['tableRows', 'otherFragment']);
 ```
 
 This approach is particularly useful for:
@@ -231,11 +238,6 @@ This approach is particularly useful for:
 - More info [here](https://htmx.org/essays/template-fragments/)
 
 ## Custom Tags and Functions
-
-### CakePHP Debug Tags
-
-- `{dump $var}` or `{debug $var}`: Uses CakePHP's `Debugger::printVar()` instead of Nette's default dumper
-- `{dump}`: Dumps all defined variables using CakePHP's debugger
 
 ### Helper Tags, Filters, Functions
 
@@ -319,6 +321,43 @@ All translation calls automatically use CakePHP's I18n functions under the hood,
 
 Please note that no __x() related functions are implemented.
 
+### Forms
+
+This plugin provides enhanced form handling through both the traditional `{Form}` helper integration and a special `n:context` attribute for more streamlined form creation.
+
+**Traditional Form Helper:**
+```latte
+{Form create $user}
+{Form control 'first_name'}
+{Form control 'last_name'}
+{Form submit}
+{Form end}
+```
+
+**Enhanced n:context Integration:**
+The `n:context` attribute provides a more elegant way to create forms by automatically handling form creation and context binding:
+
+```latte
+{* Basic usage with automatic form creation *}
+<form n:context="$user">
+    {Form control 'first_name'}
+    {Form control 'last_name'}
+    {Form submit}
+</form>
+
+{* Pass additional options via HTML attributes *}
+<form n:context="$user" type="file" url="['_name' => 'display']" class="my-form">
+    {Form control 'email'}
+    {Form submit 'Save'}
+</form>
+
+{* Results in *}
+<form enctype="multipart/form-data" method="post" accept-charset="utf-8" action="/display" class="my-form">
+```
+
+> **Note:** All HTML attributes passed to the form element when using `n:context` are automatically passed to the `options` array of `FormHelper::create()`. This allows you to set any form options using standard HTML attribute syntax.
+
+
 ### Other examples
 
 ```latte
@@ -333,6 +372,11 @@ Please note that no __x() related functions are implemented.
 {fetch 'cakeBlockName'}
 {cell cellName argument1, argument2, element: 'myEl', options: [option1 => 'value]}
 ```
+
+### CakePHP Debug Tags
+
+- `{dump $var}` or `{debug $var}`: Uses CakePHP's `Debugger::printVar()` instead of Nette's default dumper
+- `{dump}`: Dumps all defined variables using CakePHP's debugger
 
 ## Console commands
 

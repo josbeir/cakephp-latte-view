@@ -51,10 +51,11 @@ final class HelperNode extends StatementNode
     public function print(PrintContext $context): string
     {
         return $context->format(
-            'echo $this->global->cakeView->%raw->{%node}(%args);',
+            'echo $this->global->cakeView->%raw->{%node}(%args) %line;',
             $this->helperName,
             $this->method,
             $this->arguments,
+            $this->position,
         );
     }
 }
