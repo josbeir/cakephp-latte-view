@@ -25,7 +25,7 @@ final class FormNContextNode extends StatementNode
     public AreaNode $content;
 
     /**
-     * Create a new FormNNameNode instance.
+     * Create a new FormNContextNode instance.
      */
     public static function create(Tag $tag): Generator
     {

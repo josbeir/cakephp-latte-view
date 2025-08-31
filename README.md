@@ -325,7 +325,7 @@ Please note that no __x() related functions are implemented.
 
 This plugin provides enhanced form handling through both the traditional `{Form}` helper integration and a special `n:context` attribute for more streamlined form creation.
 
-**Traditional Form Helper:**
+**Tag style Form Helper:**
 ```latte
 {Form create $user}
 {Form control 'first_name'}
@@ -334,14 +334,18 @@ This plugin provides enhanced form handling through both the traditional `{Form}
 {Form end}
 ```
 
-**Enhanced n:context Integration:**
-The `n:context` attribute provides a more elegant way to create forms by automatically handling form creation and context binding:
+**n:attribute style forms:**
+The `n:context` and `n:name` attributes provide a more elegant way to create forms by automatically handling form creation and context binding:
 
 ```latte
 {* Basic usage with automatic form creation *}
 <form n:context="$user">
-    {Form control 'first_name'}
-    {Form control 'last_name'}
+    <input n:name="email">
+    <control n:name="username" /> {* Please note that custom elements do not self-close, make sure to close them using / or </control> *}
+    <control n:name="user.company.name" label="Company name" />
+    <select n:name="options" options="[1,2,3]" />
+    <label n:name="description">Description</label>
+    <textarea n:name="description"></textarea>
     {Form submit}
 </form>
 
@@ -350,12 +354,9 @@ The `n:context` attribute provides a more elegant way to create forms by automat
     {Form control 'email'}
     {Form submit 'Save'}
 </form>
-
-{* Results in *}
-<form enctype="multipart/form-data" method="post" accept-charset="utf-8" action="/display" class="my-form">
 ```
 
-> **Note:** All HTML attributes passed to the form element when using `n:context` are automatically passed to the `options` array of `FormHelper::create()`. This allows you to set any form options using standard HTML attribute syntax.
+> **Note:** All HTML attributes passed to the form element when using `n:context` are automatically passed to the `options` array of `FormHelper::create()`. This allows you to set any form options using standard HTML attribute syntax. Additionally, automatic detection of the value type is performed. For more complex controls, tag style form building may be preferred.
 
 
 ### Other examples
