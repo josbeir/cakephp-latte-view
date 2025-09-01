@@ -323,7 +323,7 @@ Please note that no __x() related functions are implemented.
 
 ### Forms
 
-This plugin provides enhanced form handling through both the traditional `{Form}` helper integration and a special `n:context` attribute for more streamlined form creation.
+This plugin provides enhanced form handling through both the traditional `{Form}` helper integration and `n:attribute` attributes for more streamlined form creation.
 
 **Tag style Form Helper:**
 ```latte

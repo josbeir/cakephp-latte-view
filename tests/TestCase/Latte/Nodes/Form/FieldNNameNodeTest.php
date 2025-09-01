@@ -43,27 +43,23 @@ class FieldNNameNodeTest extends TestCase
             <control n:name="user.company.name" label="Company name" />
             <select n:name="options" options="[1,2,3]" />
             <label n:name="mylabel">My Label</label>
-            <textarea n:name="description"></textarea>
+            <textarea n:name="description" />
         XX);
 
-        //dd($result);
-
-        $this->assertStringContainsString('echo $__c_Form->input(\'hello\', []);', $result);
-        $this->assertStringContainsString('echo $__c_Form->control(\'username\', []);', $result);
-        $this->assertStringContainsString('echo $__c_Form->control(\'user.company.name\', [\'label\' => \'Company name\']);', $result);
-        $this->assertStringContainsString('echo $__c_Form->select(\'options\', [\'options\' => [1, 2, 3]]);', $result);
-        $this->assertStringContainsString('echo $__c_Form->textarea(\'description\', []);', $result);
-
-        // Special label tag.
-        $this->assertStringContainsString('echo $__c_Form->label(\'mylabel\', null, []);', $result);
-        $this->assertStringContainsString('$__c_Form->resetTemplates();', $result);
-        $this->assertStringContainsString("echo 'My Label</label>", $result);
+        $this->assertStringContainsString('echo $this->global->cakeView->Form->input(\'hello\', []);', $result);
+        $this->assertStringContainsString('echo $this->global->cakeView->Form->control(\'username\', []);', $result);
+        $this->assertStringContainsString('echo $this->global->cakeView->Form->control(\'user.company.name\', [\'label\' => \'Company name\']);', $result);
+        $this->assertStringContainsString('echo $this->global->cakeView->Form->select(\'options\', [\'options\' => [1, 2, 3]]);', $result);
+        $this->assertStringContainsString('echo $this->global->cakeView->Form->textarea(\'description\', []);', $result);
     }
 
     public function testRendered(): void
     {
-        $this->view->render('form_nname');
+        $response = $this->view->render('form_nname');
 
-        $this->markTestIncomplete('Add some markup checks.');
+        $this->assertStringContainsString('<label for="mylabel">My Label</label> END', $response);
+        $this->assertStringContainsString('<textarea name="description" rows="5"></textarea> END', $response);
+        $this->assertStringContainsString('<input', $response);
+        $this->assertStringContainsString('<select', $response);
     }
 }

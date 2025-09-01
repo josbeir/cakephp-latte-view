@@ -58,10 +58,8 @@ final class FieldNNameNode extends StatementNode
         $elName = strtolower($el->name);
         $attributes = $this->getAttributesNode($el);
 
-        $pre = '$__c_Form = $this->global->cakeView->Form;';
-
         $print_config = [
-            $pre . 'echo $__c_Form->%raw(%node, %node) %line;',
+            'echo $this->global->cakeView->Form->%raw(%node, %node) %line;',
             $elName,
             $this->name,
             $attributes,
@@ -71,28 +69,24 @@ final class FieldNNameNode extends StatementNode
         if ($elName === 'label') {
             $print_config = [
                 <<<'XX'
-                    $__c_Form->setTemplates([
-                        'label' => '<label{{attrs}}>',
-                    ]);
-                    echo $__c_Form->%raw(%node, null, %node) %line;
-                    $__c_Form->resetTemplates();
+                    ob_start(); %node $__c_form_label = ob_get_clean();
+                    echo $this->global->cakeView->Form->%raw(%node, $__c_form_label, %node) %line;
                 XX,
+                $el->content,
                 $elName,
                 $this->name,
                 $attributes,
                 $this->position,
             ];
-        } elseif (in_array($elName, ['control', 'select', 'textarea'])) {
-            $el->captureTagName = true;
-            $el->selfClosing = true;
-            $el->content = null;
         }
 
+        $el->captureTagName = true;
+        $el->selfClosing = true;
+        $el->content = null;
+        $el->attributes = null;
         $el->tagNode = new AuxiliaryNode(
             fn(PrintContext $context): string => $context->format(...$print_config),
         );
-
-        $el->attributes = null;
     }
 
     /**
