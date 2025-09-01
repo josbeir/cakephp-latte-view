@@ -342,13 +342,13 @@ The `n:context` and `n:name` attributes provide a more elegant way to create for
     <select n:name="options" options="[1,2,3]" />
     <label n:name="description">Description</label>
     <textarea n:name="description"></textarea>
-    {Form submit}
+    <button type="submit">Save</button> {* or {Form submit} *}
 </form>
 
 {* Pass additional options via HTML attributes *}
 <form n:context="$user" type="file" url="['_name' => 'display']" class="my-form">
-    {Form control 'email'}
-    {Form submit 'Save'}
+    <control n:name="file">
+    <button type="submit">{_'Upload'}</button>
 </form>
 ```
 
