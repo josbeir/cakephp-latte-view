@@ -20,8 +20,9 @@ A CakePHP plugin providing [Latte](https://latte.nette.org/) template engine int
 - [Custom Tags and Functions](#custom-tags-and-functions)
     - [Helper Tags, Filters, Functions](#helper-tags-filters-functions)
     - [CakePHP helpers](#cakephp-helpers)
-    - [I18n functionality](#i18n-functionality)
+    - [Links](#links)
     - [Forms](#forms)
+    - [I18n functionality](#i18n-functionality)
     - [Other examples](#other-examples)
     - [CakePHP Debug Tags](#cakephp-debug-tags)
 - [Console commands](#console-commands)
@@ -250,7 +251,6 @@ Access CakePHP's view layer from templates:
 | `rurl()` | Reverse url generation - See `Router::reverse()`. |
 | `{fetch 'name'}`| Cake's `View::fetch()` method, introduced to keep legacy functionality of helpers that use view blocks.
 | `{cell name}` | Cake's `View::cell()` method
-| `{link 'title' url options}` | Generate HTML links using CakePHP's HtmlHelper. |
 | `{HelperName method arg1, arg2}` | Access any CakePHP helper using the helper name followed by its methodname args. |
 | `helper('Html')` | Returns a helper instance object. Depending on your needs you can decide to use the function or the tag. |
 
@@ -289,37 +289,33 @@ All CakePHP helpers are automatically available as Latte tags using the `{Helper
 
 Be sure to [add your helpers](https://book.cakephp.org/5/en/views/helpers.html#configuring-helpers) in your view to make them available. By default, only CakePHP's core helpers are automatically loaded.
 
-### I18n functionality
+### Links
 
-The plugin provides seamless integration with CakePHP's I18n system through Latte's built-in translation tags and filters:
+The plugin provides convenient link building functionality through both traditional function calls and Latte's elegant `n:href` and `n:named` attributes:
 
-**Tokens:** By default, [CakePHP uses the ICU formatter](https://book.cakephp.org/5/en/core-libraries/internationalization-and-localization.html#using-different-formatters) to handle tokens in its translation functions. Although this works when using `{_'Hello {0}', 'world'}`, it would clash with the Latte pattern when doing `{translate 'world'}Hello {0}{/translate}`. It is therefore recommended to use the sprintf formatter which you can enable by setting the following in your application (bootstrap for instance).
-
-```php
-I18n::setDefaultFormatter('sprintf');
-```
-
-Examples:
+**Function-based links:**
 ```latte
-{* Basic translation *}
-{_'Hello, World!'}
-{'Welcome back'|translate}
-
-{* Translation with domain *}
-{_'Admin Panel', domain: 'admin'}
-
-{* Translation with tokens *}
-{_'Hello from %s', 'Brussels'}
-{translate $username, $email}Welcome %s, your email %s has been verified{/translate}
-
-{* Pluralization *}
-{translate $count, singular: '%s item'}%s items{/translate}
-{_'%s items', $count, singular: '%s item'}
+{* Generate URL strings *}
+{link '/'} {* Outputs / *}
+{link ['controller' => 'Posts', 'action' => 'view', 1]}
+{link ['_name' => 'posts:view', 1], full: true}
 ```
 
-All translation calls automatically use CakePHP's I18n functions under the hood, ensuring full compatibility with your existing translation workflow and message files. 
+**n:href attribute for automatic link generation:**
+The `n:href` attribute automatically converts any element into a properly formatted link with the correct `href` attribute:
 
-Please note that no __x() related functions are implemented.
+**n:named attribute for named routes:**
+Use `n:named` to reference named routes defined in your routes configuration:
+
+```latte
+<a n:href="/">Simple route</a>
+<a n:href="[controller: 'Pages', action: 'display']">Cake route using an array</a>
+<a n:href="/, full: true">Route with full base url</a>
+
+<a n:named="display">Named route</a>
+<a n:named="user:index, $argument">Named route with argument</a>
+<a n:named="user:view, $argument, '?' => ['page' => 1]">Named route with argument and query params</a>
+```
 
 ### Forms
 
@@ -358,6 +354,38 @@ The `n:context` and `n:name` attributes provide a more elegant way to create for
 
 > **Note:** All HTML attributes passed to the form element when using `n:context` are automatically passed to the `options` array of `FormHelper::create()`. This allows you to set any form options using standard HTML attribute syntax. Additionally, automatic detection of the value type is performed. For more complex controls, tag style form building may be preferred.
 
+
+### I18n functionality
+
+The plugin provides seamless integration with CakePHP's I18n system through Latte's built-in translation tags and filters:
+
+**Tokens:** By default, [CakePHP uses the ICU formatter](https://book.cakephp.org/5/en/core-libraries/internationalization-and-localization.html#using-different-formatters) to handle tokens in its translation functions. Although this works when using `{_'Hello {0}', 'world'}`, it would clash with the Latte pattern when doing `{translate 'world'}Hello {0}{/translate}`. It is therefore recommended to use the sprintf formatter which you can enable by setting the following in your application (bootstrap for instance).
+
+```php
+I18n::setDefaultFormatter('sprintf');
+```
+
+Examples:
+```latte
+{* Basic translation *}
+{_'Hello, World!'}
+{'Welcome back'|translate}
+
+{* Translation with domain *}
+{_'Admin Panel', domain: 'admin'}
+
+{* Translation with tokens *}
+{_'Hello from %s', 'Brussels'}
+{translate $username, $email}Welcome %s, your email %s has been verified{/translate}
+
+{* Pluralization *}
+{translate $count, singular: '%s item'}%s items{/translate}
+{_'%s items', $count, singular: '%s item'}
+```
+
+All translation calls automatically use CakePHP's I18n functions under the hood, ensuring full compatibility with your existing translation workflow and message files. 
+
+Please note that no __x() related functions are implemented.
 
 ### Other examples
 

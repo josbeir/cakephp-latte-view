@@ -9,6 +9,9 @@ use Latte\Loaders\StringLoader;
 use LatteView\TestApp\Form\TestForm;
 use LatteView\TestApp\View\AppView;
 
+/**
+ * @package LatteView
+ */
 class FormNNameNodeTest extends TestCase
 {
     protected ?AppView $view = null;

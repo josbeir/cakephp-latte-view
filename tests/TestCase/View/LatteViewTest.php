@@ -5,7 +5,6 @@ namespace LatteView\Tests\TestCase\View;
 
 use Cake\Core\Configure;
 use Cake\I18n\I18n;
-use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use Latte\Engine;
 use Latte\RuntimeException;
@@ -214,16 +213,5 @@ class LatteViewTest extends TestCase
         $this->view->assign('test', 'Hello world');
         $content = $this->view->render('fetch');
         $this->assertStringContainsString('<h1>Hello world</h1>', $content);
-    }
-
-    public function testLink(): void
-    {
-        $routeBuilder = Router::createRouteBuilder('/');
-        $routeBuilder->connect('/test', ['controller' => 'Pages', 'action' => 'display']);
-
-        $content = $this->view->render('link');
-        $this->assertStringContainsString('<a href="/">Home</a>', $content);
-        $this->assertStringContainsString('<a href="/test">Controller</a>', $content);
-        $this->assertStringContainsString('<a href="/" class="my-class">Class</a>', $content);
     }
 }

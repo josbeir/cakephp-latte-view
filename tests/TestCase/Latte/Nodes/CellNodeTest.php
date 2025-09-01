@@ -8,6 +8,9 @@ use Latte\Engine;
 use Latte\Loaders\StringLoader;
 use LatteView\TestApp\View\AppView;
 
+/**
+ * @package LatteView
+ */
 class CellNodeTest extends TestCase
 {
     protected ?Engine $latte = null;
@@ -26,6 +29,9 @@ class CellNodeTest extends TestCase
         $this->latte = null;
     }
 
+    /**
+     * @package LatteView
+     */
     public function testBasic(): void
     {
         $compiled = $this->latte->compile('{cell TestCell}');

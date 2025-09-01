@@ -20,9 +20,9 @@ final class FormNContextNode extends StatementNode
 {
     use AttributeParserTrait;
 
-    public ExpressionNode $context;
+    protected ExpressionNode $context;
 
-    public AreaNode $content;
+    protected AreaNode $content;
 
     /**
      * Create a new FormNContextNode instance.

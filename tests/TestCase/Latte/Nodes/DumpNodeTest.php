@@ -8,6 +8,9 @@ use Cake\TestSuite\TestCase;
 use Latte\Loaders\StringLoader;
 use LatteView\TestApp\View\AppView;
 
+/**
+ * @package LatteView
+ */
 class DumpNodeTest extends TestCase
 {
     public function testDumpNode(): void

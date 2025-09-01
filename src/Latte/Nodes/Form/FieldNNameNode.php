@@ -19,11 +19,9 @@ final class FieldNNameNode extends StatementNode
 {
     use AttributeParserTrait;
 
-    public ExpressionNode $name;
+    protected ExpressionNode $name;
 
-    public ?ExpressionNode $part = null;
-
-    public AreaNode $content;
+    protected AreaNode $content;
 
     /**
      * @inheritDoc

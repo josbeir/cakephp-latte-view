@@ -66,9 +66,11 @@ final class CakeExtension extends Extension
         $tags = [
             'dump' => DumpNode::create(...),
             'debug' => DumpNode::create(...),
-            'link' => LinkNode::create(...),
             'fetch' => FetchNode::create(...),
             'cell' => CellNode::create(...),
+            'link' => LinkNode::create(...),
+            'n:href' => LinkNode::create(...),
+            'n:named' => LinkNode::create(...),
             'n:context' => FormNContextNode::create(...),
             'n:name' => FieldNNameNode::create(...),
         ];

@@ -8,6 +8,9 @@ use Latte\Engine;
 use Latte\Loaders\StringLoader;
 use LatteView\TestApp\View\AppView;
 
+/**
+ * @package LatteView
+ */
 class FetchNodeTest extends TestCase
 {
     protected ?Engine $latte = null;

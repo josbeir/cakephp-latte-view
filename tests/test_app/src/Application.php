@@ -18,6 +18,7 @@ class Application extends BaseApplication
 
     public function bootstrap(): void
     {
+        //parent::bootstrap();
         $this->addPlugin(LatteViewPlugin::class);
         $this->addPlugin(TestPlugin::class);
     }
@@ -28,6 +29,16 @@ class Application extends BaseApplication
             '/display',
             ['controller' => 'Pages', 'action' => 'display'],
             ['_name' => 'display'],
+        );
+        $routes->connect(
+            '/user',
+            ['controller' => 'Pages', 'action' => 'display'],
+            ['_name' => 'user:index', 'pass' => ['id']],
+        );
+        $routes->connect(
+            '/user/{id}',
+            ['controller' => 'Pages', 'action' => 'display'],
+            ['_name' => 'user:view', 'pass' => ['id']],
         );
     }
 }

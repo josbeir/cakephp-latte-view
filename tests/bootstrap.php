@@ -31,6 +31,7 @@ Configure::write('App', [
     'encoding' => 'UTF-8',
     'namespace' => 'LatteView\TestApp',
     'defaultLocale' => 'en_US',
+    'fullBaseUrl' => 'http://localhost',
     'paths' => [
         'plugins' => [ROOT . 'plugins' . DS],
         'templates' => [ROOT . DS . 'templates' . DS],
