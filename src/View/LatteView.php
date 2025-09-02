@@ -146,7 +146,7 @@ class LatteView extends View
     /**
      * Prepare data for the template.
      *
-     * If a value in the data array is an instance of TemplateInterface,
+     * If a value in the data array is an instance of `\LatteView\View\Parameter`,
      * it will be instantiated with the its data values as constructor arguments.
      *
      * Examples:
@@ -165,19 +165,21 @@ class LatteView extends View
      * @param array $data The data array to prepare.
      * @return array The prepared data array.
      */
-    protected function prepareData(array $data): array|ParameterInterface
+    protected function prepareData(array $data): array|Parameters
     {
         foreach ($data as $key => $value) {
-            if ($value instanceof ParameterInterface) {
-                return $value;
+            if ($value instanceof Parameters) {
+                return $value->setView($this);
             }
 
             if (
                 is_string($key) &&
-                is_subclass_of($key, ParameterInterface::class) &&
+                is_subclass_of($key, Parameters::class) &&
                 is_array($value)
             ) {
-                return new $key(...array_values($value));
+                $paramClass = new $key(...array_values($value));
+
+                return $paramClass->setView($this);
             }
         }
 

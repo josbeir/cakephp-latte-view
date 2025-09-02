@@ -92,4 +92,12 @@ final class CakeExtension extends Extension
             'rurl' => Router::reverse(...),
         ];
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getFilters(): array
+    {
+        return [];
+    }
 }

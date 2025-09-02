@@ -61,12 +61,14 @@ class FormNNameNodeTest extends TestCase
                 method="get"
                 url="['_name' => 'display']"
                 bool="true"
+                expression="('foo'|capitalize)"
             >Hi</form>
         XX);
 
         $this->assertStringContainsString("'method' => 'get'", $result);
         $this->assertStringContainsString("'url' => ['_name' => 'display']", $result);
         $this->assertStringContainsString("'bool' => true", $result);
+        $this->assertStringContainsString('\'expression\' => ($this->filters->capitalize)(\'foo\')', $result);
     }
 
     public function testTemplate(): void

@@ -82,11 +82,11 @@ Create a layout template: `templates/layout/default.latte`
 ```latte
 <html lang="en">
 <head>
-    <title>{block title}{/block}</title>
+    <title>{block title}Default title{/block} - My cool app</title>
 </head>
 <body>
     <div id="content">
-        {block content}{/block}
+        {include content}
     </div>
     <div id="footer">
         {block footer}&copy; Copyright 2008{/block}
@@ -124,9 +124,12 @@ One of the great things about Latte is its integration with various IDEs through
 
 This plugin allows you to pass typed objects to templates, enabling you to utilize this powerful feature for better IDE support and type safety.
 
-To make use of this feature, you need to pass a class that implements `LatteView\View\ParameterInterface`.
+To make use of this feature, you need to pass a class extends `LatteView\View\Parameters`. 
+
+> This class enables you to use the current view instance using the `getView()` method, allowing you to access it's methods and helpers from within your parameter class. Note that you should not access the view in the constructor as it is set at a later time.
 
 First, create a class that implements this interface:
+> This example shows how to add a custom Latte function and filter which both use a helper.
 
 ```php
 <?php
@@ -134,9 +137,12 @@ declare(strict_types=1);
 
 namespace App\View\Parameter;
 
-use LatteView\View\ParameterInterface;
+use Latte\Attributes\TemplateFilter;
+use Latte\Attributes\TemplateFunction;
+use Latte\Runtime\Html;
+use LatteView\View\Parameters;
 
-class MyTemplateParams implements ParameterInterface
+class MyTemplateParameters extends Parameters
 {
     public function __construct(
         public string $name = 'Default Name',
@@ -144,6 +150,24 @@ class MyTemplateParams implements ParameterInterface
         public ?EntityInterface $entity = null,
     ) {
     }
+
+    /**
+     * A generator that yields the item count from a helper.
+     */
+    #[TemplateFunction]
+    public function tag(): Html
+    {
+        $result = $this->getView()->Html->tag('strong', 'Hello from view!');
+
+        // Use `Latte\Runtime\Html` if you need to return html. 
+        return new Html($result);
+    }
+
+    #[TemplateFilter]
+    public function currency(string|float $number, ?string $currency = 'EUR'): string
+    {
+        return $this->getView()->Number->currency($number, $currency);
+    }    
 }
 ```
 
@@ -151,23 +175,25 @@ Now, when passing data to your view (e.g., from inside your controller method), 
 
 ```php
 // MyController.php
+use App\View\Parameters\MyTemplateParameters;
 
 $entity = $users->get(1);
 
 // Pass data to create an instance
-$this->set(MyTemplateParams::class, [
+$this->set(MyTemplateParameters::class, [
     'name' => 'John',
     'additional' => 'Doe',
     'entity' => $entity,
 ]);
 
 // Or pass an instance of your ParameterInterface class
-$params = new MyTemplateParams(
+$params = new MyTemplateParameters(
     name: 'Hello',
     additional: 'World',
     entity: $entity
 );
 
+// Note that 'parameters' is ignored, you can use any name.
 $this->set('parameters', $instance);
 ```
 
@@ -179,6 +205,9 @@ Then in your template
 Name: {$name}
 Additional: {$additional}
 Entity param: {$entity->id}
+
+Tag from parameter class: {tag()} {* Result: "<strong>Hello from view!</strong>" *}
+Currency: {='1000'|currency} {* Result: "Currency: €1,000.00" *}
 ```
 
 ## Configuration Options

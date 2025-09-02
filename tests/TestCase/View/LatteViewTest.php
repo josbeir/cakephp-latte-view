@@ -186,10 +186,13 @@ class LatteViewTest extends TestCase
         ]);
 
         $output = $this->view->render('parameter_class');
+
         $this->assertStringContainsString('Data: Custom Name', $output);
         $this->assertStringContainsString('Additional: Custom Additional', $output);
         $this->assertStringContainsString('Item: Item 1', $output);
         $this->assertStringContainsString('Item: Item 2', $output);
+        $this->assertStringContainsString('Tag from parameter class: <strong>Hello from view!</strong>', $output);
+        $this->assertStringContainsString('Currency: €1,000.00', $output);
     }
 
     public function testWithParameterClassInstance(): void
