@@ -10,21 +10,22 @@
 A CakePHP plugin providing [Latte](https://latte.nette.org/) template engine integration for CakePHP applications.
 
 ## Table of Contents
+
 - [Features](#features)
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Using the Latte type system](#using-the-latte-type-system)
 - [Configuration Options](#configuration-options)
     - [The `blocks` option](#the-blocks-option)
 - [Custom Tags and Functions](#custom-tags-and-functions)
-    - [Helper Tags, Filters, Functions](#helper-tags-filters-functions)
-    - [CakePHP helpers](#cakephp-helpers)
+    - [Introduction](#introduction)
+    - [Helpers](#cakephp-helpers)
     - [Links](#links)
     - [Forms](#forms)
-    - [I18n functionality](#i18n-functionality)
+    - [I18n](#i18n)
     - [Other examples](#other-examples)
-    - [CakePHP Debug Tags](#cakephp-debug-tags)
+    - [Debug Tags](#debug-tags)
+- [Using the Latte type system](#using-the-latte-type-system)
 - [Console commands](#console-commands)
 - [Extending](#extending)
 - [References](#references)
@@ -116,100 +117,6 @@ Using a plugin template/layout:
 ...
 ```
 
-## Using the Latte [type system](https://latte.nette.org/en/type-system)
-
-> **Note:** Using the type system is completely optional. You can continue using traditional variable passing (e.g., `$this->set('variable', $value)`) as you would with any CakePHP view. The type system is an additional feature that enhances IDE support and type safety when desired.
-
-One of the great things about Latte is its integration with various IDEs through the `{templateType}` and `{varType}` tags.
-
-This plugin allows you to pass typed objects to templates, enabling you to utilize this powerful feature for better IDE support and type safety.
-
-To make use of this feature, you need to pass a class extends `LatteView\View\Parameters`. 
-
-> This class enables you to use the current view instance using the `getView()` method, allowing you to access it's methods and helpers from within your parameter class. Note that you should not access the view in the constructor as it is set at a later time.
-
-First, create a class that implements this interface:
-> This example shows how to add a custom Latte function and filter which both use a helper.
-
-```php
-<?php
-declare(strict_types=1);
-
-namespace App\View\Parameter;
-
-use Latte\Attributes\TemplateFilter;
-use Latte\Attributes\TemplateFunction;
-use Latte\Runtime\Html;
-use LatteView\View\Parameters;
-
-class MyTemplateParameters extends Parameters
-{
-    public function __construct(
-        public string $name = 'Default Name',
-        public string $additional = 'Default Additional',
-        public ?EntityInterface $entity = null,
-    ) {
-    }
-
-    /**
-     * A generator that yields the item count from a helper.
-     */
-    #[TemplateFunction]
-    public function tag(): Html
-    {
-        $result = $this->getView()->Html->tag('strong', 'Hello from view!');
-
-        // Use `Latte\Runtime\Html` if you need to return html. 
-        return new Html($result);
-    }
-
-    #[TemplateFilter]
-    public function currency(string|float $number, ?string $currency = 'EUR'): string
-    {
-        return $this->getView()->Number->currency($number, $currency);
-    }    
-}
-```
-
-Now, when passing data to your view (e.g., from inside your controller method), you can pass an instance of this class as an argument. Please note that all other arguments will be ignored as the class instance is the only object passed to your view.
-
-```php
-// MyController.php
-use App\View\Parameters\MyTemplateParameters;
-
-$entity = $users->get(1);
-
-// Pass data to create an instance
-$this->set(MyTemplateParameters::class, [
-    'name' => 'John',
-    'additional' => 'Doe',
-    'entity' => $entity,
-]);
-
-// Or pass an instance of your ParameterInterface class
-$params = new MyTemplateParameters(
-    name: 'Hello',
-    additional: 'World',
-    entity: $entity
-);
-
-// Note that 'parameters' is ignored, you can use any name.
-$this->set('parameters', $instance);
-```
-
-Then in your template
-
-```latte
-{templateType App\View\Parameter\MyTemplateParams}
-
-Name: {$name}
-Additional: {$additional}
-Entity param: {$entity->id}
-
-Tag from parameter class: {tag()} {* Result: "<strong>Hello from view!</strong>" *}
-Currency: {='1000'|currency} {* Result: "Currency: €1,000.00" *}
-```
-
 ## Configuration Options
 
 Set options via `ViewBuilder::setOption()` or `setOptions()`:
@@ -269,9 +176,10 @@ This approach is particularly useful for:
 
 ## Custom Tags and Functions
 
-### Helper Tags, Filters, Functions
+### Introduction
 
-Access CakePHP's view layer from templates:
+The plugin comes with some handy functions and tags:
+
 | Function | Description |
 |----------|-------------|
 | `view()` | Returns the current View instance. |
@@ -280,12 +188,13 @@ Access CakePHP's view layer from templates:
 | `rurl()` | Reverse url generation - See `Router::reverse()`. |
 | `{fetch 'name'}`| Cake's `View::fetch()` method, introduced to keep legacy functionality of helpers that use view blocks.
 | `{cell name}` | Cake's `View::cell()` method
-| `{HelperName method arg1, arg2}` | Access any CakePHP helper using the helper name followed by its methodname args. |
+| `{HelperName method arg1, arg2}` | Access any CakePHP helper using the helper name followed by its methodname args. (See docs below) |
 | `helper('Html')` | Returns a helper instance object. Depending on your needs you can decide to use the function or the tag. |
+| `n:href`, `n:named`, `n:context` | `n:attribute` access for links and form building. (See docs below)
 
-### CakePHP helpers
+### Helpers
 
-All CakePHP helpers are automatically available as Latte tags using the `{HelperName ...}` syntax. Be sure to always check that your name does not clash with other Latte tags:
+All CakePHP helpers are automatically available as Latte tags using the `{HelperName method param, ...}` syntax. Be sure to always check that your name does not clash with other Latte tags:
 
 > **Note:** Latte comes with a comprehensive list of functions and filters, making many CakePHP helper functions possibly obsolete. Using Latte's built-in functionality is preferred. Check the [filter](https://latte.nette.org/en/filters), [function](https://latte.nette.org/en/functions) and [tags](https://latte.nette.org/en/tags) documentation for what is available out of the box.
 
@@ -384,7 +293,7 @@ The `n:context` and `n:name` attributes provide a more elegant way to create for
 > **Note:** All HTML attributes passed to the form element when using `n:context` are automatically passed to the `options` array of `FormHelper::create()`. This allows you to set any form options using standard HTML attribute syntax. Additionally, automatic detection of the value type is performed. For more complex controls, tag style form building may be preferred.
 
 
-### I18n functionality
+### I18n
 
 The plugin provides seamless integration with CakePHP's I18n system through Latte's built-in translation tags and filters:
 
@@ -431,10 +340,105 @@ Please note that no __x() related functions are implemented.
 {cell cellName argument1, argument2, element: 'myEl', options: [option1 => 'value]}
 ```
 
-### CakePHP Debug Tags
+### Debug Tags
 
 - `{dump $var}` or `{debug $var}`: Uses CakePHP's `Debugger::printVar()` instead of Nette's default dumper
 - `{dump}`: Dumps all defined variables using CakePHP's debugger
+
+
+## Using the Latte [type system](https://latte.nette.org/en/type-system)
+
+> **Note:** Using the type system is completely optional. You can continue using traditional variable passing (e.g., `$this->set('variable', $value)`) as you would with any CakePHP view. The type system is an additional feature that enhances IDE support and type safety when desired.
+
+One of the great things about Latte is its integration with various IDEs through the `{templateType}` and `{varType}` tags.
+
+This plugin allows you to pass typed objects to templates, enabling you to utilize this powerful feature for better IDE support and type safety.
+
+To make use of this feature, you need to pass a class extends `LatteView\View\Parameters`. 
+
+> This class enables you to use the current view instance using the `getView()` method, allowing you to access it's methods and helpers from within your parameter class. Note that you should not access the view in the constructor as it is set at a later time.
+
+First, create a class that implements this interface:
+> This example shows how to add a custom Latte function and filter which both use a helper.
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App\View\Parameter;
+
+use Latte\Attributes\TemplateFilter;
+use Latte\Attributes\TemplateFunction;
+use Latte\Runtime\Html;
+use LatteView\View\Parameters;
+
+class MyTemplateParameters extends Parameters
+{
+    public function __construct(
+        public string $name = 'Default Name',
+        public string $additional = 'Default Additional',
+        public ?EntityInterface $entity = null,
+    ) {
+    }
+
+    /**
+     * A generator that yields the item count from a helper.
+     */
+    #[TemplateFunction]
+    public function tag(): Html
+    {
+        $result = $this->getView()->Html->tag('strong', 'Hello from view!');
+
+        // Use `Latte\Runtime\Html` if you need to return html. 
+        return new Html($result);
+    }
+
+    #[TemplateFilter]
+    public function currency(string|float $number, ?string $currency = 'EUR'): string
+    {
+        return $this->getView()->Number->currency($number, $currency);
+    }    
+}
+```
+
+Now, when passing data to your view (e.g., from inside your controller method), you can pass an instance of this class as an argument. Please note that all other arguments will be ignored as the class instance is the only object passed to your view.
+
+```php
+// MyController.php
+use App\View\Parameters\MyTemplateParameters;
+
+$entity = $users->get(1);
+
+// Pass data to create an instance
+$this->set(MyTemplateParameters::class, [
+    'name' => 'John',
+    'additional' => 'Doe',
+    'entity' => $entity,
+]);
+
+// Or pass an instance of your ParameterInterface class
+$params = new MyTemplateParameters(
+    name: 'Hello',
+    additional: 'World',
+    entity: $entity
+);
+
+// Note that 'parameters' is ignored, you can use any name.
+$this->set('parameters', $instance);
+```
+
+Then in your template
+
+```latte
+{templateType App\View\Parameter\MyTemplateParams}
+
+Name: {$name}
+Additional: {$additional}
+Entity param: {$entity->id}
+
+Tag from parameter class: {tag()} {* Result: "<strong>Hello from view!</strong>" *}
+Currency: {='1000'|currency} {* Result: "Currency: €1,000.00" *}
+```
 
 ## Console commands
 
