@@ -16,11 +16,13 @@ use LatteView\Latte\Nodes\Form\FieldNNameNode;
 use LatteView\Latte\Nodes\Form\FormNContextNode;
 use LatteView\Latte\Nodes\HelperNode;
 use LatteView\Latte\Nodes\LinkNode;
+use function Cake\Core\env;
+use function Cake\Error\debug;
 
-final class CakeExtension extends Extension
+final class BaseExtension extends Extension
 {
     /**
-     * CakeExtension constructor.
+     * BaseExtension constructor.
      */
     public function __construct(
         protected View $view,
@@ -88,6 +90,7 @@ final class CakeExtension extends Extension
             'view' => fn(): View => $this->view,
             'helper' => fn(string $name): ?Helper => $this->view->helpers()->{$name} ?? null,
             'request' => fn(): ServerRequest => $this->view->getRequest(),
+            'env' => env(...),
             'url' => Router::url(...),
             'rurl' => Router::reverse(...),
         ];

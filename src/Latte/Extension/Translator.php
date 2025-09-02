@@ -6,7 +6,7 @@ namespace LatteView\Latte\Extension;
 use Cake\I18n\I18n;
 use InvalidArgumentException;
 
-class CakeTranslator
+class Translator
 {
     /**
      * Translate a message.

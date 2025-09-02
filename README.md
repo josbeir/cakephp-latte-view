@@ -17,14 +17,15 @@ A CakePHP plugin providing [Latte](https://latte.nette.org/) template engine int
 - [Usage](#usage)
 - [Configuration Options](#configuration-options)
     - [The `blocks` option](#the-blocks-option)
-- [Custom Tags and Functions](#custom-tags-and-functions)
+- [Custom Tags, Functions and Filters](#custom-tags-functions-and-filters)
     - [Introduction](#introduction)
-    - [Helpers](#cakephp-helpers)
+    - [Helpers](#helpers)
     - [Links](#links)
     - [Forms](#forms)
     - [I18n](#i18n)
-    - [Other examples](#other-examples)
     - [Debug Tags](#debug-tags)
+    - [Filters](#filters)
+    - [Other examples](#other-examples)
 - [Using the Latte type system](#using-the-latte-type-system)
 - [Console commands](#console-commands)
 - [Extending](#extending)
@@ -175,7 +176,7 @@ This approach is particularly useful for:
 - Optimizing performance by sending only the necessary HTML fragments
 - More info [here](https://htmx.org/essays/template-fragments/)
 
-## Custom Tags and Functions
+## Custom Tags, Functions and Filters
 
 ### Introduction
 
@@ -185,6 +186,7 @@ The plugin comes with some handy functions and tags:
 |----------|-------------|
 | `view()` | Returns the current View instance. |
 | `request()`| Returns the current request instance. |
+| `env()` | Access environment variables |
 | `url()` | Url generation - See `Router::url()`. |
 | `rurl()` | Reverse url generation - See `Router::reverse()`. |
 | `{fetch 'name'}`| Cake's `View::fetch()` method, introduced to keep legacy functionality of helpers that use view blocks.
@@ -326,6 +328,64 @@ All translation calls automatically use CakePHP's I18n functions under the hood,
 
 Please note that no __x() related functions are implemented.
 
+### Debug Tags
+
+- `{dump $var}` or `{debug $var}`: Uses CakePHP's `Debugger::printVar()` instead of Nette's default dumper
+- `{dump}`: Dumps all defined variables using CakePHP's debugger
+
+### Filters
+
+The following filters are mapped to their CakePHP counterparts, providing integration with CakePHP's utility classes for text manipulation, number formatting, and inflector operations.
+
+| Function          | Maps to                          |
+|-------------------|----------------------------------|
+| **Text** |
+| uuid              | Cake\Utility\Text::uuid          |
+| tokenize          | Cake\Utility\Text::tokenize      |
+| insert            | Cake\Utility\Text::insert        |
+| cleanInsert       | Cake\Utility\Text::cleanInsert   |
+| wrap              | Cake\Utility\Text::wrap          |
+| wrapBlock         | Cake\Utility\Text::wrapBlock     |
+| wordWrap          | Cake\Utility\Text::wordWrap      |
+| highlight         | Cake\Utility\Text::highlight     |
+| tail              | Cake\Utility\Text::tail          |
+| truncateByWidth   | Cake\Utility\Text::truncateByWidth |
+| excerpt           | Cake\Utility\Text::excerpt       |
+| toList            | Cake\Utility\Text::toList        |
+| utf8              | Cake\Utility\Text::utf8          |
+| ascii             | Cake\Utility\Text::ascii         |
+| parseFileSize     | Cake\Utility\Text::parseFileSize |
+| transliterate     | Cake\Utility\Text::transliterate |
+| slug              | Cake\Utility\Text::slug          |
+| precision         | Cake\I18n\Number::precision      |
+| toReadableSize    | Cake\I18n\Number::toReadableSize |
+| toPercentage      | Cake\I18n\Number::toPercentage   |
+| parseFloat        | Cake\I18n\Number::parseFloat     |
+| formatDelta       | Cake\I18n\Number::formatDelta    |
+| currency          | Cake\I18n\Number::currency       |
+| formatter         | Cake\I18n\Number::formatter      |
+| ordinal           | Cake\I18n\Number::ordinal        |
+| **Inflector** |
+| pluralize         | Cake\Utility\Inflector::pluralize |
+| singularize       | Cake\Utility\Inflector::singularize |
+| camelize          | Cake\Utility\Inflector::camelize |
+| underscore        | Cake\Utility\Inflector::underscore |
+| dasherize         | Cake\Utility\Inflector::dasherize |
+| humanize          | Cake\Utility\Inflector::humanize |
+| delimit           | Cake\Utility\Inflector::delimit  |
+| tableize          | Cake\Utility\Inflector::tableize |
+| classify          | Cake\Utility\Inflector::classify |
+| iVariable         | Cake\Utility\Inflector::variable |
+| **Time** |
+| format            | Cake\View\Helper\TimeHelper::format           |
+| i18nFormat        | Cake\View\Helper\TimeHelper::i18nFormat       |
+| nice              | Cake\View\Helper\TimeHelper::nice             |
+| toUnix            | Cake\View\Helper\TimeHelper::toUnix           |
+| toAtom            | Cake\View\Helper\TimeHelper::toAtom           |
+| toRss             | Cake\View\Helper\TimeHelper::toRss            |
+| timeAgoInWords    | Cake\View\Helper\TimeHelper::timeAgoInWords   |
+| gmt               | Cake\View\Helper\TimeHelper::gmt              |
+
 ### Other examples
 
 ```latte
@@ -335,17 +395,14 @@ Please note that no __x() related functions are implemented.
 {link 'Click me' url: ['controller' => 'Pages', 'action' => 'home'], options: ['class' => 'button]}
 {view()->viewMethod()}
 {request()->getQuery('search)}
+{env('REMOTE_ADDR')}
 {url(['controller' => 'Pages', 'action' => 'home'])}
-{_'Bonjour'}
-{fetch 'cakeBlockName'}
+{_'Bonjour'} - {='Hi'|translate} - {translate}Buongiorno{/translate}
+{fetch cakeBlockName}
 {cell cellName argument1, argument2, element: 'myEl', options: [option1 => 'value]}
+{$date|timeAgoInWords}
+{=[1,2,3]|toList}
 ```
-
-### Debug Tags
-
-- `{dump $var}` or `{debug $var}`: Uses CakePHP's `Debugger::printVar()` instead of Nette's default dumper
-- `{dump}`: Dumps all defined variables using CakePHP's debugger
-
 
 ## Using the Latte [type system](https://latte.nette.org/en/type-system)
 

@@ -6,11 +6,11 @@ namespace LatteView\Tests\TestCase\View;
 use Cake\TestSuite\TestCase;
 use Latte\Engine;
 use Latte\Loaders\StringLoader;
-use LatteView\Latte\Extension\CakeExtension;
+use LatteView\Latte\Extension\BaseExtension;
 use LatteView\TestApp\View\AppView;
 use LatteView\View\LatteView;
 
-class CakeExtensionTest extends TestCase
+class BaseExtensionTest extends TestCase
 {
     protected ?LatteView $view = null;
 
@@ -41,7 +41,7 @@ class CakeExtensionTest extends TestCase
 
     public function testHelpers(): void
     {
-        $extension = new CakeExtension($this->view);
+        $extension = new BaseExtension($this->view);
         $tags = $extension->getTags();
 
         $expected = [
@@ -69,7 +69,7 @@ class CakeExtensionTest extends TestCase
      */
     public function testHelperExecution(): void
     {
-        $extension = new CakeExtension($this->view);
+        $extension = new BaseExtension($this->view);
         $helpers = $extension->helpers();
         $templates = ['default.latte' => ''];
         foreach (array_keys($helpers) as $helperName) {
@@ -78,7 +78,7 @@ class CakeExtensionTest extends TestCase
 
         $latte = new Engine();
         $latte->setLoader(new StringLoader($templates));
-        $latte->addExtension(new CakeExtension($this->view));
+        $latte->addExtension(new BaseExtension($this->view));
 
         foreach (array_keys($helpers) as $helperName) {
             $output = $latte->renderToString($helperName . '.latte');

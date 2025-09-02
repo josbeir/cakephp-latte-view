@@ -11,8 +11,9 @@ use Latte\Essential\RawPhpExtension;
 use Latte\Essential\TranslatorExtension;
 use Latte\Runtime\Template;
 use Latte\Sandbox\SecurityPolicy;
-use LatteView\Latte\Extension\CakeExtension;
-use LatteView\Latte\Extension\CakeTranslator;
+use LatteView\Latte\Extension\BaseExtension;
+use LatteView\Latte\Extension\FilterExtension;
+use LatteView\Latte\Extension\Translator;
 use LatteView\Latte\Loaders\FileLoader;
 
 /**
@@ -75,7 +76,7 @@ class LatteView extends View
     public function getEngine(): Engine
     {
         if (!$this->engine instanceof Engine) {
-            $translator = new CakeTranslator();
+            $translator = new Translator();
 
             $this->engine = new Engine();
             $this->engine
@@ -83,8 +84,9 @@ class LatteView extends View
                 ->addProvider('coreParentFinder', $this->layoutLookup(...))
                 ->setLoader(new FileLoader())
                 ->setLocale(I18n::getLocale())
-                ->addExtension(new CakeExtension($this))
+                ->addExtension(new BaseExtension($this))
                 ->addExtension(new TranslatorExtension($translator->translate(...)))
+                ->addExtension(new FilterExtension($this, $this->engine->getFilters()))
                 ->setSandboxMode($this->getConfig('sandbox', false))
                 ->setPolicy($this->getSandboxPolicy());
 

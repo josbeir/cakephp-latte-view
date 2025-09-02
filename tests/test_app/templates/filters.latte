@@ -1,0 +1,19 @@
+{block content}
+
+excerpt: {="This is the full text with some keyword in it"|excerpt:"keyword"}
+highlight: {="This is a text with keyword"|highlight:"keyword"}
+slug: {="Some Text With Spaces"|slug}
+toList: {=[1,2,3]|toList}
+
+{=123.456|currency}
+{=123.456|precision:2}
+{=123456789|format}
+{=0.1234|toPercentage}
+{=123.456|toReadableSize}
+
+format: {="2025-01-01 14:30:00"|format:"dd-MM-yyyy"}
+nice: {="2025-01-01 14:30:00"|nice}
+toUnix: {="2025-01-01 14:30:00"|toUnix}
+toAtom: {="2025-01-01 14:30:00"|toAtom}
+toRss: {="2025-01-01 14:30:00"|toRss}
+gmt: {="2025-01-01 14:30:00"|gmt}
