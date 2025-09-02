@@ -128,6 +128,7 @@ Set options via `ViewBuilder::setOption()` or `setOptions()`:
 | `blocks`| array  | `['content']`            | Block names that are rendered when autoLayout is disabled. [Read more](#the-blocks-option) |
 | `cachePath`    | string  | `CACHE . 'latte_view'` | Path for compiled template cache                                            |
 | `sandbox`      | bool    | `false`                | Enable sandbox mode for secure template execution. When enabled, the security policy can be configured using `setSandboxPolicy()` and `getSandboxPolicy()`. |
+| `rawphp` | bool | `true` | Enable/disable the use of raw PHP code in templates via the [{php} tag](https://latte.nette.org/en/develop#toc-rawphpextension). |
 | `defaultHelpers` | array | ... | List of default Cake helpers that need to be present. Defaults to all core helpers. |
 
 ### The `blocks` option.

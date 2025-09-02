@@ -7,6 +7,7 @@ use Cake\Core\Configure;
 use Cake\I18n\I18n;
 use Cake\TestSuite\TestCase;
 use Latte\Engine;
+use Latte\Loaders\StringLoader;
 use Latte\RuntimeException;
 use Latte\Sandbox\SecurityPolicy;
 use Latte\SecurityViolationException;
@@ -216,5 +217,29 @@ class LatteViewTest extends TestCase
         $this->view->assign('test', 'Hello world');
         $content = $this->view->render('fetch');
         $this->assertStringContainsString('<h1>Hello world</h1>', $content);
+    }
+
+    public function testRawphpEnabed(): void
+    {
+        $view = new AppView();
+        $view->setConfig('rawphp', true);
+
+        $latte = $view->getEngine();
+        $latte->setLoader(new StringLoader());
+
+        $output = $latte->compile("{php echo 'test';}");
+        $this->assertStringContainsString("echo 'test';", $output);
+    }
+
+    public function testRawphpDisabled(): void
+    {
+        $view = new AppView();
+        $view->setConfig('rawphp', false);
+
+        $latte = $view->getEngine();
+        $latte->setLoader(new StringLoader());
+
+        $this->expectExceptionMessage("Unexpected ''test'', expecting end of tag in {php}");
+        $latte->compile("{php echo 'test';}");
     }
 }

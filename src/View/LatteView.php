@@ -7,6 +7,7 @@ use Cake\Core\Configure;
 use Cake\I18n\I18n;
 use Cake\View\View;
 use Latte\Engine;
+use Latte\Essential\RawPhpExtension;
 use Latte\Essential\TranslatorExtension;
 use Latte\Runtime\Template;
 use Latte\Sandbox\SecurityPolicy;
@@ -48,6 +49,7 @@ class LatteView extends View
         'autoRefresh' => null,
         'blocks' => ['content'],
         'cachePath' => CACHE . 'latte_view' . DS,
+        'rawphp' => true,
         'sandbox' => false,
         'defaultHelpers' => [
             'Breadcrumbs',
@@ -85,6 +87,10 @@ class LatteView extends View
                 ->addExtension(new TranslatorExtension($translator->translate(...)))
                 ->setSandboxMode($this->getConfig('sandbox', false))
                 ->setPolicy($this->getSandboxPolicy());
+
+            if ($this->getConfig('rawphp', true)) {
+                $this->engine->addExtension(new RawPhpExtension());
+            }
 
             if ($this->getConfig('cache')) {
                 $this->engine->setTempDirectory($this->getConfig('cachePath'));
