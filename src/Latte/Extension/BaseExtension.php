@@ -3,12 +3,15 @@ declare(strict_types=1);
 
 namespace LatteView\Latte\Extension;
 
+use Cake\Core\Configure;
+use Cake\Core\Plugin;
 use Cake\Http\ServerRequest;
 use Cake\Routing\Router;
 use Cake\View\Helper;
 use Cake\View\View;
 use Latte\Compiler\Tag;
 use Latte\Extension;
+use Latte\Runtime\Template;
 use LatteView\Latte\Nodes\CellNode;
 use LatteView\Latte\Nodes\DumpNode;
 use LatteView\Latte\Nodes\FetchNode;
@@ -16,6 +19,7 @@ use LatteView\Latte\Nodes\Form\FieldNNameNode;
 use LatteView\Latte\Nodes\Form\FormNContextNode;
 use LatteView\Latte\Nodes\HelperNode;
 use LatteView\Latte\Nodes\LinkNode;
+use LatteView\Panel\LattePanel;
 use function Cake\Core\env;
 use function Cake\Error\debug;
 
@@ -93,14 +97,17 @@ final class BaseExtension extends Extension
             'env' => env(...),
             'url' => Router::url(...),
             'rurl' => Router::reverse(...),
+            'config' => Configure::read(...),
         ];
     }
 
     /**
      * @inheritDoc
      */
-    public function getFilters(): array
+    public function beforeRender(Template $template): void
     {
-        return [];
+        if (Configure::read('debug') && Plugin::isLoaded('DebugKit')) {
+            LattePanel::addTemplate($template);
+        }
     }
 }

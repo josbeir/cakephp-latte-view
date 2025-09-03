@@ -24,7 +24,8 @@ A CakePHP plugin providing [Latte](https://latte.nette.org/) template engine int
     - [Forms](#forms)
     - [I18n](#i18n)
     - [Filters](#filters)
-    - [Debug Tags](#debug-tags)
+    - [Debug tags](#debug-tags)
+    - [DebugKit Panel](#debugkit-panel)
     - [Some examples](#some-examples)
 - [Using the Latte type system](#using-the-latte-type-system)
 - [Console commands](#console-commands)
@@ -400,10 +401,25 @@ The following [filters](https://latte.nette.org/en/filters) are mapped to their 
 | timeAgoInWords    | Cake\View\Helper\TimeHelper::timeAgoInWords   |
 | gmt               | Cake\View\Helper\TimeHelper::gmt              |
 
-### Debug Tags
+### Debug tags
 
 - `{dump $var}` or `{debug $var}`: Uses CakePHP's `Debugger::printVar()` instead of Nette's default dumper
 - `{dump}`: Dumps all defined variables using CakePHP's debugger
+
+### DebugKit Panel
+
+![DebugKit Panel](docs/debugkit_panel.png)
+
+When DebugKit is installed and debug mode is enabled, this plugin provides a "Latte" panel for the DebugKit toolbar that shows a visual tree representation of your template structure, including template inheritance hierarchy and layout relationships.
+
+- Ensure `cakephp/debug_kit` is installed and enabled in development.
+- The panel appears as `Latte` in the DebugKit toolbar.
+
+To enable the panel, add it to your DebugKit configuration:
+
+```php
+Configure::write('DebugKit.panels', ['LatteView.Latte']);
+```
 
 ### Some examples
 
