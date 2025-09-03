@@ -41,7 +41,12 @@ class LatteView extends View
      * `cachePath` - The directory path where compiled templates are cached.
      *   Defaults to CACHE . 'latte_view' . DS.
      *
+     * `rawphp` - Whether to enable raw PHP extension. Defaults to true.
+     *
      * `sandbox` - Whether to enable sandbox mode for template security. Defaults to false.
+     *
+     * `defaultHelpers` - Array of default CakePHP helpers to load. Defaults to
+     *   ['Breadcrumbs', 'Flash', 'Form', 'Html', 'Number', 'Paginator', 'Text', 'Time', 'Url'].
      *
      * @var array<string, mixed>
      */

@@ -23,9 +23,9 @@ A CakePHP plugin providing [Latte](https://latte.nette.org/) template engine int
     - [Links](#links)
     - [Forms](#forms)
     - [I18n](#i18n)
-    - [Debug Tags](#debug-tags)
     - [Filters](#filters)
-    - [Other examples](#other-examples)
+    - [Debug Tags](#debug-tags)
+    - [Some examples](#some-examples)
 - [Using the Latte type system](#using-the-latte-type-system)
 - [Console commands](#console-commands)
 - [Extending](#extending)
@@ -193,7 +193,8 @@ The plugin comes with some handy functions and tags:
 | `{cell name}` | Cake's `View::cell()` method
 | `{HelperName method arg1, arg2}` | Access any CakePHP helper using the helper name followed by its methodname args. (See docs below) |
 | `helper('Html')` | Returns a helper instance object. Depending on your needs you can decide to use the function or the tag. |
-| `n:href`, `n:named`, `n:context` | `n:attribute` access for links and form building. (See docs below)
+| `n:href`, `n:named` | `n:attribute` access for building [links](#links). |
+| `n:context`, `n:name` | `n:attribute` access for building [forms](#forms). |
 
 ### Helpers
 
@@ -310,7 +311,7 @@ Examples:
 ```latte
 {* Basic translation *}
 {_'Hello, World!'}
-{'Welcome back'|translate}
+{='Welcome back'|translate}
 
 {* Translation with domain *}
 {_'Admin Panel', domain: 'admin'}
@@ -328,16 +329,15 @@ All translation calls automatically use CakePHP's I18n functions under the hood,
 
 Please note that no __x() related functions are implemented.
 
-### Debug Tags
-
-- `{dump $var}` or `{debug $var}`: Uses CakePHP's `Debugger::printVar()` instead of Nette's default dumper
-- `{dump}`: Dumps all defined variables using CakePHP's debugger
-
 ### Filters
 
-The following filters are mapped to their CakePHP counterparts, providing integration with CakePHP's utility classes for text manipulation, number formatting, and inflector operations.
+The following [filters](https://latte.nette.org/en/filters) are mapped to their CakePHP counterparts, providing integration with CakePHP's utility classes for text manipulation, time formatting, number operations, and inflector transformations. 
 
-| Function          | Maps to                          |
+> Some filters present in these classes are omitted because Latte already has its own implementation.
+
+#### [Text](https://book.cakephp.org/5/en/core-libraries/text.html) filters
+
+| Filter          | Maps to                          |
 |-------------------|----------------------------------|
 | **Text** |
 | uuid              | Cake\Utility\Text::uuid          |
@@ -357,6 +357,11 @@ The following filters are mapped to their CakePHP counterparts, providing integr
 | parseFileSize     | Cake\Utility\Text::parseFileSize |
 | transliterate     | Cake\Utility\Text::transliterate |
 | slug              | Cake\Utility\Text::slug          |
+
+#### [Number](https://book.cakephp.org/5/en/core-libraries/number.html) filters
+
+| Filter            | Maps to                          |
+|-------------------|----------------------------------|
 | precision         | Cake\I18n\Number::precision      |
 | toReadableSize    | Cake\I18n\Number::toReadableSize |
 | toPercentage      | Cake\I18n\Number::toPercentage   |
@@ -365,7 +370,12 @@ The following filters are mapped to their CakePHP counterparts, providing integr
 | currency          | Cake\I18n\Number::currency       |
 | formatter         | Cake\I18n\Number::formatter      |
 | ordinal           | Cake\I18n\Number::ordinal        |
-| **Inflector** |
+
+
+#### [Inflector](https://book.cakephp.org/5/en/core-libraries/inflector.html) filters
+
+| Filter            | Maps to                          |
+|-------------------|----------------------------------|
 | pluralize         | Cake\Utility\Inflector::pluralize |
 | singularize       | Cake\Utility\Inflector::singularize |
 | camelize          | Cake\Utility\Inflector::camelize |
@@ -376,7 +386,11 @@ The following filters are mapped to their CakePHP counterparts, providing integr
 | tableize          | Cake\Utility\Inflector::tableize |
 | classify          | Cake\Utility\Inflector::classify |
 | iVariable         | Cake\Utility\Inflector::variable |
-| **Time** |
+
+#### Time filters
+
+| Filter            | Maps to                          |
+|-------------------|----------------------------------|
 | format            | Cake\View\Helper\TimeHelper::format           |
 | i18nFormat        | Cake\View\Helper\TimeHelper::i18nFormat       |
 | nice              | Cake\View\Helper\TimeHelper::nice             |
@@ -386,13 +400,16 @@ The following filters are mapped to their CakePHP counterparts, providing integr
 | timeAgoInWords    | Cake\View\Helper\TimeHelper::timeAgoInWords   |
 | gmt               | Cake\View\Helper\TimeHelper::gmt              |
 
-### Other examples
+### Debug Tags
+
+- `{dump $var}` or `{debug $var}`: Uses CakePHP's `Debugger::printVar()` instead of Nette's default dumper
+- `{dump}`: Dumps all defined variables using CakePHP's debugger
+
+### Some examples
 
 ```latte
 {* Some examples *}
 
-{link 'Click me' '/'}
-{link 'Click me' url: ['controller' => 'Pages', 'action' => 'home'], options: ['class' => 'button]}
 {view()->viewMethod()}
 {request()->getQuery('search)}
 {env('REMOTE_ADDR')}
