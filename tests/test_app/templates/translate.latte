@@ -13,11 +13,11 @@
     {translate domain: 'custom'}I need translation{/translate}
     <br />
 
-    {_'%s items', 1, singular: '%s item'}
+    {_'%s items', 123, count: 1, singular: '%s item'}
     <br />
 
     {foreach [1,2] as $count}
-        {translate $count, 'myarg', singular: '%s item'}%s items with %s{/translate}
+        {translate $count, 'myarg', count: $count, singular: '%s item'}%s items with %s{/translate}
     {/foreach}
 
     {_('I like that color')}

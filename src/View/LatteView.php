@@ -53,7 +53,7 @@ class LatteView extends View
     protected array $_defaultConfig = [
         'cache' => true,
         'autoRefresh' => null,
-        'blocks' => ['content'],
+        'blocks' => null,
         'cachePath' => CACHE . 'latte_view' . DS,
         'rawphp' => true,
         'sandbox' => false,
@@ -142,7 +142,7 @@ class LatteView extends View
             return $this->getEngine()->renderToString($templateFile, $dataForView);
         }
 
-        $blocks = $this->getConfig('blocks', []);
+        $blocks = (array)$this->getConfig('blocks', ['content']);
 
         $content = '';
         foreach ($blocks as $blockName) {

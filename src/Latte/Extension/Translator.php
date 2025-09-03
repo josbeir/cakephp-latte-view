@@ -25,15 +25,27 @@ class Translator
         if (isset($args['singular'])) {
             $singular = $args['singular'];
             unset($args['singular']);
-            $count = $args[0] ?? null;
+        }
+
+        if (isset($args['count'])) {
+            $count = $args['count'];
+            unset($args['count']);
         }
 
         $translator = I18n::getTranslator($domain);
 
-        // Handle plural translation - first arg is count when using plural mode
-        if ($count !== null && $singular !== null) {
+        // Handle plural translation
+        if ($count !== null || $singular !== null) {
+            if ($count === null || $singular === null) {
+                throw new InvalidArgumentException(
+                    'Both `count` and `singular` arguments must be provided for plural translation',
+                );
+            }
+
             if (!is_numeric($count)) {
-                throw new InvalidArgumentException('Count argument must be numeric when using singular argument');
+                throw new InvalidArgumentException(
+                    'Count argument must be numeric when using singular argument',
+                );
             }
 
             $args = ['_count' => $count, '_singular' => $singular] + $args;

@@ -126,10 +126,10 @@ Set options via `ViewBuilder::setOption()` or `setOptions()`:
 |----------------|---------|------------------------|-----------------------------------------------------------------------------|
 | `cache`        | bool    | `true`                 | Enable/disable template caching. Caching is always enabled except when explicitly set to `false`. |
 | `autoRefresh`  | bool    | `false` (or `true` in debug) | Automatically refresh templates. Auto-refresh is always enabled in debug mode. |
-| `blocks`| array  | `['content']`            | Block names that are rendered when autoLayout is disabled. [Read more](#the-blocks-option) |
+| `blocks`       | array|string  | `'content'`            | Block name(s) that are rendered when autoLayout is disabled. [Read more](#the-blocks-option) |
 | `cachePath`    | string  | `CACHE . 'latte_view'` | Path for compiled template cache                                            |
 | `sandbox`      | bool    | `false`                | Enable sandbox mode for secure template execution. When enabled, the security policy can be configured using `setSandboxPolicy()` and `getSandboxPolicy()`. |
-| `rawphp` | bool | `true` | Enable/disable the use of raw PHP code in templates via the [{php} tag](https://latte.nette.org/en/develop#toc-rawphpextension). |
+| `rawphp`       | bool | `true` | Enable/disable the use of raw PHP code in templates via the [{php} tag](https://latte.nette.org/en/develop#toc-rawphpextension). |
 | `defaultHelpers` | array | ... | List of default Cake helpers that need to be present. Defaults to all core helpers. |
 
 ### The `blocks` option.
@@ -321,7 +321,7 @@ Examples:
 {translate $username, $email}Welcome %s, your email %s has been verified{/translate}
 
 {* Pluralization *}
-{translate $count, singular: '%s item'}%s items{/translate}
+{translate $count, singular: '%s item', count: $count}%s items{/translate}
 {_'%s items', $count, singular: '%s item'}
 ```
 
@@ -429,7 +429,7 @@ One of the great things about Latte is its integration with various IDEs through
 
 This plugin allows you to pass typed objects to templates, enabling you to utilize this powerful feature for better IDE support and type safety.
 
-To make use of this feature, you need to pass a class extends `LatteView\View\Parameters`. 
+To make use of this feature, you need to pass a class that extends `LatteView\View\Parameters`. 
 
 > This class enables you to use the current view instance using the `getView()` method, allowing you to access it's methods and helpers from within your parameter class. Note that you should not access the view in the constructor as it is set at a later time.
 
@@ -551,7 +551,7 @@ $view->setSandboxPolicy($yourPolicy);
 
 ## Contributing
 
-Contributions, issues, and feature requests are welcome! Feel free to open a pull request or issue on GitHub. Please follow CakePHP and Latte coding standards and ensure all code is properly tested before submitting.
+Contributions, issues, and feature requests are welcome! Feel free to open a pull request or issue on GitHub. Please follow CakePHP coding standards and ensure all code is properly tested before submitting.
 
 ## License
 

@@ -57,6 +57,7 @@ class CellNodeTest extends TestCase
     {
         $view = new AppView();
         $compiled = $view->render('cell');
+
         $this->assertStringContainsString('Cell argument: Testing', $compiled);
         $this->assertStringContainsString('Cell argument: First Second', $compiled);
     }
