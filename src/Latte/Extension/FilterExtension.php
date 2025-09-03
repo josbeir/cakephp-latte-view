@@ -73,16 +73,23 @@ final class FilterExtension extends Extension
         /** @var \Cake\View\Helper\TimeHelper $timeHelper */
         $timeHelper = $this->view->Time;
 
-        return [
-            'format' => fn(...$args) => $timeHelper->format(...$args),
-            'i18nFormat' => fn(...$args) => $timeHelper->i18nFormat(...$args),
-            'nice' => fn(...$args) => $timeHelper->nice(...$args),
-            'toUnix' => fn(...$args) => $timeHelper->toUnix(...$args),
-            'toAtom' => fn(...$args) => $timeHelper->toAtom(...$args),
-            'toRss' => fn(...$args) => $timeHelper->toRss(...$args),
-            'timeAgoInWords' => fn(...$args) => $timeHelper->timeAgoInWords(...$args),
-            'gmt' => fn(...$args) => $timeHelper->gmt(...$args),
+        $helperMethods = [
+            'format',
+            'i18nFormat',
+            'nice',
+            'toUnix',
+            'toAtom',
+            'toRss',
+            'timeAgoInWords',
+            'gmt',
         ];
+
+        $filters = [];
+        foreach ($helperMethods as $method) {
+            $filters[$method] = fn(...$args) => $timeHelper->{$method}(...$args);
+        }
+
+        return $filters;
     }
 
     /**
@@ -119,7 +126,6 @@ final class FilterExtension extends Extension
             $filterName = $alias[$name] ?? $name;
 
             if (in_array($name, $returnsHtml)) {
-                $filterName = $alias[$name] ?? $name;
                 $filters[$filterName] = fn(...$args): Html => new Html($class::{$name}(...$args));
                 continue;
             }
