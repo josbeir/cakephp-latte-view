@@ -27,3 +27,52 @@ features:
     details: Comprehensive debugging support with dedicated DebugKit panel for template inspection and performance monitoring
 ---
 
+📄 layout.latte
+
+```latte
+<!DOCTYPE html>
+<html>
+<head>
+    {Html charset}
+    <title>{block title}Homepage{/block} - My app</title>
+    {* $this->Html->css('site') *}
+    {Html css 'site'}
+    {Html js 'app'}
+
+    {* $this->fetch('meta') *}
+    {fetch meta}
+    {fetch css}
+    {fetch script}
+</head>
+<body>
+    <header>
+      <h1>{block title}Latte + CakePHP = Awesome{/block}</h1>
+    </header>
+    <main>
+      {include content}
+    </main>
+    <footer>
+      {block footer}
+        Copyright {$today|format:'Y'}
+      {/block}
+    </footer>
+</body>
+</html>
+```
+
+📄 add.latte
+
+```latte
+{block title}Create article{/block}
+
+{block content}
+{* $this->Form->create($article, ['method' => 'put']) *}
+<form n:context="$article" method="put">
+  <control n:name="title" />
+
+  {* $this->Form->control('body', ['rows' => 10]) *}  
+  <control n:name="body" rows="10" />
+  
+  <button type="submit">{_'Save article'}</button>
+</form>
+```
