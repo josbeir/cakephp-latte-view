@@ -187,6 +187,7 @@ The plugin comes with some handy functions and tags:
 |----------|-------------|
 | `view()` | Returns the current View instance. |
 | `request()`| Returns the current request instance. |
+| `config()` | Read a config value, Maps to Configure::read() |
 | `env()` | Access environment variables |
 | `url()` | Url generation - See `Router::url()`. |
 | `rurl()` | Reverse url generation - See `Router::reverse()`. |
