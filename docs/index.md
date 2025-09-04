@@ -4,6 +4,9 @@ layout: home
 hero:
   name: "LatteView for CakePHP"
   tagline: "Bringing the power of Latte templates to your CakePHP application"
+  image:
+    src: /assets/logo-latte.png
+    alt: Latte
   actions:
     - theme: brand
       text: Documentation

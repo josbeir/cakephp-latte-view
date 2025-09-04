@@ -1,6 +1,18 @@
 # Getting started
 
-This guide will walk you through integrating Latte templating engine with your CakePHP application.
+This guide will walk you through integrating Latte templating engine with your CakePHP application. Before proceeding, we recommend familiarizing yourself with [Latte syntax](https://latte.nette.org/en/syntax) to get the most out of this integration.
+
+## TL;DR
+
+This plugin replaces CakePHP's default templating engine with [Latte](https://latte.nette.org/), a modern and secure template engine from the Nette framework.
+
+**Key differences from CakePHP templates:**
+- Uses `.latte` files instead of `.php` templates
+- Latte's native features replace some CakePHP view methods:
+    - `{include}` and `{block}` replace `$this->element()` and `$this->start()`/`$this->end()`
+    - Template inheritance with `{layout}` replaces `$this->extend()`
+- `$this->fetch()` is still available to maintain compatibility with existing helpers that manipulate view blocks
+- All CakePHP helpers remain fully functional
 
 ## Requirements
 

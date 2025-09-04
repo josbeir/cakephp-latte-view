@@ -11,7 +11,7 @@ A CakePHP plugin providing [Latte](https://latte.nette.org/) template engine int
 
 ## Documentation
 
-[**View documentation**](https://www.jaspersmet.be/cakephp-latte-view/)
+[**View documentation**](https://jaspersmet.be/cakephp-latte-view/)
 
 ## Contributing
 
