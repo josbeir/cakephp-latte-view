@@ -1,14 +1,13 @@
 {block content}
-    {* Outputs a rendered route *}
-    <span class="links-wrapper-1">{link '/', full: true}</span>
-    <span class="links-wrapper-2">{link [_name: 'display'], full: true}</span>
+{* Outputs a rendered route *}
+<span class="links-wrapper-1">{link '/', full: true}</span>
+<span class="links-wrapper-2">{link [_name: 'display'], full: true}</span>
 
-    {* Outputs a html link with rendered route *}
-    <a n:href="/">Simple</a>
-    <a n:href="[controller: 'Pages', action: 'display']">Hello from n:href array</a>
-    <a n:href="/, full: true">Hello from n:href full base</a>
-    <a n:named="display">Hello from n:named</a>
+{* Outputs a html link with rendered route *}
+<a n:href="/">Simple</a>
+<a n:href="[controller: 'Pages', action: 'display']">Hello from n:href array</a>
+<a n:href="/, full: true">Hello from n:href full base</a>
+<a n:named="display">Hello from n:named</a>
 
-    <a n:named="user:index, 1">Hello from n:named full base</a>
-    <a n:named="user:view, 1, '?' => ['page' => 1]">Hello from n:named full</a>
-{/block}
+<a n:named="user:index, 1">Hello from n:named full base</a>
+<a n:named="user:view, 1, '?' => ['page' => 1]">Hello from n:named full</a>

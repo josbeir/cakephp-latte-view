@@ -49,18 +49,17 @@ class FileLoader extends LatteFileLoader
         }
 
         // Detect plugin names using the '@' symbol
+        $originalName = $name;
         if (str_contains($name, '@')) {
             $name = substr($name, strpos($name, '@') + 1);
         }
 
         [$plugin, $name] = pluginSplit($name);
-        $name = str_replace('/', DIRECTORY_SEPARATOR, $name);
-
-        if ($plugin !== null) {
+        if ($plugin !== null && Plugin::isLoaded($plugin)) {
             return $this->findPluginTemplate($plugin, $name);
         }
 
-        return $this->findAppTemplate($name);
+        return $this->findAppTemplate($originalName);
     }
 
     /**

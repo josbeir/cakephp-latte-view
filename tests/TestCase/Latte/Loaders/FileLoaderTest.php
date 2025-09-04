@@ -48,6 +48,18 @@ class FileLoaderTest extends TestCase
                 '@Test./layout/pluginlayout',
                 '/test_app/plugins/Test/templates/layout/pluginlayout.latte',
             ],
+            [
+                '@Test./layout/@pluginlayout',
+                '/test_app/plugins/Test/templates/layout/@pluginlayout.latte',
+            ],
+            [
+                '/layout/@layout',
+                '/layout/@layout.latte',
+            ],
+            [
+                '/layout/@layout.latte',
+                '/layout/@layout.latte',
+            ],
         ];
     }
 
@@ -55,7 +67,6 @@ class FileLoaderTest extends TestCase
     public function testGetContentWithValidFile(string $path, string $expectedPath): void
     {
         $loader = new FileLoader();
-
         $result = $loader->findTemplate($path);
 
         $this->assertStringEndsWith($expectedPath, $result);

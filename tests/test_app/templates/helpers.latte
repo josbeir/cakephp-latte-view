@@ -1,11 +1,10 @@
 {block content}
 
-    {Form create}
-        {Form control 'myfield', ['label' => 'My Field']}
-    {Form end}
+{Form create}
+    {Form control 'myfield', ['label' => 'My Field']}
+{Form end}
 
-    {Custom hello}
+{Custom hello}
 
-    {helper('Custom')->world()}
+{helper('Custom')->world()}
 
-{/block}
