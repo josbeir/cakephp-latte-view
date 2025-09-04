@@ -1,0 +1,189 @@
+{
+  "name": "Latte",
+  "scopeName": "text.latte",
+  "fileTypes": ["latte"],
+  "patterns": [
+    { "include": "text.html.basic" },
+    { "include": "#comment" },
+    { "include": "#output" },
+    { "include": "#macro" }
+  ],
+  "repository": {
+    "comment": {
+      "name": "comment.block.latte",
+      "begin": "\\{\\*",
+      "beginCaptures": { "0": { "name": "punctuation.definition.comment.begin.latte" } },
+      "end": "\\*\\}",
+      "endCaptures": { "0": { "name": "punctuation.definition.comment.end.latte" } },
+      "patterns": [
+        {
+          "name": "keyword.other.todo",
+          "match": "(?i)(?<=\\{\\*|\\s)TODO:.*$"
+        }
+      ]
+    },
+
+    "output": {
+      "name": "meta.output.latte",
+      "begin": "\\{(=|\\$)",
+      "beginCaptures": {
+        "0": { "name": "punctuation.section.embedded.begin.latte" },
+        "1": { "name": "keyword.operator.print.latte" }
+      },
+      "end": "\\}",
+      "endCaptures": { "0": { "name": "punctuation.section.embedded.end.latte" } },
+      "patterns": [
+        { "include": "#variables" },
+        { "include": "#strings" },
+        { "include": "#numbers" },
+        { "include": "#operators" },
+        { "include": "#modifiers" },
+        { "include": "source.php" }
+      ]
+    },
+
+    "macro": {
+      "name": "meta.macro.latte",
+      "begin": "\\{(?!\\*)(/?)([a-zA-Z_][\\w:-]*)\\b",
+      "beginCaptures": {
+        "0": { "name": "punctuation.section.embedded.begin.latte" },
+        "1": { "name": "punctuation.definition.macro.slash.latte" },
+        "2": { "name": "support.function.macro.latte" }
+      },
+      "end": "\\}",
+      "endCaptures": { "0": { "name": "punctuation.section.embedded.end.latte" } },
+      "patterns": [
+        { "include": "#keywords" },
+        { "include": "#variables" },
+        { "include": "#strings" },
+        { "include": "#numbers" },
+        { "include": "#operators" },
+        { "include": "#modifiers" },
+        { "include": "source.php" }
+      ]
+    },
+
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.latte",
+          "match": "\\b(if|elseif|else|foreach|for|while|switch|case|default|break|continue|do)\\b"
+        },
+        {
+          "name": "keyword.other.latte",
+          "match": "\\b(include|extends|layout|block|snippet|define|capture|php|var|set)\\b"
+        }
+      ]
+    },
+
+    "variables": {
+      "patterns": [
+        {
+          "name": "variable.other.latte",
+          "match": "\\$[a-zA-Z_][\\w]*"
+        },
+        {
+          "name": "variable.other.property.latte",
+          "match": "(?<=\\$[a-zA-Z_][\\w]*)\\->\\w+"
+        }
+      ]
+    },
+
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.latte",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            { "name": "constant.character.escape.latte", "match": "\\\\." },
+            { "include": "#variables" }
+          ]
+        },
+        {
+          "name": "string.quoted.single.latte",
+          "begin": "'",
+          "end": "'",
+          "patterns": [
+            { "name": "constant.character.escape.latte", "match": "\\\\." },
+            { "include": "#variables" }
+          ]
+        }
+      ]
+    },
+
+    "numbers": {
+      "name": "constant.numeric.latte",
+      "match": "\\b(?:0x[0-9A-Fa-f]+|\\d+(?:\\.\\d+)?)\\b"
+    },
+
+    "operators": {
+      "name": "keyword.operator.latte",
+      "match": "(\\!|\\?|\\:\\:|\\.|,|\\|\\||&&|\\|>|\\||=>|==?=?|!=|<=|>=|<|>|\\+|-|\\*|\\/|%|\\.|\\:)"
+    },
+
+    "modifiers": {
+      "patterns": [
+        {
+          "name": "meta.modifier.latte",
+          "begin": "\\|([a-zA-Z_][\\w]*)",
+          "beginCaptures": { "1": { "name": "support.function.modifier.latte" } },
+          "end": "(?=(\\|)|\\}|$)",
+          "patterns": [
+            {
+              "name": "punctuation.definition.arguments.begin.latte",
+              "match": "\\("
+            },
+            {
+              "name": "punctuation.definition.arguments.end.latte",
+              "match": "\\)"
+            },
+            { "include": "#strings" },
+            { "include": "#numbers" },
+            { "include": "#variables" },
+            { "include": "#operators" },
+            { "include": "source.php" }
+          ]
+        }
+      ]
+    }
+  },
+
+  "injections": {
+    "L:text.html - comment": {
+      "patterns": [
+        { "name": "entity.other.attribute-name.html.latte", "match": "\\bn:[a-zA-Z][\\w-]*" },
+        {
+          "name": "meta.attribute-with-value.latte",
+          "begin": "(n:[a-zA-Z][\\w-]*)\\s*=\\s*(\")",
+          "beginCaptures": {
+            "1": { "name": "entity.other.attribute-name.html.latte" },
+            "2": { "name": "punctuation.definition.string.begin.html" }
+          },
+          "end": "\"",
+          "endCaptures": { "0": { "name": "punctuation.definition.string.end.html" } },
+          "patterns": [
+            { "include": "#variables" },
+            { "include": "#strings" },
+            { "include": "#numbers" },
+            { "include": "#operators" },
+            { "include": "source.php" }
+          ]
+        },
+        {
+          "name": "meta.embedded.inline.latte",
+          "begin": "\\{(?!\\*)",
+          "beginCaptures": { "0": { "name": "punctuation.section.embedded.begin.latte" } },
+          "end": "\\}",
+          "endCaptures": { "0": { "name": "punctuation.section.embedded.end.latte" } },
+          "patterns": [
+            { "include": "#macro" },
+            { "include": "#output" }
+          ]
+        }
+      ]
+    }
+  },
+
+  "uuid": "c2a7f0f8-bf38-4e0b-9e7a-1f8f3f2c1a7e"
+}

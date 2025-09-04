@@ -1,0 +1,57 @@
+import { defineConfig } from 'vitepress'
+import { createHighlighter } from 'shiki'
+
+import fs from 'fs';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const latteLang = JSON.parse(fs.readFileSync(`${__dirname}/latte.tmLanguage.json`, 'utf8'))
+
+const latte = {
+  'name': 'latte',
+  'scopeName': 'text.latte',
+  'aliases': ['latte'],
+  'embeddedLangs': ['php', 'html', 'javascript', 'css'],
+  ...latteLang
+}
+
+// https://vitepress.dev/reference/site-config
+export default defineConfig({
+  //base: '/cakephp-latte-view/',
+  title: "LatteView for CakePHP",
+  description: "A CakePHP plugin providing Latte template engine integration for CakePHP applications.",
+  markdown: {
+    languages: [latte, 'php'],
+  },
+  themeConfig: {
+    // https://vitepress.dev/reference/default-theme-config
+    nav: [
+      { text: 'Home', link: '/' },
+      { text: 'Documentation', link: '/getting-started' }
+    ],
+
+    sidebar: [
+      {
+        text: 'Documentation',
+        items: [
+          { text: 'Getting started', link: '/getting-started' },
+          { text: 'Configuration', link: '/configuration' },
+          { text: 'Tags, filters & functions', link: '/tags-filters-functions' },
+          { text: 'Template parameters', link: '/template-parameters' },
+          { text: 'Debugging', link: '/debugging' },
+          { text: 'Console commands', link: '/commands' },
+          { text: 'Extending', link: '/extending' },
+        ]
+      }
+    ],
+
+    socialLinks: [
+      { icon: 'github', link: 'https://github.com/josbeir/cakephp-latte-view' }
+    ],
+
+    footer: {
+      message: 'Released under the <a href="https://github.com/josbeir/cakephp-latte-view/blob/main/LICENSE.md">MIT License</a>.',
+    }    
+  }
+})
