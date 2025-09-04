@@ -9,7 +9,7 @@ This plugin provides several debugging tools to help you inspect variables and u
 
 ## DebugKit Panel
 
-![DebugKit Panel](assets/debugkit_panel.png)
+![DebugKit Panel](./public/debugkit_panel.png)
 
 When DebugKit is installed and debug mode is enabled, this plugin provides a "Latte" panel for the DebugKit toolbar that shows a visual tree representation of your template structure, including template inheritance hierarchy and layout relationships.
 

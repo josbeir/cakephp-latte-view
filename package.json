@@ -6,6 +6,7 @@
   "scripts": {
     "docs:dev": "vitepress dev docs --port 1474",
     "docs:build": "vitepress build docs --base /cakephp-latte-view/",
+    "docs:buildLocal": "vitepress build docs",
     "docs:preview": "vitepress preview docs --port 1475"
   }
 }
