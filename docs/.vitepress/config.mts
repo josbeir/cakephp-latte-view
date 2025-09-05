@@ -25,7 +25,12 @@ export default defineConfig({
     languages: [latte, 'php'],
   },
   themeConfig: {
-    // https://vitepress.dev/reference/default-theme-config
+    search: {
+      provider: 'local'
+    },
+    editLink: {
+      pattern: 'https://github.com/josbeir/cakephp-latte-view/edit/main/docs/:path',
+    },
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Documentation', link: '/getting-started' }

@@ -25,6 +25,8 @@ bin/cake latte clear -c MyPlugin.View # For plugin view classes
 
 ## Test your templates for errors
 
+The latte linter helps you catch syntax errors and potential issues in your templates before they cause runtime errors. This is particularly useful during static analysis processes to ensure code quality and prevent deployment of faulty templates. You can scan templates from your application or specific plugins using the following commands:
+
 ```bash
 bin/cake latte linter # Scans your app templates
 bin/cake latte linter -p MyPlugin # Scans your plugin templates

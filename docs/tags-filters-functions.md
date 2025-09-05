@@ -1,6 +1,6 @@
 # Custom Tags, Functions and Filters
 
-The plugin comes with some handy functions and tags:
+This plugin extends Latte with CakePHP-specific functionality, providing convenient functions, tags, and filters that integrate seamlessly with your CakePHP application:
 
 | Function | Description |
 |----------|-------------|
