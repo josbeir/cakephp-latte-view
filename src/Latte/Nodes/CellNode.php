@@ -61,7 +61,7 @@ final class CellNode extends StatementNode
         }
 
         return $context->format(
-            'echo $this->global->cakeView->cell(%node, %node, %node)->render(%node) %line;',
+            'echo $this->global->cakeView->cell(%node, %node?, %node?)->render(%node?) %line;',
             $this->name,
             $this->arguments,
             $options,

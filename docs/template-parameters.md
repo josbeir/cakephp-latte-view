@@ -14,7 +14,7 @@ To make use of this feature, you need to pass a class that extends `LatteView\Vi
 
 > This class enables you to use the current view instance using the `getView()` method, allowing you to access it's methods and helpers from within your parameter class. Note that you should not access the view in the constructor as it is set at a later time.
 
-First, create a class that implements this interface:
+First, create a class that extends `\LatteView\View\Parameters`:
 > This example shows how to add a custom Latte function and filter which both use a helper.
 
 ```php

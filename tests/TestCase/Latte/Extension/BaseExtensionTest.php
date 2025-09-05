@@ -73,7 +73,7 @@ class BaseExtensionTest extends TestCase
         $helpers = $extension->helpers();
         $templates = ['default.latte' => ''];
         foreach (array_keys($helpers) as $helperName) {
-            $templates[$helperName . '.latte'] = '{' . $helperName . ' initialize []}';
+            $templates[$helperName . '.latte'] = '{' . $helperName . ' initialize ["key" => "value"]}';
         }
 
         $latte = new Engine();

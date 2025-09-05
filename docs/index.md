@@ -66,13 +66,14 @@ features:
 {block title}Create article{/block}
 
 {block content}
-{* $this->Form->create($article, ['method' => 'put']) *}
-<form n:context="$article" method="put">
-  <control n:name="title" />
-
-  {* $this->Form->control('body', ['rows' => 10]) *}  
-  <control n:name="body" rows="10" />
-  
+{* $this->Form->create($user, ['method' => 'put']) *}
+<form n:context="$user">
+  <control n:name="first_name" />
+  <control n:name="last_name" />
+  <control n:name="email" /> 
+  <control n:name="password" />
+  <control n:name="bio" rows="10" />
   <button type="submit">{_'Save article'}</button>
+  <a n:named="users:index">{_'Go back'}</a>
 </form>
 ```

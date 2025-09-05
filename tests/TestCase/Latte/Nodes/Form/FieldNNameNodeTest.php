@@ -46,14 +46,15 @@ class FieldNNameNodeTest extends TestCase
             <control n:name="user.company.name" label="Company name" />
             <select n:name="options" options="[1,2,3]" />
             <label n:name="mylabel">My Label</label>
+            <label n:name="mylabel2">My Label <input n:name="test" /></label>
             <textarea n:name="description" />
         XX);
 
-        $this->assertStringContainsString('echo $this->global->cakeView->Form->input(\'hello\', []);', $result);
-        $this->assertStringContainsString('echo $this->global->cakeView->Form->control(\'username\', []);', $result);
+        $this->assertStringContainsString('echo $this->global->cakeView->Form->input(\'hello\');', $result);
+        $this->assertStringContainsString('echo $this->global->cakeView->Form->control(\'username\');', $result);
         $this->assertStringContainsString('echo $this->global->cakeView->Form->control(\'user.company.name\', [\'label\' => \'Company name\']);', $result);
         $this->assertStringContainsString('echo $this->global->cakeView->Form->select(\'options\', [\'options\' => [1, 2, 3]]);', $result);
-        $this->assertStringContainsString('echo $this->global->cakeView->Form->textarea(\'description\', []);', $result);
+        $this->assertStringContainsString('echo $this->global->cakeView->Form->textarea(\'description\');', $result);
     }
 
     public function testRendered(): void
@@ -64,5 +65,11 @@ class FieldNNameNodeTest extends TestCase
         $this->assertStringContainsString('<textarea name="description" rows="5"></textarea> END', $response);
         $this->assertStringContainsString('<input', $response);
         $this->assertStringContainsString('<select', $response);
+
+        // wrapped label
+        $this->assertStringContainsString('<label for="wrapped">', $response);
+        $this->assertStringContainsString('<strong>Wrapped Label</strong>', $response);
+        $this->assertStringContainsString('<input type="input" name="wrapped_input">', $response);
+        $this->assertStringContainsString('</label>', $response);
     }
 }

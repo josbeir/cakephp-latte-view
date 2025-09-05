@@ -35,14 +35,14 @@ class CellNodeTest extends TestCase
     public function testBasic(): void
     {
         $compiled = $this->latte->compile('{cell TestCell}');
-        $expected = '$this->global->cakeView->cell(\'TestCell\', [],)->render()';
+        $expected = '$this->global->cakeView->cell(\'TestCell\')->render()';
         $this->assertStringContainsString($expected, $compiled);
     }
 
     public function testArguments(): void
     {
         $compiled = $this->latte->compile('{cell TestCell "argumentValue", "argumentValue2", element: "myEl"}');
-        $expected = '$this->global->cakeView->cell(\'TestCell\', [\'argumentValue\', \'argumentValue2\'],)->render(\'myEl\')';
+        $expected = '$this->global->cakeView->cell(\'TestCell\', [\'argumentValue\', \'argumentValue2\'])->render(\'myEl\')';
         $this->assertStringContainsString($expected, $compiled);
     }
 

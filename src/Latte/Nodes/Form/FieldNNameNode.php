@@ -57,7 +57,7 @@ final class FieldNNameNode extends StatementNode
         $attributes = $this->getAttributesNode($el);
 
         $print_config = [
-            'echo $this->global->cakeView->Form->%raw(%node, %node) %line;',
+            'echo $this->global->cakeView->Form->%raw(%node, %node?) %line;',
             $elName,
             $this->name,
             $attributes,
@@ -68,12 +68,13 @@ final class FieldNNameNode extends StatementNode
             $print_config = [
                 <<<'XX'
                     ob_start(); %node $__c_form_label = ob_get_clean();
-                    echo $this->global->cakeView->Form->%raw(%node, $__c_form_label, %node) %line;
+                    $__c_form_label_opts = array_merge(%node, ['escape' => false]);
+                    echo $this->global->cakeView->Form->%raw(%node, $__c_form_label, $__c_form_label_opts) %line;
                 XX,
                 $el->content,
+                $attributes,
                 $elName,
                 $this->name,
-                $attributes,
                 $this->position,
             ];
         }
