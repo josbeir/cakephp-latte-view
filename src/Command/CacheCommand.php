@@ -21,6 +21,7 @@ class CacheCommand extends AbstractCommand
      */
     public function execute(Arguments $args, ConsoleIo $io): int
     {
+        $io->out('Clearing Latte cache directory...');
         $cacheDir = $this->getViewClass($args)->getConfig('cachePath');
 
         if (is_dir($cacheDir)) {

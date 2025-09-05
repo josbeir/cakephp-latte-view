@@ -18,7 +18,10 @@ class Application extends BaseApplication
 
     public function bootstrap(): void
     {
-        //parent::bootstrap();
+        if (!defined('APP')) {
+            parent::bootstrap();
+        }
+
         $this->addPlugin(LatteViewPlugin::class);
         $this->addPlugin(TestPlugin::class);
     }
