@@ -7,6 +7,7 @@ use Generator;
 use Latte\Compiler\Nodes\AreaNode;
 use Latte\Compiler\Nodes\AuxiliaryNode;
 use Latte\Compiler\Nodes\FragmentNode;
+use Latte\Compiler\Nodes\Php\Expression\ArrayNode;
 use Latte\Compiler\Nodes\Php\ExpressionNode;
 use Latte\Compiler\Nodes\StatementNode;
 use Latte\Compiler\PrintContext;
@@ -24,15 +25,20 @@ final class FormNContextNode extends StatementNode
 
     protected AreaNode $content;
 
+    protected ArrayNode $args;
+
     /**
      * Create a new FormNContextNode instance.
      */
     public static function create(Tag $tag): Generator
     {
         $tag->expectArguments();
+
         $node = new self();
-        $tag->node = $node;
         $node->context = $tag->parser->parseExpression();
+
+        $tag->parser->stream->tryConsume(',');
+        $node->args = $tag->parser->parseArguments();
 
         [$node->content] = yield;
         $node->init($tag);
@@ -50,9 +56,13 @@ final class FormNContextNode extends StatementNode
 
         $el->captureTagName = true;
         $el->tagNode = new AuxiliaryNode(fn(PrintContext $context): string => $context->format(
-            'echo $this->global->cakeView->Form->create(%node, %node) %line;',
-            $this->context,
+            <<<'XX'
+                $__c_form_args = \Cake\Utility\Hash::merge(%node, %node);
+                echo $this->global->cakeView->Form->create(%node, $__c_form_args) %line;
+            XX,
+            $this->args,
             $attributes,
+            $this->context,
             $this->position,
         ));
 

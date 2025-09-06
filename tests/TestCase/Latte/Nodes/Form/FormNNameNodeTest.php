@@ -43,7 +43,7 @@ class FormNNameNodeTest extends TestCase
             <form n:context=$var method="get">Hi</form>
         XX);
 
-        $formTag = '$this->global->cakeView->Form->create($var, [\'method\' => \'get\'])';
+        $formTag = '$this->global->cakeView->Form->create($var, $__c_form_args)';
         $this->assertStringContainsString($formTag, $result);
 
         $endTag = '</form>';
@@ -59,15 +59,13 @@ class FormNNameNodeTest extends TestCase
             {var $var = null}
             <form n:context=$var
                 method="get"
-                url="['_name' => 'display']"
-                bool="true"
-                expression="('foo'|capitalize)"
+                url="{['_name' => 'display']}"
+                expression="{('foo'|capitalize)}"
             >Hi</form>
         XX);
 
         $this->assertStringContainsString("'method' => 'get'", $result);
         $this->assertStringContainsString("'url' => ['_name' => 'display']", $result);
-        $this->assertStringContainsString("'bool' => true", $result);
         $this->assertStringContainsString('\'expression\' => ($this->filters->capitalize)(\'foo\')', $result);
     }
 
@@ -93,6 +91,12 @@ class FormNNameNodeTest extends TestCase
 
         $formEnd = '</form>';
         $this->assertStringContainsString($formEnd, $result);
+
+        $deleteFormStart = '<form method="post" accept-charset="utf-8" action="/"><div style="display:none;"><input type="hidden" name="_method" value="DELETE"></div>';
+        $this->assertStringContainsString($deleteFormStart, $result);
+
+        $deleteFormContent = 'Form with args';
+        $this->assertStringContainsString($deleteFormContent, $result);
     }
 
     public function testNullForm(): void
@@ -119,7 +123,7 @@ class FormNNameNodeTest extends TestCase
         $this->view->set('form', $form);
         $result = $this->view->render('form');
 
-        $formStart = '<form enctype="multipart/form-data" method="post" accept-charset="utf-8" action="/display">';
+        $formStart = '<form enctype="multipart/form-data" method="post" accept-charset="utf-8" class="test" action="/">';
         $this->assertStringContainsString($formStart, $result);
 
         $hiddenMethod = '<div style="display:none;"><input type="hidden" name="_method" value="POST"></div>';

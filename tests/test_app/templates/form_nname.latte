@@ -1,11 +1,14 @@
 <form n:context="null" n:block="content">
-    {var $var = null}
+    {var $var = 'Its over Anakin.'}
+    {var $label2 = 'I have the high ground.'}
     <input n:name="hello" /> END
     <control n:name="username" /> END
     <control n:name="user.company.name" label="Company name" /> END
     <select n:name="options" options="[1,2,3]" /> END
     <label n:name="mylabel">My Label</label> END
     <textarea n:name="description"></textarea> END
+
+    <control n:name="email, label: $var" label="{$label2}" /> END
 
     <label n:name="wrapped">
         <strong>Wrapped Label</strong>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace LatteView\Tests\TestCase\View;
 
 use Cake\TestSuite\TestCase;
+use Cake\Utility\Hash;
 use Latte\Engine;
 use Latte\Loaders\StringLoader;
 use LatteView\TestApp\View\AppView;
@@ -40,21 +41,36 @@ class FieldNNameNodeTest extends TestCase
     public function testCompiled(): void
     {
         $result = $this->latte->compile(<<<'XX'
-            {var $var = null}
+            {var $label = 'Its over Anakin.'}
+            {var $label2 = 'I have the high ground.'}
             <input n:name="hello" />
             <control n:name="username" />
             <control n:name="user.company.name" label="Company name" />
-            <select n:name="options" options="[1,2,3]" />
+            <select n:name="options, options: [1,2,3]" />
             <label n:name="mylabel">My Label</label>
             <label n:name="mylabel2">My Label <input n:name="test" /></label>
+            <textarea n:name="starwars, label: $label" label="{$label2}" />
             <textarea n:name="description" />
         XX);
 
-        $this->assertStringContainsString('echo $this->global->cakeView->Form->input(\'hello\');', $result);
-        $this->assertStringContainsString('echo $this->global->cakeView->Form->control(\'username\');', $result);
-        $this->assertStringContainsString('echo $this->global->cakeView->Form->control(\'user.company.name\', [\'label\' => \'Company name\']);', $result);
-        $this->assertStringContainsString('echo $this->global->cakeView->Form->select(\'options\', [\'options\' => [1, 2, 3]]);', $result);
-        $this->assertStringContainsString('echo $this->global->cakeView->Form->textarea(\'description\');', $result);
+        $this->assertStringContainsString('echo $this->global->cakeView->Form->input(\'hello\', $__c_form_args);', $result);
+        $this->assertStringContainsString('echo $this->global->cakeView->Form->control(\'username\', $__c_form_args);', $result);
+        $this->assertStringContainsString('echo $this->global->cakeView->Form->control(\'user.company.name\', $__c_form_args);', $result);
+        $this->assertStringContainsString('echo $this->global->cakeView->Form->select(\'options\', $__c_form_args);', $result);
+        $this->assertStringContainsString('echo $this->global->cakeView->Form->textarea(\'description\', $__c_form_args);', $result);
+    }
+
+    public function testAttributeParsing(): void
+    {
+        $result = $this->latte->compile(<<<'XX'
+            {var $label = 'Its over Anakin.'}
+            {var $label2 = 'I have the high ground.'}
+            <input n:name="hello, label: ($label|uppercase)" label="{$label2}" />
+            <input n:name="hello, label: $label" label="{$label2}" />
+        XX);
+
+        $this->assertStringContainsString(Hash::class . '::merge([\'label\' => ($this->filters->uppercase)($label)], [\'label\' => $label2]);', $result);
+        $this->assertStringContainsString('Hash::merge([\'label\' => $label], [\'label\' => $label2]);', $result);
     }
 
     public function testRendered(): void

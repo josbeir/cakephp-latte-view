@@ -9,8 +9,12 @@
         Null context
     </form>
 
-    {var $url = url(['_name' => 'display'])}
-    <form n:context=$form type="file" url="$url">
+    {var $class = 'test'}
+    <form n:context=$form type="file" class="{$class}">
         File form
-    </form>  
+    </form>
+
+    <form n:context="$form, method: 'delete'">
+        Form with args
+    </form>
 </div>
