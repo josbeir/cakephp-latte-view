@@ -102,21 +102,38 @@ The `n:context` and `n:name` attributes provide a more elegant way to create for
     <input n:name="email">
     <control n:name="username" /> {* Please note that custom elements do not self-close, make sure to close them using / or </control> *}
     <control n:name="user.company.name" label="Company name" />
-    <select n:name="options" options="[1,2,3]" />
+    <select n:name="options, options: $my_options" />
     <label n:name="description">Description</label>
     <textarea n:name="description"></textarea>
     <button type="submit">Save</button> {* or {Form submit} *}
 </form>
 
-{* Pass additional options via HTML attributes *}
-<form n:context="$user" type="file" url="['_name' => 'display']" class="my-form">
+<form n:context="$user, type: file, url: ['_name' => 'display']" class="my-form">
     <control n:name="file">
     <button type="submit">{_'Upload'}</button>
 </form>
 ```
+### Passing options to `n:context` and `n:name` 
 
-> **Note:** All HTML attributes passed to the form element when using `n:context` are automatically passed to the `options` array of `FormHelper::create()`. This allows you to set any form options using standard HTML attribute syntax. Additionally, automatic detection of the value type is performed. For more complex controls, tag style form building may be preferred.
+There are 2 ways of passing options to FormHelper methods. 
 
+1: Using n:name style arguments, these give you full control of dataa passed to the method.
+
+```latte
+{var $label = 'My label'}
+<control n:name="myfield, label: $label" /> 
+{* Compiles to: $this->Form->control('myfield', ['label' => $label]); *}
+```
+
+2: Using HTML attributes:
+```latte
+{var $label = 'My label'}
+<control n:name="myfield" label="{$label}" /> 
+{* Compiles to: $this->Form->control('myfield', ['label' => 'My label']); *}
+```
+
+> [!TIP]
+> You can decide on how to pass arguments. The downside of passing HTML attributes (2nd option) is that currently no modifiers are supported. So filters and complex expressions will not work. In this case passing a variable would be a better choice.
 
 ## I18n
 
