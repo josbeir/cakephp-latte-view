@@ -6,6 +6,7 @@ namespace LatteView\Latte\Nodes\Form;
 use Generator;
 use Latte\Compiler\Nodes\AreaNode;
 use Latte\Compiler\Nodes\AuxiliaryNode;
+use Latte\Compiler\Nodes\Php\Expression\ArrayNode;
 use Latte\Compiler\Nodes\Php\ExpressionNode;
 use Latte\Compiler\Nodes\StatementNode;
 use Latte\Compiler\PrintContext;
@@ -23,17 +24,24 @@ final class FieldNNameNode extends StatementNode
 
     protected AreaNode $content;
 
+    protected ArrayNode $args;
+
     /**
      * @inheritDoc
      */
     public static function create(Tag $tag): Generator
     {
+        $tag->outputMode = $tag::OutputKeepIndentation;
         $tag->expectArguments();
+
         $node = new self();
-        $tag->node = $node;
         $node->name = $tag->parser->parseUnquotedStringOrExpression(colon: false);
 
+        $tag->parser->stream->tryConsume(',');
+        $node->args = $tag->parser->parseArguments();
+
         [$node->content] = yield;
+
         $node->init($tag);
 
         return $node;
@@ -57,10 +65,14 @@ final class FieldNNameNode extends StatementNode
         $attributes = $this->getAttributesNode($el);
 
         $print_config = [
-            'echo $this->global->cakeView->Form->%raw(%node, %node?) %line;',
+            <<<'XX'
+                $__c_form_args = \Cake\Utility\Hash::merge(%node, %node);
+                echo $this->global->cakeView->Form->%raw(%node, $__c_form_args) %line;
+            XX,
+            $this->args,
+            $attributes,
             $elName,
             $this->name,
-            $attributes,
             $this->position,
         ];
 
@@ -68,10 +80,11 @@ final class FieldNNameNode extends StatementNode
             $print_config = [
                 <<<'XX'
                     ob_start(); %node $__c_form_label = ob_get_clean();
-                    $__c_form_label_opts = array_merge(%node, ['escape' => false]);
-                    echo $this->global->cakeView->Form->%raw(%node, $__c_form_label, $__c_form_label_opts) %line;
+                    $__c_form_args = array_merge(%node, %node, ['escape' => false]);
+                    echo $this->global->cakeView->Form->%raw(%node, $__c_form_label, $__c_form_args) %line;
                 XX,
                 $el->content,
+                $this->args,
                 $attributes,
                 $elName,
                 $this->name,
