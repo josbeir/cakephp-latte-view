@@ -65,14 +65,14 @@ use App\View\Parameters\MyTemplateParameters;
 
 $entity = $users->get(1);
 
-// Pass data to create an instance
+// Pass data to create an instance. 
 $this->set(MyTemplateParameters::class, [
     'name' => 'John',
     'additional' => 'Doe',
     'entity' => $entity,
 ]);
 
-// Or pass an instance of your ParameterInterface class
+// Or pass an instance of your `Parameters` class.
 $params = new MyTemplateParameters(
     name: 'Hello',
     additional: 'World',
@@ -83,7 +83,7 @@ $params = new MyTemplateParameters(
 $this->set('parameters', $instance);
 ```
 
-Then in your template
+In your template, use the `{templateType}` tag to enable IDE support and type safety:
 
 ```latte
 {templateType App\View\Parameter\MyTemplateParams}
