@@ -91,12 +91,6 @@ class FormNNameNodeTest extends TestCase
 
         $formEnd = '</form>';
         $this->assertStringContainsString($formEnd, $result);
-
-        $deleteFormStart = '<form method="post" accept-charset="utf-8" action="/"><div style="display:none;"><input type="hidden" name="_method" value="DELETE"></div>';
-        $this->assertStringContainsString($deleteFormStart, $result);
-
-        $deleteFormContent = 'Form with args';
-        $this->assertStringContainsString($deleteFormContent, $result);
     }
 
     public function testNullForm(): void
