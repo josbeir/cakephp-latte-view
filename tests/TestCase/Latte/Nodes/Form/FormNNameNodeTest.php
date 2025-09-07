@@ -64,8 +64,6 @@ class FormNNameNodeTest extends TestCase
             >Hi</form>
         XX);
 
-        dd($result);
-
         $this->assertStringContainsString("'method' => 'get'", $result);
         $this->assertStringContainsString("'url' => ['_name' => 'display']", $result);
         $this->assertStringContainsString('\'expression\' => ($this->filters->capitalize)(\'foo\')', $result);
