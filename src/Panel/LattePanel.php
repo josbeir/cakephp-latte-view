@@ -38,6 +38,14 @@ class LattePanel extends DebugPanel
     }
 
     /**
+     * Get summary data from the queries run.
+     */
+    public function summary(): string
+    {
+         return (string)count($this->list);
+    }
+
+    /**
      * Build the template list.
      */
     protected function buildList(Template $template, int $depth = 0, int $count = 1): void
