@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace LatteView\Tests\TestCase\View;
 
 use Cake\TestSuite\TestCase;
+use Latte\CompileException;
 use Latte\Engine;
 use Latte\Loaders\StringLoader;
 use LatteView\TestApp\View\AppView;
@@ -52,6 +53,7 @@ class PostableNNameNodeTest extends TestCase
 
     public function testInvalidTag(): void
     {
+        $this->expectException(CompileException::class);
         $this->latte->compile(<<<'XX'
             <input n:post="[_name: 'display']">Hello world</input>
         XX);
