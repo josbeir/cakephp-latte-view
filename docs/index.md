@@ -66,7 +66,7 @@ features:
 {block title}Create article{/block}
 
 {block content}
-{* $this->Form->create($user, ['method' => 'put']) *}
+{* $this->Form->create($user) *}
 <form n:context="$user">
   <control n:name="first_name" />
   <control n:name="last_name" />
