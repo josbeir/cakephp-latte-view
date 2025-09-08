@@ -41,7 +41,6 @@ trait AttributeParserTrait
                 $val = new StringNode($val);
             } else {
                 continue;
-                //throw new Exception('Unsupported attribute value type: ' . get_class($val));
             }
 
             $items[] = new ArrayItemNode($val, $name);
