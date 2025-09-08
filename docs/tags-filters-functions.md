@@ -26,7 +26,7 @@ All CakePHP helpers are automatically available as Latte tags using the `{Helper
 ```latte
 {* Html helper examples *}
 {Html link 'My link', '/'}
-{Html link 'My link', ['controller' => 'Pages', 'action' => 'home']}
+{Html link 'My link', [controller: 'Pages', action: 'home']}
 {Html css 'style.css'}
 {Html script 'app.js'}
 
@@ -60,8 +60,8 @@ The plugin provides convenient link building functionality through both traditio
 ```latte
 {* Generate URL strings *}
 {link '/'} {* Outputs / *}
-{link ['controller' => 'Posts', 'action' => 'view', 1]}
-{link ['_name' => 'posts:view', 1], full: true}
+{link [controller: 'Posts', action: 'view', 1]}
+{link [_name: 'posts:view', 1], full: true}
 ```
 
 **n:href attribute for automatic link generation:**
@@ -77,7 +77,7 @@ Use `n:named` to reference named routes defined in your routes configuration:
 
 <a n:named="display">Named route</a>
 <a n:named="user:index, $argument">Named route with argument</a>
-<a n:named="user:view, $argument, '?' => ['page' => 1]">Named route with argument and query params</a>
+<a n:named="user:view, $argument, '?' => [page: 1]">Named route with argument and query params</a>
 ```
 
 ## Forms
@@ -108,7 +108,7 @@ The `n:context` and `n:name` attributes provide a more elegant way to create for
     <button type="submit">Save</button> {* or {Form submit} *}
 </form>
 
-<form n:context="$user, type: file, url: ['_name' => 'display']" class="my-form">
+<form n:context="$user, type: file, url: [_name: 'display']" class="my-form">
     <control n:name="file">
     <button type="submit">{_'Upload'}</button>
 </form>
@@ -139,18 +139,18 @@ There are 2 ways of passing options to FormHelper methods.
 ```latte
 {var $label = 'My label'}
 <control n:name="myfield, label: $label" /> 
-{* Compiles to: $this->Form->control('myfield', ['label' => $label]); *}
+{* Compiles to: $this->Form->control('myfield', [label: $label]); *}
 ```
 
 2: Using HTML attributes:
 ```latte
 {var $label = 'My label'}
 <control n:name="myfield" label="{$label}" /> 
-{* Compiles to: $this->Form->control('myfield', ['label' => 'My label']); *}
+{* Compiles to: $this->Form->control('myfield', [label: 'My label']); *}
 ```
 
 > [!TIP]
-> You can decide on how to pass arguments. The downside of passing HTML attributes (2nd option) is that currently no modifiers are supported. So filters and complex expressions will not work. In this case passing a variable would be a better choice.
+> You can decide how to pass arguments. The downside of passing HTML attributes (2nd option) is that currently modifiers are only supported when encapsulating them within parentheses (). In this case, passing a variable would be maybe a better choice.
 
 ## I18n
 

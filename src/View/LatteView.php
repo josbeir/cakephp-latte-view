@@ -35,7 +35,7 @@ class LatteView extends View
      * `autoRefresh` - Whether to check for template updates on each request. Defaults to false.
      *   If not explicitly set and debug is enabled, it will be true.
      *
-     * `blocks` - An array of block names to render when auto layout is disabled.
+     * `fragments` - An array of fragment (block) names to render when auto layout is disabled.
      *   Defaults to ['content'].
      *
      * `cachePath` - The directory path where compiled templates are cached.
@@ -53,7 +53,7 @@ class LatteView extends View
     protected array $_defaultConfig = [
         'cache' => true,
         'autoRefresh' => null,
-        'blocks' => null,
+        'fragments' => null,
         'cachePath' => CACHE . 'latte_view' . DS,
         'rawphp' => true,
         'sandbox' => false,
@@ -142,14 +142,14 @@ class LatteView extends View
             return $this->getEngine()->renderToString($templateFile, $dataForView);
         }
 
-        $blocks = (array)$this->getConfig('blocks', ['content']);
+        $fragments = (array)$this->getConfig('fragments', ['content']);
 
         $content = '';
-        foreach ($blocks as $blockName) {
+        foreach ($fragments as $fragmentName) {
             $content .= $this->getEngine()->renderToString(
                 $templateFile,
                 $dataForView,
-                $blockName,
+                $fragmentName,
             );
         }
 

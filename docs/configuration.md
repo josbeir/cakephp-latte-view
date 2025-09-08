@@ -10,15 +10,15 @@ Set options via `ViewBuilder::setOption()` or `setOptions()`:
 |----------------|---------|------------------------|-----------------------------------------------------------------------------|
 | `cache`        | bool    | `true`                 | Enable/disable template caching. Caching is always enabled except when explicitly set to `false`. |
 | `autoRefresh`  | bool    | `false` (or `true` in debug) | Automatically refresh templates. Auto-refresh is always enabled in debug mode. |
-| `blocks`       | array,string  | `'content'`            | Block name(s) that are rendered when autoLayout is disabled. [Read more](#the-blocks-option) |
+| `fragments`       | array,string  | `'content'`            | Fragment (block) name(s) that should be rendered when autoLayout is disabled. [Read more](#the-blocks-option) |
 | `cachePath`    | string  | `CACHE . 'latte_view'` | Path for compiled template cache                                            |
 | `sandbox`      | bool    | `false`                | Enable sandbox mode for secure template execution. When enabled, the security policy can be configured using `setSandboxPolicy()` and `getSandboxPolicy()`. |
 | `rawphp`       | bool | `true` | Enable/disable the use of raw PHP code in templates via the [{php} tag](https://latte.nette.org/en/develop#toc-rawphpextension). |
 | `defaultHelpers` | array | ... | List of default Cake helpers that need to be present. Defaults to all core helpers. |
 
-## The `blocks` option.
+## The `fragments` option.
 
-The `blocks` option can be used when `autoLayout` is disabled to control which blocks inside the template will be returned. This is particularly useful when working with template fragments, allowing you to render specific parts of a template without the full layout structure.
+The `blocks` option controls which template fragments (Latte blocks) are rendered when `autoLayout` is disabled. This feature enables you to return specific portions of a template without the full layout structure, making it ideal for partial page updates and AJAX responses.
 
 Imagine you have this template
 
@@ -49,10 +49,10 @@ When configuring the ViewBuilder to return only specific blocks, you can generat
 $this->viewBuilder()->disableAutoLayout();
 
 // Return only table rows for dynamic content updates
-$this->viewBuilder()->setConfig('blocks', ['tableRows']);
+$this->viewBuilder()->setConfig('fragments', ['tableRows']);
 
 // Return multiple fragments for complex partial updates
-$this->viewBuilder()->setConfig('blocks', ['tableRows', 'otherFragment']);
+$this->viewBuilder()->setConfig('fragments', ['tableRows', 'otherFragment']);
 ```
 
 This approach is particularly useful for:

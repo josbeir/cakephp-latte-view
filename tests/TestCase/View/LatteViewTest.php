@@ -135,25 +135,25 @@ class LatteViewTest extends TestCase
         Configure::write('debug', true);
     }
 
-    public function testMultiBlockRendering(): void
+    public function testMultiFragmentRendering(): void
     {
         $this->view->disableAutoLayout();
-        $this->view->setConfig('blocks', ['block1', 'block2']);
+        $this->view->setConfig('fragments', ['fragment1', 'fragment2']);
 
-        $output = $this->view->render('multi_block');
+        $output = $this->view->render('multi_fragment');
 
-        $this->assertStringContainsString('Block 1 content', $output);
-        $this->assertStringContainsString('Block 2 content', $output);
-        $this->assertStringNotContainsString('Block 3 content', $output);
+        $this->assertStringContainsString('Fragment 1 content', $output);
+        $this->assertStringContainsString('Fragment 2 content', $output);
+        $this->assertStringNotContainsString('Fragment 3 content', $output);
     }
 
-    public function testUnknownBlockName(): void
+    public function testUnknownFragmentName(): void
     {
         $this->expectException(RuntimeException::class);
 
         $this->view->disableAutoLayout();
-        $this->view->setConfig('blocks', ['unknown']);
-        $this->view->render('multi_block');
+        $this->view->setConfig('fragments', ['unknown']);
+        $this->view->render('multi_fragment');
     }
 
     public function testTranslations(): void
