@@ -50,6 +50,13 @@ class PostableNNameNodeTest extends TestCase
         $this->assertStringContainsString("array_merge([], ['confirmMessage' => 'Hi there!']", $result);
     }
 
+    public function testInvalidTag(): void
+    {
+        $this->latte->compile(<<<'XX'
+            <input n:post="[_name: 'display']">Hello world</input>
+        XX);
+    }
+
     public function testRendered(): void
     {
         $result = $this->view->render('postable');
