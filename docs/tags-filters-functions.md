@@ -113,7 +113,24 @@ The `n:context` and `n:name` attributes provide a more elegant way to create for
     <button type="submit">{_'Upload'}</button>
 </form>
 ```
-### Passing options to `n:context` and `n:name` 
+
+### postLink and postButton support
+
+This plugin provides `n:attributes` for `FormHelper::postLink` and `FormHelper::postButton` in the form of `n:post`
+
+```latte
+<!-- Links -->
+<a n:post="[_name: 'named:route']" confirmMessage="Are you sure?">
+    I'm a postLink
+</a>
+
+<!-- Buttons -->
+<button n:post="[action: 'delete', $artcle->id]">
+    <strong>Hello</strong>
+</button>
+```
+
+### Passing options to `n:context`, `n:name`, `n:post`
 
 There are 2 ways of passing options to FormHelper methods. 
 

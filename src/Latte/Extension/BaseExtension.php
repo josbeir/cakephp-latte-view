@@ -17,6 +17,7 @@ use LatteView\Latte\Nodes\DumpNode;
 use LatteView\Latte\Nodes\FetchNode;
 use LatteView\Latte\Nodes\Form\FieldNNameNode;
 use LatteView\Latte\Nodes\Form\FormNContextNode;
+use LatteView\Latte\Nodes\Form\PostableNnameNode;
 use LatteView\Latte\Nodes\HelperNode;
 use LatteView\Latte\Nodes\LinkNode;
 use LatteView\Panel\LattePanel;
@@ -79,6 +80,7 @@ final class BaseExtension extends Extension
             'n:named' => LinkNode::create(...),
             'n:context' => FormNContextNode::create(...),
             'n:name' => FieldNNameNode::create(...),
+            'n:post' => PostableNnameNode::create(...),
         ];
 
         return array_merge($tags, $this->helpers());
