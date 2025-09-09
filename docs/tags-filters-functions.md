@@ -15,7 +15,7 @@ This plugin extends Latte with CakePHP-specific functionality, providing conveni
 | `{HelperName method arg1, arg2}` | Access any CakePHP helper using the helper name followed by its methodname args. (See docs below) |
 | `helper('Html')` | Returns a helper instance object. Depending on your needs you can decide to use the function or the tag. |
 | `n:href`, `n:named` | `n:attribute` access for building [links](#links). |
-| `n:context`, `n:name` | `n:attribute` access for building [forms](#forms). |
+| `n:context`, `n:name`, `n:post` | `n:attribute` access for building [forms](#forms). |
 
 ## Helpers
 

@@ -10,7 +10,7 @@ Set options via `ViewBuilder::setOption()` or `setOptions()`:
 |----------------|---------|------------------------|-----------------------------------------------------------------------------|
 | `cache`        | bool    | `true`                 | Enable/disable template caching. Caching is always enabled except when explicitly set to `false`. |
 | `autoRefresh`  | bool    | `false` (or `true` in debug) | Automatically refresh templates. Auto-refresh is always enabled in debug mode. |
-| `fragments`       | array,string  | `'content'`            | Fragment (block) name(s) that should be rendered when autoLayout is disabled. [Read more](#the-blocks-option) |
+| `fragments`       | array,string  | `'content'`            | Fragment (block) name(s) that should be rendered when autoLayout is disabled. [Read more](#the-fragments-option) |
 | `cachePath`    | string  | `CACHE . 'latte_view'` | Path for compiled template cache                                            |
 | `sandbox`      | bool    | `false`                | Enable sandbox mode for secure template execution. When enabled, the security policy can be configured using `setSandboxPolicy()` and `getSandboxPolicy()`. |
 | `rawphp`       | bool | `true` | Enable/disable the use of raw PHP code in templates via the [{php} tag](https://latte.nette.org/en/develop#toc-rawphpextension). |
