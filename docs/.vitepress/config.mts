@@ -42,7 +42,19 @@ export default defineConfig({
         items: [
           { text: 'Getting started', link: '/getting-started' },
           { text: 'Configuration', link: '/configuration' },
-          { text: 'Tags, filters & functions', link: '/tags-filters-functions' },
+          { 
+            text: 'Tags, filters & functions', 
+            link: '/tags-filters-functions',
+            collapsed: false,
+            items: [
+              { text: 'Functions', link: '/tags-filters-functions#custom-tags-functions-and-filters' },
+              { text: 'Helpers', link: '/tags-filters-functions#helpers' },
+              { text: 'Links', link: '/tags-filters-functions#links' },
+              { text: 'Forms', link: '/tags-filters-functions#forms' },
+              { text: 'I18n', link: '/tags-filters-functions#i18n' },
+              { text: 'Filters', link: '/tags-filters-functions#filters' },
+            ]
+          },
           { text: 'Template parameters', link: '/template-parameters' },
           { text: 'Debugging', link: '/debugging' },
           { text: 'Console commands', link: '/commands' },
