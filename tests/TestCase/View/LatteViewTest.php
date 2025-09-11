@@ -178,6 +178,16 @@ class LatteViewTest extends TestCase
         $this->assertStringContainsString('I like that color from domain', $output);
     }
 
+    public function testLocaleFunction(): void
+    {
+        $output = $this->view->render('translate');
+        $this->assertStringContainsString('The current locale is: en_GB.', $output);
+
+        I18n::setLocale('en_US');
+        $output = $this->view->render('translate');
+        $this->assertStringContainsString('The current locale is: en_US.', $output);
+    }
+
     public function testWithParameterClass(): void
     {
         $this->view->set(MyTemplateParams::class, [

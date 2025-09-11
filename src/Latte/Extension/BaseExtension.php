@@ -6,6 +6,7 @@ namespace LatteView\Latte\Extension;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
 use Cake\Http\ServerRequest;
+use Cake\I18n\I18n;
 use Cake\Routing\Router;
 use Cake\View\Helper;
 use Cake\View\View;
@@ -96,6 +97,7 @@ final class BaseExtension extends Extension
             'view' => fn(): View => $this->view,
             'helper' => fn(string $name): ?Helper => $this->view->helpers()->{$name} ?? null,
             'request' => fn(): ServerRequest => $this->view->getRequest(),
+            'locale' => I18n::getLocale(...),
             'env' => env(...),
             'url' => Router::url(...),
             'rurl' => Router::reverse(...),

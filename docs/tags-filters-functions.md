@@ -10,6 +10,7 @@ This plugin extends Latte with CakePHP-specific functionality, providing conveni
 | `env()` | Access environment variables |
 | `url()` | Url generation - See `Router::url()`. |
 | `rurl()` | Reverse url generation - See `Router::reverse()`. |
+| `locale()` | Returns the current locale. See `I18n::getLocale()` |
 | `{fetch 'name'}`| Cake's `View::fetch()` method, introduced to keep legacy functionality of helpers that use view blocks.
 | `{cell name}` | Cake's `View::cell()` method
 | `{HelperName method arg1, arg2}` | Access any CakePHP helper using the helper name followed by its methodname args. (See docs below) |
