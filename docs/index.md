@@ -63,17 +63,21 @@ features:
 📄 add.latte
 
 ```latte
-{block title}Create article{/block}
+{block title}Create User{/block}
 
 {block content}
-{* $this->Form->create($user) *}
-<form n:context="$user">
-  <control n:name="first_name" />
-  <control n:name="last_name" />
-  <control n:name="email" /> 
-  <control n:name="password" />
-  <control n:name="bio" rows="10" />
-  <button type="submit">{_'Save article'}</button>
-  <a n:named="users:index">{_'Go back'}</a>
+{* Replace $this->Form->create($user) with elegant n:context *}
+<form n:context="$user" class="user-form">
+    <control n:name="first_name" label="First Name" />
+    <control n:name="last_name" label="Last Name" />
+    <control n:name="email" type="email" label="Email Address" />
+    <control n:name="password" type="password" label="Password" />
+    <control n:name="bio" type="textarea" rows="5" label="Biography" />
+    
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">{_'Save User'}</button>
+        <a n:named="users:index" class="btn btn-secondary">{_'Cancel'}</a>
+    </div>
 </form>
+{/block}
 ```

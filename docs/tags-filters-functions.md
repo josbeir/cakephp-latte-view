@@ -60,9 +60,9 @@ The plugin provides convenient link building functionality through both traditio
 **Function-based links:**
 ```latte
 {* Generate URL strings *}
-{link '/'} {* Outputs / *}
-{link [controller: 'Posts', action: 'view', 1]}
-{link [_name: 'posts:view', 1], full: true}
+{url '/'} {* Outputs: / *}
+{url [controller: 'Posts', action: 'view', 1]} {* Outputs: /posts/view/1 *}
+{url [_name: 'posts:view', 1], full: true} {* Outputs: https://example.com/posts/view/1 *}
 ```
 
 **n:href attribute for automatic link generation:**
@@ -72,13 +72,17 @@ The `n:href` attribute automatically converts any element into a properly format
 Use `n:named` to reference named routes defined in your routes configuration:
 
 ```latte
-<a n:href="/">Simple route</a>
-<a n:href="[controller: 'Pages', action: 'display']">Cake route using an array</a>
-<a n:href="/, full: true">Route with full base url</a>
+{* n:href examples *}
+<a n:href="/">Home</a>
+<a n:href="[controller: 'Pages', action: 'display', 'about']">About Page</a>
+<a n:href="[controller: 'Posts', action: 'view', $post->id]">View Post</a>
+<a n:href="/, full: true">Full URL Home Link</a>
 
-<a n:named="display">Named route</a>
-<a n:named="user:index, $argument">Named route with argument</a>
-<a n:named="user:view, $argument, '?' => [page: 1]">Named route with argument and query params</a>
+{* n:named examples *}
+<a n:named="posts:index">All Posts</a>
+<a n:named="posts:view, $post->id">View This Post</a>
+<a n:named="posts:index, '?' => [sort: 'created', direction: 'desc']">Recent Posts</a>
+<a n:named="users:profile, $user->id, '?' => [tab: 'settings']">User Settings</a>
 ```
 
 ## Forms
@@ -126,7 +130,7 @@ This plugin provides `n:attributes` for `FormHelper::postLink` and `FormHelper::
 </a>
 
 <!-- Buttons -->
-<button n:post="[action: 'delete', $artcle->id]">
+<button n:post="[action: 'delete', $article->id]">
     <strong>Hello</strong>
 </button>
 ```
@@ -135,7 +139,7 @@ This plugin provides `n:attributes` for `FormHelper::postLink` and `FormHelper::
 
 There are 2 ways of passing options to FormHelper methods. 
 
-1: Using n:name style arguments, these give you full control of dataa passed to the method.
+1: Using n:name style arguments, these give you full control of data passed to the method.
 
 ```latte
 {var $label = 'My label'}
@@ -150,8 +154,7 @@ There are 2 ways of passing options to FormHelper methods.
 {* Compiles to: $this->Form->control('myfield', [label: 'My label']); *}
 ```
 
-> [!TIP]
-> You can decide how to pass arguments. The downside of passing HTML attributes (2nd option) is that currently modifiers are only supported when encapsulating them within parentheses (). In this case, passing a variable would be maybe a better choice.
+> **Tip:** You can decide how to pass arguments. The downside of passing HTML attributes (2nd option) is that currently modifiers are only supported when encapsulating them within parentheses (). In this case, passing a variable would be a better choice.
 
 ## I18n
 

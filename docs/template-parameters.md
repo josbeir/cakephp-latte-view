@@ -60,33 +60,36 @@ class MyTemplateParameters extends Parameters
 Now, when passing data to your view (e.g., from inside your controller method), you can pass an instance of this class as an argument. Please note that all other arguments will be ignored as the class instance is the only object passed to your view.
 
 ```php
-// MyController.php
+// UsersController.php
 use App\View\Parameters\MyTemplateParameters;
 
-$entity = $users->get(1);
-
-// Pass data to create an instance. 
-$this->set(MyTemplateParameters::class, [
-    'name' => 'John',
-    'additional' => 'Doe',
-    'entity' => $entity,
-]);
-
-// Or pass an instance of your `Parameters` class.
-$params = new MyTemplateParameters(
-    name: 'Hello',
-    additional: 'World',
-    entity: $entity
-);
-
-// Note that 'parameters' is ignored, you can use any name.
-$this->set('parameters', $instance);
+public function view($id)
+{
+    $user = $this->Users->get($id);
+    
+    // Method 1: Pass data to create an instance
+    $this->set(MyTemplateParameters::class, [
+        'name' => $user->full_name,
+        'additional' => 'Profile Page',
+        'entity' => $user,
+    ]);
+    
+    // Method 2: Or pass an instance of your Parameters class
+    $params = new MyTemplateParameters(
+        name: $user->full_name,
+        additional: 'User Profile',
+        entity: $user
+    );
+    
+    // The variable name doesn't matter when passing an instance
+    $this->set('userParams', $params);
+}
 ```
 
 In your template, use the `{templateType}` tag to enable IDE support and type safety:
 
 ```latte
-{templateType App\View\Parameter\MyTemplateParams}
+{templateType App\View\Parameter\MyTemplateParameters}
 
 Name: {$name}
 Additional: {$additional}

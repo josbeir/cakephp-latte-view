@@ -16,43 +16,88 @@ Set options via `ViewBuilder::setOption()` or `setOptions()`:
 | `rawphp`       | bool | `true` | Enable/disable the use of raw PHP code in templates via the [{php} tag](https://latte.nette.org/en/develop#toc-rawphpextension). |
 | `defaultHelpers` | array | ... | List of default Cake helpers that need to be present. Defaults to all core helpers. |
 
-## The `fragments` option.
+## The `fragments` option
 
-The `blocks` option controls which template fragments (Latte blocks) are rendered when `autoLayout` is disabled. This feature enables you to return specific portions of a template without the full layout structure, making it ideal for partial page updates and AJAX responses.
+The `fragments` option controls which template fragments (Latte blocks) are rendered when `autoLayout` is disabled. This feature enables you to return specific portions of a template without the full layout structure, making it ideal for partial page updates and AJAX responses.
 
 Imagine you have this template
 
 ```latte
-<table>
-    {block tableRows}
-        {foreach $rows as $row}
-        <tr>
-            <td>Block 1 content</td>
-        </tr>
-        {/foreach}
+{* users/index.latte *}
+<div class="users-index">
+    <h1>{block pageTitle}All Users{/block}</h1>
+    
+    {block userTable}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {foreach $users as $user}
+            <tr>
+                <td>{$user->name}</td>
+                <td>{$user->email}</td>
+                <td>
+                    <a n:named="users:view, $user->id">View</a>
+                </td>
+            </tr>
+            {/foreach}
+        </tbody>
+    </table>
     {/block}
-</table>
+    
+    {block pagination}
+        {$this->Paginator->numbers()}
+    {/block}
+</div>
 
 {block content}
-    {* other template content that we don't want in our response *}
-{/block}
-
-{block otherFragment}
-    Block 3 content
+    <div class="sidebar">
+        <h3>User Management</h3>
+        <ul>
+            <li><a n:named="users:add">Add New User</a></li>
+            <li><a n:named="users:export">Export Users</a></li>
+        </ul>
+    </div>
 {/block}
 ```
 
 When configuring the ViewBuilder to return only specific blocks, you can generate focused template fragments for partial page updates or AJAX responses:
 
 ```php
-// Disable autoLayout first
-$this->viewBuilder()->disableAutoLayout();
+// In your controller action
+public function index()
+{
+    $users = $this->paginate($this->Users);
+    $this->set(compact('users'));
+    
+    // Handle AJAX requests for partial updates
+    if ($this->getRequest()->is('ajax')) {
+        // Disable autoLayout for AJAX responses
+        $this->viewBuilder()->disableAutoLayout();
+        
+        // Return only the user table for dynamic updates
+        $this->viewBuilder()->setOption('fragments', ['userTable']);
+    }
+}
 
-// Return only table rows for dynamic content updates
-$this->viewBuilder()->setConfig('fragments', ['tableRows']);
-
-// Return multiple fragments for complex partial updates
-$this->viewBuilder()->setConfig('fragments', ['tableRows', 'otherFragment']);
+public function search()
+{
+    $query = $this->getRequest()->getQuery('q');
+    $users = $this->Users->find('all')
+        ->where(['name LIKE' => '%' . $query . '%']);
+    $this->set(compact('users'));
+    
+    if ($this->getRequest()->is('ajax')) {
+        $this->viewBuilder()->disableAutoLayout();
+        // Return multiple fragments for complex updates
+        $this->viewBuilder()->setOption('fragments', ['userTable', 'pagination']);
+    }
+}
 ```
 
 This approach is particularly useful for:

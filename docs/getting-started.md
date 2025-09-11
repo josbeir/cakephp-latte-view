@@ -45,7 +45,7 @@ class AppView extends LatteView
 {
     public function initialize()
     {
-        parent::initialize();,
+        parent::initialize();
 
         // See configuration options below.
         $this->setConfig([]);
@@ -58,27 +58,57 @@ class AppView extends LatteView
 Create a layout template: `templates/layout/default.latte`
 
 ```latte
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>{block title}Default title{/block} - My cool app</title>
+    {Html charset}
+    <title>{block title}My CakePHP App{/block}</title>
+    {Html meta 'icon'}
+    {Html css 'app.css'}
+    {fetch meta}
+    {fetch css}
 </head>
 <body>
-    <div id="content">
+    <nav class="navbar">
+        <div class="container">
+            <a n:href="[controller: 'Pages', action: 'home']" class="brand">MyApp</a>
+        </div>
+    </nav>
+    
+    <main class="container">
         {include content}
-    </div>
-    <div id="footer">
-        {block footer}&copy; Copyright 2008{/block}
-    </div>
+    </main>
+    
+    <footer class="footer">
+        {block footer}
+            <p>&copy; Copyright {date('Y')} - Built with CakePHP & Latte</p>
+        {/block}
+    </footer>
+    
+    {Html script 'app.js'}
+    {fetch script}
 </body>
 </html>
 ```
 
-Create a child template for your controller action with the default layout `templates/Controller/action.latte`:
+Create a child template for your controller action with the default layout `templates/Users/view.latte`:
 
 ```latte
-{block title}My page title{/block}
+{block title}User Profile - {$user->name}{/block}
+
 {block content}
-    My page content {$variable}
+    <div class="user-profile">
+        <h1>Welcome, {$user->name}!</h1>
+        <p>Email: {$user->email}</p>
+        <p>Joined: {$user->created|nice}</p>
+        
+        {if $user->bio}
+            <div class="bio">
+                <h3>About</h3>
+                <p>{$user->bio|nl2br}</p>
+            </div>
+        {/if}
+    </div>
 {/block}
 ```
 
