@@ -25,4 +25,10 @@ class LinterCommandTest extends TestCase
 
         $this->assertExitCode(CacheCommand::CODE_SUCCESS);
     }
+
+    public function testLinterConstants(): void
+    {
+        $this->assertSame(0, CacheCommand::CODE_SUCCESS);
+        $this->assertSame(1, CacheCommand::CODE_ERROR);
+    }
 }

@@ -8,11 +8,13 @@ use Cake\I18n\I18n;
 use Cake\TestSuite\TestCase;
 use Latte\Engine;
 use Latte\Loaders\StringLoader;
+use Latte\Runtime\Template;
 use Latte\RuntimeException;
 use Latte\Sandbox\SecurityPolicy;
 use Latte\SecurityViolationException;
 use LatteView\TestApp\View\AppView;
 use LatteView\TestApp\View\Parameter\MyTemplateParams;
+use ReflectionClass;
 
 class LatteViewTest extends TestCase
 {
@@ -251,5 +253,37 @@ class LatteViewTest extends TestCase
 
         $this->expectExceptionMessage("Unexpected ''test'', expecting end of tag in {php}");
         $latte->compile("{php echo 'test';}");
+    }
+
+    public function testLayoutLookupWithReferenceType(): void
+    {
+        $view = new AppView();
+        $reflection = new ReflectionClass($view);
+        $method = $reflection->getMethod('layoutLookup');
+        $method->setAccessible(true);
+
+        // Create a mock template with reference type
+        $mockTemplate = $this->createMock(Template::class);
+        $mockTemplate->method('getReferenceType')->willReturn('block');
+
+        $result = $method->invoke($view, $mockTemplate);
+        $this->assertNull($result);
+    }
+
+    public function testLayoutLookupWithoutReferenceType(): void
+    {
+        $view = new AppView();
+        $view->setLayout('default'); // Use existing layout
+
+        $reflection = new ReflectionClass($view);
+        $method = $reflection->getMethod('layoutLookup');
+        $method->setAccessible(true);
+
+        // Create a mock template without reference type
+        $mockTemplate = $this->createMock(Template::class);
+        $mockTemplate->method('getReferenceType')->willReturn(null);
+
+        $result = $method->invoke($view, $mockTemplate);
+        $this->assertStringContainsString('default.latte', $result);
     }
 }
