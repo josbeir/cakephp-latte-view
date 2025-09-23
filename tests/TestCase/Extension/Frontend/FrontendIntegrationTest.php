@@ -1,0 +1,165 @@
+<?php
+declare(strict_types=1);
+
+namespace LatteView\Test\TestCase\Extension\Frontend;
+
+use Cake\ORM\Entity;
+use Cake\TestSuite\TestCase;
+use LatteView\Extension\Frontend\FrontendExtension;
+use LatteView\TestApp\View\AppView;
+
+class FrontendIntegrationTest extends TestCase
+{
+    protected ?AppView $view = null;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->view = new AppView();
+
+        // Enable the frontend extension
+        $this->view->setConfig('extensions', [
+            'frontend' => [],
+        ]);
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        $this->view = null;
+    }
+
+    public function testAlpineIntegration(): void
+    {
+        $user = new Entity([
+            'name' => 'John Doe',
+            'email' => 'john@example.com',
+        ]);
+
+        $this->view->set('user', $user);
+        $this->view->set('articles', [
+            ['title' => 'Article 1'],
+            ['title' => 'Article 2'],
+        ]);
+
+        $output = $this->view->render('frontend/alpine_test', false);
+
+        // Test that Alpine x-data attributes are present
+        $this->assertStringContainsString('x-data=', $output);
+
+        // Test that data is properly escaped
+        $this->assertStringContainsString('John Doe', $output);
+        $this->assertStringContainsString('john@example.com', $output);
+
+        // Test that JSON is properly formatted
+        $this->assertStringNotContainsString('<script>', $output);
+    }
+
+    public function testStimulusIntegration(): void
+    {
+        $user = new Entity([
+            'name' => 'Jane Smith',
+            'email' => 'jane@example.com',
+        ]);
+
+        $validationRules = ['required' => ['name', 'email']];
+
+        $this->view->set('user', $user);
+        $this->view->set('validationRules', $validationRules);
+        $this->view->set('items', ['item1', 'item2', 'item3']);
+
+        $output = $this->view->render('frontend/stimulus_test', false);
+
+        // Test that Stimulus data-*-value attributes are present
+        $this->assertStringContainsString('data-user-profile-value=', $output);
+        $this->assertStringContainsString('data-form-validator-value=', $output);
+        $this->assertStringContainsString('data-list-manager-value=', $output);
+
+        // Test that data is properly serialized
+        $this->assertStringContainsString('Jane Smith', $output);
+        $this->assertStringContainsString('required', $output);
+    }
+
+    public function testHtmxIntegration(): void
+    {
+        $params = ['id' => 123, 'action' => 'update'];
+        $formData = ['title' => 'Test Title', 'content' => 'Test Content'];
+        $currentPage = 2;
+        $filters = ['status' => 'active', 'category' => 'news'];
+
+        $this->view->set(['params' => $params, 'formData' => $formData, 'currentPage' => $currentPage, 'filters' => $filters]);
+
+        $output = $this->view->render('frontend/htmx_test', false);
+
+        // Test that HTMX hx-vals attributes are present
+        $this->assertStringContainsString('hx-vals=', $output);
+
+        // Test that data is properly serialized
+        $this->assertStringContainsString('123', $output);
+        $this->assertStringContainsString('update', $output);
+        $this->assertStringContainsString('Test Title', $output);
+    }
+
+    public function testGenericDataIntegration(): void
+    {
+        $user = new Entity(['name' => 'Test User']);
+        $config = ['theme' => 'dark', 'locale' => 'en'];
+        $state = 'active';
+        $message = 'Hello World';
+
+        $this->view->set(['user' => $user, 'config' => $config, 'state' => $state, 'message' => $message]);
+
+        $output = $this->view->render('frontend/generic_data_test', false);
+
+        // Test that generic data-json attributes are present
+        $this->assertStringContainsString('data-json=', $output);
+
+        // Test that data is properly serialized
+        $this->assertStringContainsString('Test User', $output);
+        $this->assertStringContainsString('dark', $output);
+        $this->assertStringContainsString('Hello World', $output);
+    }
+
+    public function testXSSPrevention(): void
+    {
+        // Set all variables needed by the template
+        $user = new Entity(['name' => 'Test User']);
+        $config = ['theme' => 'dark', 'locale' => 'en'];
+        $state = 'active';
+        $message = '<script>alert("xss")</script>';
+
+        $this->view->set(['user' => $user, 'config' => $config, 'state' => $state, 'message' => $message]);
+
+        $output = $this->view->render('frontend/generic_data_test', false);
+
+        // Test that XSS is prevented
+        $this->assertStringNotContainsString('<script>alert("xss")</script>', $output);
+
+        // Test that escaping was applied
+        $this->assertStringContainsString('\\u003C', $output); // Escaped angle bracket
+    }
+
+    public function testCustomFrameworkMapping(): void
+    {
+        // Create view with custom framework mapping
+        $view = new AppView();
+        $view->setConfig('extensions', [
+            'frontend' => [
+                'custom' => 'data-{name}-props',
+                'vue' => ':data',
+            ],
+        ]);
+
+        $view->set('data', ['test' => 'value']);
+
+        // This would require a custom template, but we can test the extension setup
+        $extension = new FrontendExtension($view, [
+            'custom' => 'data-{name}-props',
+            'vue' => ':data',
+        ]);
+
+        $tags = $extension->getTags();
+        $this->assertArrayHasKey('n:data-custom', $tags);
+        $this->assertArrayHasKey('n:data-vue', $tags);
+    }
+}

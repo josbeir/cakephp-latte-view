@@ -1,0 +1,24 @@
+{block content}
+
+{* Basic Alpine data binding *}
+<div n:data-alpine="$user">
+    <h1 x-text="name"></h1>
+    <p x-text="email"></p>
+</div>
+
+{* Alpine with array data *}
+<div n:data-alpine="$articles">
+    <template x-for="article in data">
+        <div x-text="article.title"></div>
+    </template>
+</div>
+
+{* Alpine with simple string *}
+<div n:data-alpine="'Hello World'">
+    <span x-text="data"></span>
+</div>
+
+{* Alpine with number *}
+<div n:data-alpine="42">
+    <span x-text="data"></span>
+</div>

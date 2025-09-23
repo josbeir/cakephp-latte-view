@@ -1,0 +1,20 @@
+{block content}
+
+{* Basic Stimulus with named controller *}
+<div data-controller="user-profile" n:data-stimulus:user-profile="$user">
+    <span data-user-profile-target="name"></span>
+</div>
+
+{* Multiple Stimulus controllers with different data *}
+<div data-controller="user-profile form-validator"
+     n:data-stimulus:user-profile="$user"
+     n:data-stimulus:form-validator="$validationRules">
+    <form data-form-validator-target="form">
+        <input data-user-profile-target="nameField" />
+    </form>
+</div>
+
+{* Stimulus with array data *}
+<div data-controller="list-manager" n:data-stimulus:list-manager="$items">
+    <div data-list-manager-target="container"></div>
+</div>
