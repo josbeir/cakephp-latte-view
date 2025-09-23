@@ -1,0 +1,10 @@
+{block content}
+
+{* Test standard Latte escapeJs behavior *}
+<div x-data="{$feed->type|escapeJs}">
+    Standard Latte escapeJs test
+</div>
+
+<div data-config="{json($feed)}">
+    JSON function test
+</div>

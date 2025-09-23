@@ -1,0 +1,21 @@
+{block content}
+
+{* Generic data attribute for any framework *}
+<div n:data="$user" data-my-framework="true">
+    Custom Framework Usage
+</div>
+
+{* Generic data with array *}
+<div n:data="['config' => $config, 'state' => $state]" data-custom-widget="widget-name">
+    Widget with Data
+</div>
+
+{* Generic data with simple value *}
+<div n:data="$message" data-notification="true">
+    Notification Component
+</div>
+
+{* Test XSS prevention *}
+<div n:data="['script' => '<script>alert(\'xss\')</script>', 'safe' => 'normal text']">
+    XSS Test
+</div>

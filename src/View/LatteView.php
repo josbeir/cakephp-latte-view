@@ -99,6 +99,7 @@ class LatteView extends View
                 $this->engine->addExtension(new RawPhpExtension());
             }
 
+            // Load custom extensions
             if ($this->getConfig('cache')) {
                 $this->engine->setTempDirectory($this->getConfig('cachePath'));
             }

@@ -1,0 +1,19 @@
+{block content}
+
+{* Basic HTMX with data *}
+<button n:data-htmx="$params" hx-post="/api/update" hx-target="#result">
+    Update Data
+</button>
+
+{* HTMX form with data *}
+<form n:data-htmx="$formData" hx-post="/submit" hx-swap="outerHTML">
+    <input type="text" name="title" />
+    <button type="submit">Submit</button>
+</form>
+
+{* HTMX with array parameters *}
+<div n:data-htmx="['page' => $currentPage, 'filters' => $filters]"
+     hx-get="/search"
+     hx-trigger="change">
+    Search Results
+</div>

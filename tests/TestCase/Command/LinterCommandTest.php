@@ -13,14 +13,14 @@ class LinterCommandTest extends TestCase
 
     public function testLinter(): void
     {
-        $this->exec('latte linter');
+        $this->exec('latte linter --class FrontendExtensionApp');
         $this->assertOutputContains('Done (checked');
         $this->assertExitCode(CacheCommand::CODE_SUCCESS);
     }
 
     public function testPlugin(): void
     {
-        $this->exec('latte linter -p Test');
+        $this->exec('latte linter -p Test --class FrontendExtensionApp');
         $this->assertOutputContains('Done (checked');
 
         $this->assertExitCode(CacheCommand::CODE_SUCCESS);

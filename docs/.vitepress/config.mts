@@ -58,6 +58,13 @@ export default defineConfig({
           { text: 'Template parameters', link: '/template-parameters' },
           { text: 'Debugging', link: '/debugging' },
           { text: 'Console commands', link: '/commands' },
+          {
+            text: 'Extensions',
+            collapsed: false,
+            items: [
+              { text: 'Frontend Extension', link: '/extensions/frontend' },
+            ]
+          },
           { text: 'Extending', link: '/extending' },
         ]
       }
