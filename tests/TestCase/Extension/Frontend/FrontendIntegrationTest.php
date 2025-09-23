@@ -6,19 +6,17 @@ namespace LatteView\Test\TestCase\Extension\Frontend;
 use Cake\ORM\Entity;
 use Cake\TestSuite\TestCase;
 use LatteView\Extension\Frontend\FrontendExtension;
-use LatteView\TestApp\View\AppView;
+use LatteView\TestApp\View\FrontendExtensionAppView;
 
 class FrontendIntegrationTest extends TestCase
 {
-    protected ?AppView $view = null;
+    protected ?FrontendExtensionAppView $view = null;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->view = new AppView();
-
-        // Manually load the frontend extension
-        $this->view->getEngine()->addExtension(new FrontendExtension($this->view));
+        $this->view = new FrontendExtensionAppView();
+        // Frontend extension is automatically loaded in FrontendExtensionAppView
     }
 
     protected function tearDown(): void
@@ -139,10 +137,8 @@ class FrontendIntegrationTest extends TestCase
 
     public function testCustomFrameworkMapping(): void
     {
-        // Create view with custom framework mapping
-        $view = new AppView();
-
-        // Manually load extension with custom framework mapping
+        // Create view and manually load extension with custom framework mapping
+        $view = new FrontendExtensionAppView();
         $view->getEngine()->addExtension(new FrontendExtension($view, [
             'custom' => 'data-{name}-props',
             'vue' => ':data',
