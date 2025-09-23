@@ -218,4 +218,20 @@ class FrontendIntegrationTest extends TestCase
         $this->assertStringNotContainsString('x-data="&quot;dropdown(', $output);
         $this->assertStringNotContainsString('dropdown(...}&quot;"', $output);
     }
+
+    public function testJavaScriptModeFallback(): void
+    {
+        // Test JavaScript mode with non-function expressions (fallback to JSON serialization)
+        // This covers line 173 in DataSerializationNode::compileJavaScriptExpression()
+
+        $data = ['key' => 'value', 'number' => 42];
+        $this->view->set('data', $data);
+
+        $output = $this->view->render('frontend/javascript_fallback_test', false);
+
+        // JavaScript mode with non-function expression should fallback to JSON serialization
+        // Should produce: x-data="&#123;&quot;key&quot;:&quot;value&quot;,&quot;number&quot;:42}"
+        $this->assertStringContainsString('x-data="&#123;&quot;key&quot;:&quot;value&quot;', $output);
+        $this->assertStringContainsString('&quot;number&quot;:42}"', $output);
+    }
 }

@@ -7,6 +7,7 @@ use Cake\ORM\Entity;
 use Cake\TestSuite\TestCase;
 use JsonSerializable;
 use LatteView\Extension\Frontend\Serializers\UniversalSerializer;
+use ReflectionClass;
 use stdClass;
 
 class UniversalSerializerTest extends TestCase
@@ -164,5 +165,42 @@ class UniversalSerializerTest extends TestCase
         $this->assertJson($result);
         $decoded = json_decode($result, true);
         $this->assertEquals('deep', $decoded['level1']['level2']['level3']['value']);
+    }
+
+    public function testMaxDepthProtection(): void
+    {
+        // Test that infinite recursion is prevented
+        // This covers line 34 in UniversalSerializer::prepareData()
+
+        // Create a circular reference by using reflection to access the private method
+        $reflection = new ReflectionClass(UniversalSerializer::class);
+        $method = $reflection->getMethod('prepareData');
+        $method->setAccessible(true);
+
+        $data = ['key' => 'value'];
+
+        // Call with depth > 10 to trigger the null return
+        $result = $method->invoke(null, $data, 11);
+
+        $this->assertNull($result);
+    }
+
+    public function testUnknownDataTypeFallback(): void
+    {
+        // Test fallback for unknown data types (line 74)
+        // This covers the final return statement in prepareData()
+
+        $reflection = new ReflectionClass(UniversalSerializer::class);
+        $method = $reflection->getMethod('prepareData');
+        $method->setAccessible(true);
+
+        // Use a resource (which is not handled by any other condition)
+        $resource = fopen('php://memory', 'r');
+        $result = $method->invoke(null, $resource, 0);
+
+        // Should return the resource as-is (fallback case)
+        $this->assertSame($resource, $result);
+
+        fclose($resource);
     }
 }

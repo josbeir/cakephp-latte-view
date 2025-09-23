@@ -86,4 +86,23 @@ class FrontendExtensionTest extends TestCase
         $this->assertArrayHasKey('n:data-stimulus-js', $tags);
         $this->assertArrayHasKey('n:data-htmx-js', $tags);
     }
+
+    public function testGetFunctions(): void
+    {
+        // Test that getFunctions() returns the json function
+        // This covers lines 134-136 in FrontendExtension::getFunctions()
+
+        $functions = $this->extension->getFunctions();
+
+        $this->assertArrayHasKey('json', $functions);
+        $this->assertIsCallable($functions['json']);
+
+        // Test the json function
+        $jsonFunction = $functions['json'];
+        $result = $jsonFunction(['key' => 'value']);
+
+        // Should be JavaScript-escaped JSON
+        $this->assertStringContainsString('key', $result);
+        $this->assertStringContainsString('value', $result);
+    }
 }
