@@ -200,6 +200,117 @@ The `{name}` placeholder will be replaced with the component name specified in t
 </form>
 ```
 
+### JavaScript Function Calls
+
+For more advanced scenarios, you can use JavaScript mode (with `-js` suffix) to call JavaScript functions with serialized PHP data as parameters:
+
+#### Alpine.js Function Calls
+```latte
+{* Creates x-data with JavaScript function call *}
+<div n:data-alpine-js="dropdown($params)">
+    <button x-on:click="toggle()">Toggle Dropdown</button>
+    <div x-show="isOpen" class="dropdown-menu">
+        <span x-text="config.type"></span>
+    </div>
+</div>
+```
+
+**Compiles to:**
+```html
+<div x-data="dropdown({&quot;type&quot;:&quot;xml&quot;,&quot;count&quot;:5})">
+    <button x-on:click="toggle()">Toggle Dropdown</button>
+    <div x-show="isOpen" class="dropdown-menu">
+        <span x-text="config.type"></span>
+    </div>
+</div>
+```
+
+```latte
+{* Multiple parameters *}
+<div n:data-alpine-js="modal($config, $user)">
+    <button x-on:click="open()">Open Modal</button>
+    <div x-show="visible" class="modal">
+        <h2 x-text="title"></h2>
+        <p x-text="user.name"></p>
+    </div>
+</div>
+```
+
+**Compiles to:**
+```html
+<div x-data="modal({&quot;theme&quot;:&quot;dark&quot;},{&quot;name&quot;:&quot;John&quot;,&quot;role&quot;:&quot;admin&quot;})">
+    <button x-on:click="open()">Open Modal</button>
+    <div x-show="visible" class="modal">
+        <h2 x-text="title"></h2>
+        <p x-text="user.name"></p>
+    </div>
+</div>
+```
+
+#### Stimulus Function Calls
+```latte
+{* Creates data-*-value with JavaScript function call *}
+<div data-controller="profile-menu" n:data-stimulus-js:profile-menu="initProfile($user)">
+    <button data-profile-menu-target="trigger">Menu</button>
+    <div data-profile-menu-target="menu">
+        <span data-profile-menu-target="username"></span>
+    </div>
+</div>
+```
+
+**Compiles to:**
+```html
+<div data-controller="profile-menu" data-profile-menu-value="initProfile({&quot;name&quot;:&quot;John&quot;,&quot;role&quot;:&quot;admin&quot;})">
+    <button data-profile-menu-target="trigger">Menu</button>
+    <div data-profile-menu-target="menu">
+        <span data-profile-menu-target="username"></span>
+    </div>
+</div>
+```
+
+#### HTMX Function Calls
+```latte
+{* Creates hx-vals with JavaScript function call *}
+<button n:data-htmx-js="getFormData($params)" hx-post="/api/submit" hx-target="#result">
+    Submit Form
+</button>
+```
+
+**Compiles to:**
+```html
+<button hx-vals="getFormData({&quot;type&quot;:&quot;xml&quot;,&quot;count&quot;:5})" hx-post="/api/submit" hx-target="#result">
+    Submit Form
+</button>
+```
+
+#### Generic Function Calls
+```latte
+{* Creates data-json with JavaScript function call *}
+<div n:data-js="setupWidget($user)">
+    Component with JavaScript function call
+</div>
+```
+
+**Compiles to:**
+```html
+<div data-json="setupWidget({&quot;name&quot;:&quot;John&quot;,&quot;role&quot;:&quot;admin&quot;})">
+    Component with JavaScript function call
+</div>
+```
+
+#### When to Use JavaScript Mode
+
+Use JavaScript mode (`-js` suffix) when:
+- You need to call JavaScript functions with dynamic data
+- Your frontend framework expects function calls rather than plain JSON
+- You want to initialize complex components with custom setup functions
+- You need to pass multiple separate data objects to a single function
+
+Use regular mode (no suffix) when:
+- You want to pass plain JSON data objects
+- Your framework reads data directly from attributes
+- You're using simple data binding scenarios
+
 ### Data Types
 
 The extension handles all PHP data types:

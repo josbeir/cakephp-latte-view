@@ -1,0 +1,36 @@
+{block content}
+
+{* Alpine.js JavaScript mode - Function calls *}
+<div n:data-alpine-js="dropdown($params)">
+    <button x-on:click="toggle()">Toggle Dropdown</button>
+    <div x-show="isOpen" class="dropdown-menu">
+        <span x-text="config.type"></span>
+    </div>
+</div>
+
+{* Alpine.js JavaScript mode - Multiple parameters *}
+<div n:data-alpine-js="modal($params, $user)">
+    <button x-on:click="open()">Open Modal</button>
+    <div x-show="visible" class="modal">
+        <h2 x-text="title"></h2>
+        <p x-text="user.name"></p>
+    </div>
+</div>
+
+{* Stimulus JavaScript mode *}
+<div data-controller="profile-menu" n:data-stimulus-js:profile-menu="initProfile($user)">
+    <button data-profile-menu-target="trigger">Menu</button>
+    <div data-profile-menu-target="menu">
+        <span data-profile-menu-target="username"></span>
+    </div>
+</div>
+
+{* HTMX JavaScript mode *}
+<button n:data-htmx-js="getFormData($params)" hx-post="/api/submit" hx-target="#result">
+    Submit Form
+</button>
+
+{* Generic data JavaScript mode *}
+<div n:data-js="setupWidget($user)">
+    Component with JavaScript function call
+</div>

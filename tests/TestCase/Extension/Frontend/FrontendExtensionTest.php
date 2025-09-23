@@ -75,4 +75,15 @@ class FrontendExtensionTest extends TestCase
         $this->assertArrayHasKey('n:data-stimulus', $tags);
         $this->assertArrayHasKey('n:data-htmx', $tags);
     }
+
+    public function testJavaScriptModeFrameworkMappings(): void
+    {
+        $tags = $this->extension->getTags();
+
+        // Test that -js variants are available
+        $this->assertArrayHasKey('n:data-js', $tags);
+        $this->assertArrayHasKey('n:data-alpine-js', $tags);
+        $this->assertArrayHasKey('n:data-stimulus-js', $tags);
+        $this->assertArrayHasKey('n:data-htmx-js', $tags);
+    }
 }

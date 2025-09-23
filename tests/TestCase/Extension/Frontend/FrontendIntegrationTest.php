@@ -185,4 +185,37 @@ class FrontendIntegrationTest extends TestCase
         $this->assertArrayHasKey('n:data-custom', $tags);
         $this->assertArrayHasKey('n:data-vue', $tags);
     }
+
+    public function testJavaScriptMode(): void
+    {
+        $params = ['type' => 'xml', 'count' => 5];
+        $user = new Entity(['name' => 'John', 'role' => 'admin']);
+
+        $this->view->set('params', $params);
+        $this->view->set('user', $user);
+
+        $output = $this->view->render('frontend/javascript_test', false);
+
+        // Test Alpine.js JavaScript mode
+        // Should produce: x-data="dropdown(&#123;&quot;type&quot;:&quot;xml&quot;,&quot;count&quot;:5})"
+        $this->assertStringContainsString('x-data="dropdown(&#123;&quot;type&quot;:&quot;xml&quot;', $output);
+        $this->assertStringContainsString('&quot;count&quot;:5})"', $output);
+
+        // Test Stimulus JavaScript mode
+        // Should produce: data-profile-menu-value="initProfile(&#123;&quot;name&quot;:&quot;John&quot;...})"
+        $this->assertStringContainsString('data-profile-menu-value="initProfile(&#123;&quot;name&quot;:&quot;John&quot;', $output);
+        $this->assertStringContainsString('&quot;role&quot;:&quot;admin&quot;})"', $output);
+
+        // Test HTMX JavaScript mode
+        // Should produce: hx-vals="getFormData(&#123;&quot;type&quot;:&quot;xml&quot;...})"
+        $this->assertStringContainsString('hx-vals="getFormData(&#123;&quot;type&quot;:&quot;xml&quot;', $output);
+
+        // Test generic JavaScript mode
+        // Should produce: data-json="setupWidget(&#123;&quot;name&quot;:&quot;John&quot;...})"
+        $this->assertStringContainsString('data-json="setupWidget(&#123;&quot;name&quot;:&quot;John&quot;', $output);
+
+        // Ensure no double escaping or outer quotes
+        $this->assertStringNotContainsString('x-data="&quot;dropdown(', $output);
+        $this->assertStringNotContainsString('dropdown(...}&quot;"', $output);
+    }
 }

@@ -44,23 +44,41 @@ final class FrontendExtension extends Extension
 
         // Add n:data for generic JSON data attribute
         $tags['n:data'] = function ($tag): ?DataSerializationNode {
-            return DataSerializationNode::create($tag, 'data', null, $this->frameworkMappings);
+            return DataSerializationNode::create($tag, 'data', null, $this->frameworkMappings, false);
+        };
+
+        // Add n:data-js for generic JavaScript mode
+        $tags['n:data-js'] = function ($tag): ?DataSerializationNode {
+            return DataSerializationNode::create($tag, 'data', null, $this->frameworkMappings, true);
         };
 
         // Add framework-specific tags
         foreach (array_keys($this->frameworkMappings) as $framework) {
+            // JSON mode (default behavior)
             $tags['n:data-' . $framework] = function ($tag) use ($framework): ?DataSerializationNode {
-                return $this->createDataSerializationNode($tag, $framework);
+                return $this->createDataSerializationNode($tag, $framework, false);
+            };
+
+            // JavaScript mode (-js variants)
+            $tags['n:data-' . $framework . '-js'] = function ($tag) use ($framework): ?DataSerializationNode {
+                return $this->createDataSerializationNode($tag, $framework, true);
             };
 
             // Register specific test cases for colon syntax
             // This is a temporary solution - in a real implementation,
             // you'd need to register specific component names
-            $testNames = ['user-profile', 'form-validator', 'list-manager'];
+            $testNames = ['user-profile', 'form-validator', 'list-manager', 'profile-menu'];
             foreach ($testNames as $testName) {
+                // JSON mode with component names
                 $tagName = 'n:data-' . $framework . ':' . $testName;
                 $tags[$tagName] = function ($tag) use ($framework): ?DataSerializationNode {
-                    return $this->createDataSerializationNode($tag, $framework);
+                    return $this->createDataSerializationNode($tag, $framework, false);
+                };
+
+                // JavaScript mode with component names
+                $tagNameJs = 'n:data-' . $framework . '-js:' . $testName;
+                $tags[$tagNameJs] = function ($tag) use ($framework): ?DataSerializationNode {
+                    return $this->createDataSerializationNode($tag, $framework, true);
                 };
             }
         }
@@ -73,9 +91,13 @@ final class FrontendExtension extends Extension
      *
      * @param \Latte\Compiler\Tag $tag The tag instance.
      * @param string $framework The framework name.
+     * @param bool $jsMode Whether to use JavaScript mode.
      */
-    private function createDataSerializationNode(Tag $tag, string $framework): ?DataSerializationNode
-    {
+    private function createDataSerializationNode(
+        Tag $tag,
+        string $framework,
+        bool $jsMode = false,
+    ): ?DataSerializationNode {
         // Handle framework:name syntax (e.g., n:data-stimulus:user-profile)
         $name = null;
         if (str_contains($tag->name, ':')) {
@@ -85,7 +107,7 @@ final class FrontendExtension extends Extension
             }
         }
 
-        return DataSerializationNode::create($tag, $framework, $name, $this->frameworkMappings);
+        return DataSerializationNode::create($tag, $framework, $name, $this->frameworkMappings, $jsMode);
     }
 
     /**
