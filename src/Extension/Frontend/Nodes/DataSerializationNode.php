@@ -8,7 +8,6 @@ use Latte\Compiler\Nodes\Php\ExpressionNode;
 use Latte\Compiler\Nodes\StatementNode;
 use Latte\Compiler\PrintContext;
 use Latte\Compiler\Tag;
-use Latte\Runtime\Filters;
 use LatteView\Extension\Frontend\Serializers\UniversalSerializer;
 
 final class DataSerializationNode extends StatementNode
@@ -63,9 +62,10 @@ final class DataSerializationNode extends StatementNode
         $attributeName = $this->getAttributeName();
 
         // When used as n: attribute, generate attribute name and escaped value
+        // Use escapeHtmlAttr directly on raw JSON (no outer quotes needed for Alpine.js)
         $context->beginEscape()->enterHtmlAttribute(null);
         $result = $context->format(
-            'echo \' %raw="\'; echo ' . Filters::class . '::escapeJs('
+            'echo \' %raw="\'; echo %escape('
             . UniversalSerializer::class . '::serialize(%node)) %line; echo \'"\';',
             $attributeName,
             $this->data,

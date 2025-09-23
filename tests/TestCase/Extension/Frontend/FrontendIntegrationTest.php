@@ -135,6 +135,35 @@ class FrontendIntegrationTest extends TestCase
         $this->assertStringContainsString('\\u003C', $output); // Escaped angle bracket
     }
 
+    public function testCorrectJSONEscaping(): void
+    {
+        $user = new Entity([
+            'name' => 'John Doe',
+            'email' => 'john@example.com',
+        ]);
+        $articles = [
+            ['title' => 'Article 1'],
+            ['title' => 'Article 2'],
+        ];
+
+        $this->view->set('user', $user);
+        $this->view->set('articles', $articles);
+
+        $output = $this->view->render('frontend/alpine_test', false);
+
+        // Test that JSON is properly escaped without outer quotes
+        // Should produce: x-data="&#123;&quot;name&quot;:&quot;John Doe&quot;...}"
+        // NOT: x-data="&quot;&#123;\&quot;name\&quot;:\&quot;John Doe\&quot;...}&quot;"
+        $this->assertStringContainsString('x-data="&#123;&quot;', $output);
+        $this->assertStringNotContainsString('x-data="&quot;&#123;', $output);
+
+        // Ensure no double quotes wrapping the JSON
+        $this->assertStringNotContainsString('x-data="&quot;{', $output);
+
+        // Test specific expected pattern for user data
+        $this->assertStringContainsString('x-data="&#123;&quot;name&quot;:&quot;John Doe&quot;', $output);
+    }
+
     public function testCustomFrameworkMapping(): void
     {
         // Create view and manually load extension with custom framework mapping
