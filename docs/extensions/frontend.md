@@ -1,15 +1,14 @@
 # Frontend Extension
 
-The Frontend Extension provides seamless integration between CakePHP data and modern frontend frameworks through universal data serialization. It converts PHP variables to JSON with proper escaping for use in HTML attributes.
+The Frontend Extension serializes PHP variables to JSON for use in HTML attributes. It converts PHP variables to JSON with proper escaping for frontend frameworks.
 
 > **Note**: This extension is essentially a convenient wrapper around Latte's built-in `escapeHtml()` and `escapeJs()` filters, providing framework-specific attribute generation and automatic data serialization.
 
 ## Features
 
 - **Universal Data Serialization**: Convert any PHP variable (entities, arrays, scalars) to JSON
-- **Framework Agnostic**: Support for AlpineJS, Stimulus, HTMX, and custom frameworks
+- **Framework Agnostic**: Support for frameworks that read complex data from HTML attributes (Alpine.js, Stimulus, HTMX, etc.)
 - **Named Components**: Support for multiple controllers/components with different data
-- **Security**: Automatic XSS prevention using Latte's built-in escaping
 - **Configurable**: Easy framework mapping configuration
 
 ## Installation & Configuration
