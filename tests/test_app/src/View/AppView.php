@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace LatteView\TestApp\View;
 
+use LatteView\Extension\Frontend\FrontendExtension;
 use LatteView\View\LatteView;
 
 class AppView extends LatteView
@@ -12,8 +13,6 @@ class AppView extends LatteView
         $this->loadHelper('Custom');
 
         // Load Frontend Extension for testing
-        $this->setConfig('extensions', [
-            'frontend' => [],
-        ]);
+        $this->getEngine()->addExtension(new FrontendExtension($this));
     }
 }

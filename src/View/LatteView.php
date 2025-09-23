@@ -11,7 +11,6 @@ use Latte\Essential\RawPhpExtension;
 use Latte\Essential\TranslatorExtension;
 use Latte\Runtime\Template;
 use Latte\Sandbox\SecurityPolicy;
-use LatteView\Extension\Frontend\FrontendExtension;
 use LatteView\Latte\Extension\BaseExtension;
 use LatteView\Latte\Extension\FilterExtension;
 use LatteView\Latte\Extension\Translator;
@@ -101,14 +100,6 @@ class LatteView extends View
             }
 
             // Load custom extensions
-            $extensions = $this->getConfig('extensions', []);
-            if (isset($extensions['frontend'])) {
-                $this->engine->addExtension(new FrontendExtension(
-                    $this,
-                    is_array($extensions['frontend']) ? $extensions['frontend'] : [],
-                ));
-            }
-
             if ($this->getConfig('cache')) {
                 $this->engine->setTempDirectory($this->getConfig('cachePath'));
             }

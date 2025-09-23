@@ -16,34 +16,49 @@ The Frontend Extension provides seamless integration between CakePHP data and mo
 
 ### Enable the Extension
 
-Add the frontend extension to your LatteView configuration:
+Add the frontend extension to your View class by calling `$this->getEngine()->addExtension()`:
 
 ```php
-// In your application config (e.g., config/app.php)
-'LatteView' => [
-    'extensions' => [
-        'frontend' => []
-    ]
-]
+// In your View class (e.g., src/View/AppView.php)
+use LatteView\Extension\Frontend\FrontendExtension;
+
+class AppView extends LatteView
+{
+    public function initialize(): void
+    {
+        parent::initialize();
+        
+        // Load the frontend extension
+        $this->getEngine()->addExtension(new FrontendExtension($this));
+    }
+}
 ```
 
 ### Custom Framework Mappings
 
-Configure custom framework mappings using the `{name}` placeholder:
+Configure custom framework mappings by passing options to the extension constructor using the `{name}` placeholder:
 
 ```php
-'LatteView' => [
-    'extensions' => [
-        'frontend' => [
+// In your View class
+use LatteView\Extension\Frontend\FrontendExtension;
+
+class AppView extends LatteView
+{
+    public function initialize(): void
+    {
+        parent::initialize();
+        
+        // Load the frontend extension with custom mappings
+        $this->getEngine()->addExtension(new FrontendExtension($this, [
             'alpine' => 'x-data',                    // Default
             'stimulus' => 'data-{name}-value',       // Default
             'htmx' => 'hx-vals',                     // Default
             'vue' => ':data',                        // Custom
             'turbo' => 'data-{name}-stream',         // Custom
             'custom' => 'data-{name}-props'          // Custom
-        ]
-    ]
-]
+        ]));
+    }
+}
 ```
 
 The `{name}` placeholder will be replaced with the component name specified in templates.

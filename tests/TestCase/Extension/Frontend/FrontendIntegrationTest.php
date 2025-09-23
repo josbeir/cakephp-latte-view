@@ -17,10 +17,8 @@ class FrontendIntegrationTest extends TestCase
         parent::setUp();
         $this->view = new AppView();
 
-        // Enable the frontend extension
-        $this->view->setConfig('extensions', [
-            'frontend' => [],
-        ]);
+        // Manually load the frontend extension
+        $this->view->getEngine()->addExtension(new FrontendExtension($this->view));
     }
 
     protected function tearDown(): void
@@ -143,12 +141,12 @@ class FrontendIntegrationTest extends TestCase
     {
         // Create view with custom framework mapping
         $view = new AppView();
-        $view->setConfig('extensions', [
-            'frontend' => [
-                'custom' => 'data-{name}-props',
-                'vue' => ':data',
-            ],
-        ]);
+
+        // Manually load extension with custom framework mapping
+        $view->getEngine()->addExtension(new FrontendExtension($view, [
+            'custom' => 'data-{name}-props',
+            'vue' => ':data',
+        ]));
 
         $view->set('data', ['test' => 'value']);
 
