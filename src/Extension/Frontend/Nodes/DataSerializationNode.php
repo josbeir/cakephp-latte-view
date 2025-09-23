@@ -161,8 +161,8 @@ final class DataSerializationNode extends StatementNode
                         $paramCode .= " . ',' . ";
                     }
 
-                     $paramCode .= UniversalSerializer::class . '::serialize('
-                         . $context->format('%node', $arg->value) . ')';
+                    $paramCode .= UniversalSerializer::class . '::serialize('
+                        . $context->format('%node', $arg->value) . ')';
                 }
 
                 return "'" . $functionName . "(' . " . $paramCode . " . ')'";
