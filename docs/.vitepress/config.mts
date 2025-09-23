@@ -1,5 +1,6 @@
 import { defineConfig } from 'vitepress'
 import { createHighlighter } from 'shiki'
+import { execSync } from 'child_process'
 
 import fs from 'fs';
 import { dirname } from 'path';
@@ -7,6 +8,18 @@ import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const latteLang = JSON.parse(fs.readFileSync(`${__dirname}/latte.tmLanguage.json`, 'utf8'))
+
+// Get the latest git tag for version display
+const getLatestVersion = () => {
+  try {
+    // Get the absolute latest tag regardless of current branch
+    return execSync('git tag --sort=-version:refname | head -1', { encoding: 'utf8' }).trim()
+  } catch {
+    return 'dev'
+  }
+}
+
+const version = getLatestVersion()
 
 const latte = {
   'name': 'latte',
@@ -33,7 +46,8 @@ export default defineConfig({
     },
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'Documentation', link: '/getting-started' }
+      { text: 'Documentation', link: '/getting-started' },
+      { text: `v${version}`, link: 'https://github.com/josbeir/cakephp-latte-view/releases' }
     ],
 
     sidebar: [
