@@ -31,7 +31,7 @@ final class FieldNNameNode extends StatementNode
      */
     public static function create(Tag $tag): Generator
     {
-        $tag->outputMode = $tag::OutputKeepIndentation;
+        $tag->outputMode = Tag::OutputKeepIndentation;
         $tag->expectArguments();
 
         $node = new self();

@@ -30,7 +30,7 @@ final class LinkNode extends StatementNode
      */
     public static function create(Tag $tag): ?static
     {
-        $tag->outputMode = $tag::OutputKeepIndentation;
+        $tag->outputMode = Tag::OutputKeepIndentation;
         $tag->expectArguments();
 
         $node = new self();
