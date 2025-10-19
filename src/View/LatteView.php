@@ -23,6 +23,8 @@ class LatteView extends View
 {
     protected ?Engine $engine = null;
 
+    protected bool $layoutLookup = true;
+
     protected ?SecurityPolicy $sandboxPolicy = null;
 
     /**
@@ -124,6 +126,16 @@ class LatteView extends View
     }
 
     /**
+     * @inheritDoc
+     */
+    protected function _renderElement(string $file, array $data, array $options): string
+    {
+        $this->disableLayoutLookup();
+
+        return parent::_renderElement($file, $data, $options);
+    }
+
+    /**
      * Renders a template file with the provided data.
      *
      * Note: When auto layout is enabled (default), Latte handles layout resolution automatically.
@@ -201,13 +213,21 @@ class LatteView extends View
     }
 
     /**
+     * Disable layout lookup.
+     */
+    public function disableLayoutLookup(): void
+    {
+        $this->layoutLookup = false;
+    }
+
+    /**
      * Retrieve the default layout.
      *
      * @return string
      */
     protected function layoutLookup(Template $template): ?string
     {
-        if (!$template->getReferenceType()) {
+        if (!$template->getReferenceType() && $this->layoutLookup) {
             return $this->_getLayoutFileName();
         }
 

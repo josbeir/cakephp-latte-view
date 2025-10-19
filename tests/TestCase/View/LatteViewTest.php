@@ -286,4 +286,11 @@ class LatteViewTest extends TestCase
         $result = $method->invoke($view, $mockTemplate);
         $this->assertStringContainsString('default.latte', $result);
     }
+
+    public function testElementRender(): void
+    {
+        $output = $this->view->element('element');
+        $this->assertNotEmpty($output);
+        $this->assertStringStartsWith('<p>Hello world</p>', $output);
+    }
 }
