@@ -43,24 +43,24 @@ final class FrontendExtension extends Extension
         $tags = [];
 
         // Add n:data for generic JSON data attribute
-        $tags['n:data'] = function ($tag): ?DataSerializationNode {
+        $tags['n:data'] = function (Tag $tag): ?DataSerializationNode {
             return DataSerializationNode::create($tag, 'data', null, $this->frameworkMappings, false);
         };
 
         // Add n:data-js for generic JavaScript mode
-        $tags['n:data-js'] = function ($tag): ?DataSerializationNode {
+        $tags['n:data-js'] = function (Tag $tag): ?DataSerializationNode {
             return DataSerializationNode::create($tag, 'data', null, $this->frameworkMappings, true);
         };
 
         // Add framework-specific tags
         foreach (array_keys($this->frameworkMappings) as $framework) {
             // JSON mode (default behavior)
-            $tags['n:data-' . $framework] = function ($tag) use ($framework): ?DataSerializationNode {
+            $tags['n:data-' . $framework] = function (Tag $tag) use ($framework): ?DataSerializationNode {
                 return $this->createDataSerializationNode($tag, $framework, false);
             };
 
             // JavaScript mode (-js variants)
-            $tags['n:data-' . $framework . '-js'] = function ($tag) use ($framework): ?DataSerializationNode {
+            $tags['n:data-' . $framework . '-js'] = function (Tag $tag) use ($framework): ?DataSerializationNode {
                 return $this->createDataSerializationNode($tag, $framework, true);
             };
 
@@ -71,13 +71,13 @@ final class FrontendExtension extends Extension
             foreach ($testNames as $testName) {
                 // JSON mode with component names
                 $tagName = 'n:data-' . $framework . ':' . $testName;
-                $tags[$tagName] = function ($tag) use ($framework): ?DataSerializationNode {
+                $tags[$tagName] = function (Tag $tag) use ($framework): ?DataSerializationNode {
                     return $this->createDataSerializationNode($tag, $framework, false);
                 };
 
                 // JavaScript mode with component names
                 $tagNameJs = 'n:data-' . $framework . '-js:' . $testName;
-                $tags[$tagNameJs] = function ($tag) use ($framework): ?DataSerializationNode {
+                $tags[$tagNameJs] = function (Tag $tag) use ($framework): ?DataSerializationNode {
                     return $this->createDataSerializationNode($tag, $framework, true);
                 };
             }
