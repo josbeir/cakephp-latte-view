@@ -74,7 +74,7 @@ final class LinkNode extends StatementNode
         XX;
 
         if ($this->mode === 'href') {
-            $context->beginEscape()->enterHtmlAttribute(null);
+            $context->beginEscape()->enterHtmlAttribute();
             $res = $context->format(
                 $full .
                 <<<'XX'
@@ -92,7 +92,7 @@ final class LinkNode extends StatementNode
 
         // Named routing.
         } elseif ($this->mode === 'named') {
-            $context->beginEscape()->enterHtmlAttribute(null);
+            $context->beginEscape()->enterHtmlAttribute();
             $res = $context->format(
                 $full .
                 <<<'XX'

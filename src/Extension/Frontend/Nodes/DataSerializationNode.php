@@ -71,7 +71,7 @@ final class DataSerializationNode extends StatementNode
     {
         $attributeName = $this->getAttributeName();
 
-        $context->beginEscape()->enterHtmlAttribute(null);
+        $context->beginEscape()->enterHtmlAttribute();
 
         if ($this->jsMode) {
             // JavaScript mode: Use the expression directly with escapeJs for data interpolation

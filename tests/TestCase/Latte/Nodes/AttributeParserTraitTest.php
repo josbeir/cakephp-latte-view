@@ -36,7 +36,7 @@ class AttributeParserTraitTest extends TestCase
 
     public function testGetAttributesNodeWithEmptyElement(): void
     {
-        $element = new ElementNode('div', null, null);
+        $element = new ElementNode('div');
 
         $result = $this->parser->getAttributesNodePublic($element);
 
@@ -60,7 +60,7 @@ class AttributeParserTraitTest extends TestCase
     public function testGetAttributesNodeWithComplexElement(): void
     {
         // Test to ensure the trait is working with basic scenarios
-        $element = new ElementNode('input', null, null);
+        $element = new ElementNode('input');
 
         $result = $this->parser->getAttributesNodePublic($element);
 
