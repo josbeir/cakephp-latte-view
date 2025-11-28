@@ -6,7 +6,7 @@ namespace LatteView\Extension\Frontend;
 use Cake\View\View;
 use Latte\Compiler\Tag;
 use Latte\Extension;
-use Latte\Runtime\Filters;
+use Latte\Runtime\Helpers as LatteHelpers;
 use LatteView\Extension\Frontend\Nodes\DataSerializationNode;
 use LatteView\Extension\Frontend\Serializers\UniversalSerializer;
 
@@ -131,7 +131,7 @@ final class FrontendExtension extends Extension
     {
         return [
             'json' => function (mixed $data): string {
-                return Filters::escapeJs(
+                return LatteHelpers::escapeJs(
                     UniversalSerializer::serialize($data),
                 );
             },

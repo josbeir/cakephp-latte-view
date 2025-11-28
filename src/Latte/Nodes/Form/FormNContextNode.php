@@ -54,8 +54,7 @@ final class FormNContextNode extends StatementNode
         $el = $tag->htmlElement;
         $attributes = $this->getAttributesNode($el);
 
-        $el->captureTagName = true;
-        $el->tagNode = new AuxiliaryNode(fn(PrintContext $context): string => $context->format(
+        $el->dynamicTag = new AuxiliaryNode(fn(PrintContext $context): string => $context->format(
             <<<'XX'
                 $__c_form_args = \Cake\Utility\Hash::merge(%node, %node);
                 echo $this->global->cakeView->Form->create(%node, $__c_form_args) %line;
@@ -66,7 +65,7 @@ final class FormNContextNode extends StatementNode
             $this->position,
         ));
 
-        $el->attributes = null;
+        $el->attributes = new FragmentNode();
 
         // @phpstan-ignore-next-line
         $el->content = new FragmentNode([
