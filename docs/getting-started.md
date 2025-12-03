@@ -47,7 +47,7 @@ class AppView extends LatteView
     {
         parent::initialize();
 
-        // See configuration options below.
+        // Check the configuration page for more details.
         $this->setConfig([]);
     }
 }
