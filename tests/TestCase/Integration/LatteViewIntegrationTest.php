@@ -54,7 +54,6 @@ class LatteViewIntegrationTest extends TestCase
     {
         $reflection = new ReflectionClass($this->view);
         $property = $reflection->getProperty('_ext');
-        $property->setAccessible(true);
 
         $ext = $property->getValue($this->view);
 

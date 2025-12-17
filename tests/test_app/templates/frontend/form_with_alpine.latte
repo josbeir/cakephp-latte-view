@@ -1,0 +1,14 @@
+{block content}
+
+{* Form with Alpine.js x-data attribute *}
+<form n:context="$action"
+    hx-post="/"
+    hx-target="#modal-content"
+    hx-swap="innerHTML"
+    hx-indicator="#modalIndicator"
+    n:data-alpine="[
+        'isActive' => ($isActive ? 'true' : 'false'),
+        'items' => $items,
+    ]">
+    <p>Form content</p>
+</form>

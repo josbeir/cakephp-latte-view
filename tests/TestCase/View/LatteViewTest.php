@@ -260,7 +260,6 @@ class LatteViewTest extends TestCase
         $view = new AppView();
         $reflection = new ReflectionClass($view);
         $method = $reflection->getMethod('layoutLookup');
-        $method->setAccessible(true);
 
         // Create a mock template with reference type
         $mockTemplate = $this->createMock(Template::class);
@@ -277,7 +276,6 @@ class LatteViewTest extends TestCase
 
         $reflection = new ReflectionClass($view);
         $method = $reflection->getMethod('layoutLookup');
-        $method->setAccessible(true);
 
         // Create a mock template without reference type
         $mockTemplate = $this->createMock(Template::class);

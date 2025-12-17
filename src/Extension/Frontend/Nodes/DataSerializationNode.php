@@ -110,6 +110,30 @@ final class DataSerializationNode extends StatementNode
     }
 
     /**
+     * Get attribute name (public for FormNContextNode integration).
+     */
+    public function getPublicAttributeName(): string
+    {
+        return $this->getAttributeName();
+    }
+
+    /**
+     * Get the data expression (public for FormNContextNode integration).
+     */
+    public function getDataExpression(): ExpressionNode
+    {
+        return $this->data;
+    }
+
+    /**
+     * Check if this node is in JavaScript mode.
+     */
+    public function isJsMode(): bool
+    {
+        return $this->jsMode;
+    }
+
+    /**
      * Get attribute name.
      */
     private function getAttributeName(): string

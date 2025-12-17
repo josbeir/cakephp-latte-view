@@ -175,7 +175,6 @@ class UniversalSerializerTest extends TestCase
         // Create a circular reference by using reflection to access the private method
         $reflection = new ReflectionClass(UniversalSerializer::class);
         $method = $reflection->getMethod('prepareData');
-        $method->setAccessible(true);
 
         $data = ['key' => 'value'];
 
@@ -192,7 +191,6 @@ class UniversalSerializerTest extends TestCase
 
         $reflection = new ReflectionClass(UniversalSerializer::class);
         $method = $reflection->getMethod('prepareData');
-        $method->setAccessible(true);
 
         // Use a resource (which is not handled by any other condition)
         $resource = fopen('php://memory', 'r');

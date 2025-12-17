@@ -8,12 +8,17 @@ use Latte\Compiler\Nodes\FragmentNode;
 use Latte\Compiler\Nodes\Html\AttributeNode;
 use Latte\Compiler\Nodes\Html\ElementNode;
 use Latte\Compiler\Nodes\Html\ExpressionAttributeNode;
+use Latte\Compiler\Nodes\Php\ArgumentNode;
 use Latte\Compiler\Nodes\Php\ArrayItemNode;
 use Latte\Compiler\Nodes\Php\Expression\ArrayNode;
+use Latte\Compiler\Nodes\Php\Expression\FunctionCallNode;
 use Latte\Compiler\Nodes\Php\ExpressionNode;
+use Latte\Compiler\Nodes\Php\NameNode;
 use Latte\Compiler\Nodes\Php\Scalar\StringNode;
 use Latte\Compiler\Nodes\PrintNode;
 use Latte\Compiler\Nodes\TextNode;
+use LatteView\Extension\Frontend\Nodes\DataSerializationNode;
+use LatteView\Extension\Frontend\Serializers\UniversalSerializer;
 
 trait AttributeParserTrait
 {
@@ -28,6 +33,21 @@ trait AttributeParserTrait
 
         $items = [];
         foreach ($el->attributes->children as $child) {
+            // Handle DataSerializationNode (e.g., n:data-alpine="$data")
+            if ($child instanceof DataSerializationNode) {
+                $attrName = $child->getPublicAttributeName();
+                $nameNode = new StringNode($attrName);
+
+                // Create a function call expression: UniversalSerializer::serialize($data)
+                $valueNode = new FunctionCallNode(
+                    new NameNode(UniversalSerializer::class . '::serialize'),
+                    [new ArgumentNode($child->getDataExpression(), false, false, null, $child->position)],
+                );
+
+                $items[] = new ArrayItemNode($valueNode, $nameNode);
+                continue;
+            }
+
             // Handle standard AttributeNode (e.g., method="get")
             if ($child instanceof AttributeNode && $child->name instanceof TextNode) {
                 $name = $child->name->content;

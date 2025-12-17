@@ -234,4 +234,31 @@ class FrontendIntegrationTest extends TestCase
         $this->assertStringContainsString('x-data="&#123;&quot;key&quot;:&quot;value&quot;', $output);
         $this->assertStringContainsString('&quot;number&quot;:42}"', $output);
     }
+
+    public function testFormWithAlpineIntegration(): void
+    {
+        // Test that x-data attributes work correctly with form n:context
+        $action = null;
+        $isActive = false;
+        $items = [1, 2, 3];
+
+        $this->view->set([
+            'action' => $action,
+            'isActive' => $isActive,
+            'items' => $items,
+        ]);
+
+        $output = $this->view->render('frontend/form_with_alpine', false);
+
+        // Test that x-data attribute is present
+        $this->assertStringContainsString('x-data=', $output);
+
+        // Test that boolean values are properly serialized
+        $this->assertStringContainsString('isActive', $output);
+        $this->assertStringContainsString('false', $output);
+
+        // Test that array values are properly serialized
+        $this->assertStringContainsString('items', $output);
+        $this->assertStringContainsString('[1,2,3]', $output);
+    }
 }
