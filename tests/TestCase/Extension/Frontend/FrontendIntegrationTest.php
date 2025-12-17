@@ -237,7 +237,7 @@ class FrontendIntegrationTest extends TestCase
 
     public function testFormWithAlpineIntegration(): void
     {
-        // Test that x-data attributes work correctly with form n:context
+        // Test that x-data attributes work correctly with form n:context using n:data-alpine
         $action = null;
         $isActive = false;
         $items = [1, 2, 3];

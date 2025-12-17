@@ -64,6 +64,45 @@ The `{name}` placeholder will be replaced with the component name specified in t
 
 ## Usage
 
+### Limitations
+
+**JavaScript Object Literals in Attributes**
+
+Latte's parser treats `{` as an expression delimiter, making it incompatible with JavaScript object literal syntax in attributes:
+
+```latte
+{* ❌ This does NOT work - Latte parses { as expression start *}
+<div x-data="{ count: {$value}, increment() { ... } }">
+```
+
+**Solutions:**
+
+1. **Use `n:data-alpine` for data passing** (recommended):
+```latte
+{* ✅ Works - serializes PHP to JSON *}
+<div n:data-alpine="['count' => $value]">
+    <button @click="count++">Increment</button>
+</div>
+```
+
+2. **Use wrapper element** when mixing JavaScript and Latte expressions:
+```latte
+{* ✅ Works - x-data on wrapper, n:context on form *}
+<div x-data="{ count: 0, increment() { this.count++ } }">
+    <form n:context="$entity">
+        <button type="button" @click="increment()">Count: <span x-text="count"></span></button>
+    </form>
+</div>
+```
+
+3. **Use standard form syntax** without `n:context`:
+```latte
+{* ✅ Works - manual Form helper call *}
+{Form create $entity, ['x-data' => '{ count: ' . $value . ' }']}
+    <button type="button" @click="count++">Increment</button>
+{/Form create}
+```
+
 ### Basic Data Attributes
 
 #### Generic Data Attribute

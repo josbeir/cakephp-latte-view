@@ -17,6 +17,7 @@ use Latte\Compiler\Nodes\Php\NameNode;
 use Latte\Compiler\Nodes\Php\Scalar\StringNode;
 use Latte\Compiler\Nodes\PrintNode;
 use Latte\Compiler\Nodes\TextNode;
+use Latte\Compiler\PrintContext;
 use LatteView\Extension\Frontend\Nodes\DataSerializationNode;
 use LatteView\Extension\Frontend\Serializers\UniversalSerializer;
 
@@ -25,7 +26,7 @@ trait AttributeParserTrait
     /**
      * Get the attributes node.
      */
-    protected function getAttributesNode(?ElementNode $el): ArrayNode
+    protected function getAttributesNode(?ElementNode $el, ?PrintContext $context = null): ArrayNode
     {
         if (!$el instanceof ElementNode) {
             return new ArrayNode([]);
@@ -54,7 +55,7 @@ trait AttributeParserTrait
                 $val = $el->getAttribute($name);
                 $nameNode = new StringNode($name);
 
-                $valueNode = $this->parseAttributeValue($val);
+                $valueNode = $this->parseAttributeValue($val, $context);
                 if ($valueNode !== null) {
                     $items[] = new ArrayItemNode($valueNode, $nameNode);
                 }
@@ -76,8 +77,9 @@ trait AttributeParserTrait
 
     /**
      * Parse an attribute value into an ExpressionNode.
+     * For complex values (FragmentNode with mixed content), returns null to preserve them as-is.
      */
-    protected function parseAttributeValue(mixed $val): ?ExpressionNode
+    protected function parseAttributeValue(mixed $val, ?PrintContext $context = null): ?ExpressionNode
     {
         // Handle PrintNode (expression like {$var})
         if ($val instanceof PrintNode) {
@@ -88,6 +90,13 @@ trait AttributeParserTrait
         // If fragment has a single PrintNode child, extract its expression
         if ($val instanceof FragmentNode && (count($val->children) === 1 && $val->children[0] instanceof PrintNode)) {
             return $val->children[0]->expression;
+        }
+
+        // Handle FragmentNode with mixed content (text + expressions)
+        // This is common for attributes like x-data="{ prop: {$value}, ... }"
+        // We return null so these attributes are preserved as-is on the element
+        if ($val instanceof FragmentNode && count($val->children) > 1) {
+            return null;
         }
 
         // Handle AreaNode that might contain a PrintNode
@@ -105,6 +114,20 @@ trait AttributeParserTrait
         }
 
         return null;
+    }
+
+    /**
+     * Check if an attribute should be skipped from CakePHP form argument processing.
+     * These attributes should render as-is in the HTML output.
+     *
+     * @param string $name The attribute name
+     * @return bool True if the attribute should be skipped
+     */
+    protected function shouldSkipAttribute(string $name): bool
+    {
+        // This method is kept for potential future use but currently not used
+        // since we handle all attributes through parseAttributeValue
+        return false;
     }
 
     /**

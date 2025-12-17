@@ -189,7 +189,8 @@ class AttributeParserTraitTest extends TestCase
 
     public function testParseAttributeValueWithFragmentContainingMultipleChildren(): void
     {
-        // Fragment with multiple children - should use findPrintNode
+        // Fragment with multiple children - returns null to preserve as-is on element
+        // (e.g., x-data="{ prop: {$value}, func() {...} }")
         $variable = new VariableNode('bar');
         $printNode = $this->createPrintNode($variable);
         $textNode = new TextNode('prefix');
@@ -197,8 +198,8 @@ class AttributeParserTraitTest extends TestCase
 
         $result = $this->parser->parseAttributeValuePublic($fragment);
 
-        $this->assertInstanceOf(VariableNode::class, $result);
-        $this->assertEquals('bar', $result->name);
+        // Should return null for complex fragments (mixed content)
+        $this->assertNull($result);
     }
 
     public function testParseAttributeValueWithString(): void
@@ -284,15 +285,16 @@ class AttributeParserTraitTest extends TestCase
 
     public function testParseAttributeValueWithAreaNodeContainingPrintNode(): void
     {
-        // AreaNode (via FragmentNode) with a PrintNode inside
+        // AreaNode (via FragmentNode) with multiple children including a PrintNode
+        // Returns null since it's mixed content that should be preserved on the element
         $variable = new VariableNode('area');
         $printNode = $this->createPrintNode($variable);
         $fragment = new FragmentNode([new TextNode('before'), $printNode, new TextNode('after')]);
 
         $result = $this->parser->parseAttributeValuePublic($fragment);
 
-        $this->assertInstanceOf(VariableNode::class, $result);
-        $this->assertEquals('area', $result->name);
+        // Should return null for mixed content fragments
+        $this->assertNull($result);
     }
 
     public function testParseAttributeValueWithAreaNodeWithoutPrintNode(): void
