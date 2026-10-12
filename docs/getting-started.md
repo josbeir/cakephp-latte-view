@@ -16,14 +16,16 @@ This plugin replaces CakePHP's default templating engine with [Latte](https://la
 
 ## Requirements
 
-- **PHP**: 8.2 or higher
-- **CakePHP**: 5.x
-- **DebugKit**: 5.2 or higher (development dependency)
+- **PHP**: 8.5 or higher
+- **CakePHP**: 6.x
+- **DebugKit**: 6.x (optional development integration)
 
 ## Installation
 
+Set `"minimum-stability": "dev"` and `"prefer-stable": true` in your application's composer.json while CakePHP 6 requires development dependencies.
+
 ```bash
-composer require josbeir/cakephp-latte-view
+composer require josbeir/cakephp-latte-view:dev-cake6
 ```
 
 ## Usage

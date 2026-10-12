@@ -11,7 +11,7 @@ class TestForm extends Form
     /**
      * @inheritDoc
      */
-    protected function _buildSchema(Schema $schema): Schema
+    protected function buildSchema(Schema $schema): Schema
     {
         return $schema
             ->addField('name', 'string')

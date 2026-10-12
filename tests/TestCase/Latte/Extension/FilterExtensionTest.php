@@ -50,7 +50,7 @@ class FilterExtensionTest extends TestCase
         $this->assertStringContainsString('This is a text with <span class="highlight">keyword</span>', $rendered);
         $this->assertStringContainsString('Some-Text-With-Spaces', $rendered);
         $this->assertStringContainsString('1, 2 and 3', $rendered);
-        $this->assertStringContainsString('$123.46', $rendered);
+        $this->assertStringContainsString("$\u{00A0}123.46", $rendered);
         $this->assertStringContainsString('123.46', $rendered);
         $this->assertStringContainsString('11/29/73, 9:33 PM', $rendered);
         $this->assertStringContainsString('0.12%', $rendered);
@@ -93,5 +93,13 @@ class FilterExtensionTest extends TestCase
 
         $this->assertArrayHasKey('highlight', $functions);
         $this->assertIsCallable($functions['highlight']);
+    }
+
+    public function testAllFiltersAreCallable(): void
+    {
+        $extension = new FilterExtension($this->view);
+        foreach ($extension->getFilters() as $name => $filter) {
+            $this->assertIsCallable($filter, $name);
+        }
     }
 }

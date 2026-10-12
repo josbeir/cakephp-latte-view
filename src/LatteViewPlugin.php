@@ -34,7 +34,7 @@ class LatteViewPlugin extends BasePlugin
     public function events(EventManagerInterface $eventManager): EventManagerInterface
     {
         if (!Configure::read('LatteView.disableCacheClearListener', false)) {
-            $eventManager->on('Command.afterExecute', function (Event $event, $args, $result): void {
+            $eventManager->on('Command.afterExecute', function (Event $event): void {
                 $command = $event->getSubject();
                 if ($command instanceof CacheClearallCommand) {
                     $command->executeCommand(CacheCommand::class);

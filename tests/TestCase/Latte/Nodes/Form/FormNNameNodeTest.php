@@ -46,11 +46,11 @@ class FormNNameNodeTest extends TestCase
         $formTag = '$this->global->cakeView->Form->create($var, $__c_form_args)';
         $this->assertStringContainsString($formTag, $result);
 
-        $endTag = '</form>';
+        $endTag = '$this->global->cakeView->Form->end()';
         $this->assertStringContainsString($endTag, $result);
 
-        $contents = '>Hi<';
-        $this->assertStringContainsString($contents, $result);
+        $rendered = $this->latte->renderToString('{layout none}<form n:context=null method="get">Hi</form>');
+        $this->assertSame('<form method="get" accept-charset="utf-8" action="/">Hi</form>', $rendered);
     }
 
     public function testCompiledComplex(): void
@@ -80,13 +80,13 @@ class FormNNameNodeTest extends TestCase
         $formStart = '<form method="post" accept-charset="utf-8" action="/">';
         $this->assertStringContainsString($formStart, $result);
 
-        $nameField = '<div class="input text"><label for="name">Name</label><input type="text" name="name" id="name" value="John Doe"></div>';
+        $nameField = '<div class="input"><label for="name">Name</label><input type="text" name="name" id="name" value="John Doe"></div>';
         $this->assertStringContainsString($nameField, $result);
 
-        $emailField = '<div class="input email"><label for="email">Email</label><input type="email" name="email" id="email" value="john@example.com"></div>';
+        $emailField = '<div class="input"><label for="email">Email</label><input type="email" name="email" id="email" value="john@example.com"></div>';
         $this->assertStringContainsString($emailField, $result);
 
-        $bodyField = '<div class="input textarea"><label for="body">Body</label><textarea name="body" id="body" rows="5">Hello world!</textarea></div>';
+        $bodyField = '<div class="input"><label for="body">Body</label><textarea name="body" id="body" rows="5">Hello world!</textarea></div>';
         $this->assertStringContainsString($bodyField, $result);
 
         $formEnd = '</form>';
@@ -120,7 +120,7 @@ class FormNNameNodeTest extends TestCase
         $formStart = '<form enctype="multipart/form-data" method="post" accept-charset="utf-8" class="test" action="/">';
         $this->assertStringContainsString($formStart, $result);
 
-        $hiddenMethod = '<div style="display:none;"><input type="hidden" name="_method" value="POST"></div>';
+        $hiddenMethod = '<div hidden="hidden"><input type="hidden" name="_method" value="POST"></div>';
         $this->assertStringContainsString($hiddenMethod, $result);
 
         $fileFormContent = 'File form';

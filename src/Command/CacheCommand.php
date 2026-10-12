@@ -3,9 +3,6 @@ declare(strict_types=1);
 
 namespace LatteView\Command;
 
-use Cake\Console\Arguments;
-use Cake\Console\ConsoleIo;
-
 class CacheCommand extends AbstractCommand
 {
     /**
@@ -19,11 +16,10 @@ class CacheCommand extends AbstractCommand
     /**
      * @inheritDoc
      */
-    public function execute(Arguments $args, ConsoleIo $io): int
+    public function execute(): int
     {
-        $io->out('Clearing Latte cache directory...');
-        $cacheDir = $this->getViewClass($args)->getConfig('cachePath');
-
+        $this->io->out('Clearing Latte cache directory...');
+        $cacheDir = $this->getViewClass()->getConfig('cachePath');
         if (is_dir($cacheDir)) {
             $files = glob($cacheDir . '/*') ?: [];
             foreach ($files as $file) {
@@ -32,9 +28,9 @@ class CacheCommand extends AbstractCommand
                 }
             }
 
-            $io->success('Cache directory cleared successfully.');
+            $this->io->success('Cache directory cleared successfully.');
         } else {
-            $io->warning('Cache directory does not exist.');
+            $this->io->warning('Cache directory does not exist.');
         }
 
         return self::CODE_SUCCESS;

@@ -9,16 +9,6 @@ use LatteView\View\Parameters;
 
 class ParametersTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-    }
-
     public function testSetView(): void
     {
         $view = new View();

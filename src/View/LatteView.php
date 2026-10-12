@@ -52,7 +52,7 @@ class LatteView extends View
      *
      * @var array<string, mixed>
      */
-    protected array $_defaultConfig = [
+    protected array $defaultConfig = [
         'cache' => true,
         'autoRefresh' => null,
         'fragments' => null,
@@ -75,7 +75,7 @@ class LatteView extends View
     /**
      * @inheritDoc
      */
-    protected string $_ext = '.latte';
+    protected string $ext = '.latte';
 
     /**
      * Get the Latte engine instance.
@@ -128,11 +128,11 @@ class LatteView extends View
     /**
      * @inheritDoc
      */
-    protected function _renderElement(string $file, array $data, array $options): string
+    protected function renderElement(string $file, array $data, array $options): string
     {
         $this->disableLayoutLookup();
 
-        return parent::_renderElement($file, $data, $options);
+        return parent::renderElement($file, $data, $options);
     }
 
     /**
@@ -145,7 +145,7 @@ class LatteView extends View
      * @param array $dataForView Data to include in rendered view.
      * @return string Rendered output
      */
-    protected function _evaluate(string $templateFile, array $dataForView): string
+    protected function evaluate(string $templateFile, array $dataForView): string
     {
         $dataForView = $this->prepareData($dataForView);
 
@@ -228,7 +228,7 @@ class LatteView extends View
     protected function layoutLookup(Template $template): ?string
     {
         if (!$template->getReferenceType() && $this->layoutLookup) {
-            return $this->_getLayoutFileName();
+            return $this->getLayoutFileName();
         }
 
         return null;

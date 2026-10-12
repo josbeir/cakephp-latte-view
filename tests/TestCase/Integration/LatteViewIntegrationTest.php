@@ -53,7 +53,7 @@ class LatteViewIntegrationTest extends TestCase
     public function testCustomViewExtension(): void
     {
         $reflection = new ReflectionClass($this->view);
-        $property = $reflection->getProperty('_ext');
+        $property = $reflection->getProperty('ext');
 
         $ext = $property->getValue($this->view);
 

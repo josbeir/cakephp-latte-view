@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace LatteView\Command;
 
 use Cake\Command\Command;
-use Cake\Console\Arguments;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Core\App;
 use LatteView\View\LatteView;
@@ -29,11 +28,10 @@ abstract class AbstractCommand extends Command
     /**
      * Get the view class name instance from the arguments.
      */
-    public function getViewClass(Arguments $args): LatteView
+    public function getViewClass(): LatteView
     {
-        $class = (string)$args->getOption('class');
+        $class = (string)$this->args->getOption('class');
         $viewClass = App::className($class, 'View', 'View');
-
         if (!$viewClass) {
             throw new RuntimeException('View class ' . $class . ' not found.');
         }
