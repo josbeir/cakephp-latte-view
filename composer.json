@@ -12,8 +12,8 @@
         "phpunit/phpunit": "^13.0",
         "cakephp/plugin-installer": "^2.0.1",
         "cakephp/cakephp-codesniffer": "^6.0@dev",
-        "phpstan/phpstan": "^2.1.32",
-        "rector/rector": "^2.1",
+        "phpstan/phpstan": "^2.3",
+        "rector/rector": "^2.7",
         "cakephp/debug_kit": "^6.0@dev"
     },
     "autoload": {
