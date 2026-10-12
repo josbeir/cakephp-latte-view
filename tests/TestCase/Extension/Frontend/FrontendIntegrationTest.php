@@ -5,6 +5,8 @@ namespace LatteView\Test\TestCase\Extension\Frontend;
 
 use Cake\ORM\Entity;
 use Cake\TestSuite\TestCase;
+use Latte\CompileException;
+use Latte\Loaders\StringLoader;
 use LatteView\Extension\Frontend\FrontendExtension;
 use LatteView\TestApp\View\FrontendExtensionAppView;
 
@@ -233,6 +235,16 @@ class FrontendIntegrationTest extends TestCase
         // Should produce: x-data="&#123;&quot;key&quot;:&quot;value&quot;,&quot;number&quot;:42}"
         $this->assertStringContainsString('x-data="&#123;&quot;key&quot;:&quot;value&quot;', $output);
         $this->assertStringContainsString('&quot;number&quot;:42}"', $output);
+    }
+
+    public function testJavaScriptModeRejectsCallablePlaceholder(): void
+    {
+        $engine = $this->view->getEngine();
+        $engine->setLoader(new StringLoader());
+
+        $this->expectException(CompileException::class);
+        $this->expectExceptionMessage('JavaScript data attributes require function arguments');
+        $engine->compile('<div n:data-alpine-js="dropdown(...)"></div>');
     }
 
     public function testFormWithAlpineIntegration(): void

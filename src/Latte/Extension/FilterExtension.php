@@ -10,7 +10,6 @@ use Cake\View\View;
 use Latte\Extension;
 use Latte\Runtime\Html;
 use ReflectionClass;
-use ReflectionMethod;
 
 final class FilterExtension extends Extension
 {
@@ -109,12 +108,14 @@ final class FilterExtension extends Extension
     ): array {
         $filters = [];
         $reflection = new ReflectionClass($class);
-        $methods = $reflection->getMethods(ReflectionMethod::IS_PUBLIC | ReflectionMethod::IS_STATIC);
+        $methods = $reflection->getMethods();
 
         foreach ($methods as $method) {
             $name = $method->getName();
             if (
-                array_key_exists($name, $this->existingFilters)
+                !$method->isPublic()
+                || !$method->isStatic()
+                || array_key_exists($name, $this->existingFilters)
                 || str_starts_with($name, 'get')
                 || str_starts_with($name, 'set')
                 || str_starts_with($name, '_')

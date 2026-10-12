@@ -65,7 +65,7 @@ final class PostableNnameNode extends StatementNode
         $el = $tag->htmlElement;
         $elName = strtolower($el->name);
 
-        if (!in_array($elName, ['a', 'button'])) {
+        if (!in_array($elName, ['a', 'button'], true)) {
             throw new CompileException('n:post is only allowed on <a> and <button>', $tag->position);
         }
 
@@ -79,11 +79,7 @@ final class PostableNnameNode extends StatementNode
             <<<'XX'
                 ob_start(); %node; $__c_form_content = ob_get_clean();
                 $__c_form_args = array_merge(%node, %node);
-                if ('%3.raw' == 'postButton') {
-                    $__c_form_args['escapeTitle'] = false;
-                } else {
-                    $__c_form_args['escape'] = false;
-                }
+                $__c_form_args['escape'] = false;
                 echo $this->global->cakeView->Form->%raw($__c_form_content, %node, $__c_form_args) %line;
             XX,
             $el->content,

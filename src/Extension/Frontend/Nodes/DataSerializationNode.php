@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace LatteView\Extension\Frontend\Nodes;
 
 use Generator;
+use Latte\CompileException;
+use Latte\Compiler\Nodes\Php\ArgumentNode;
 use Latte\Compiler\Nodes\Php\Expression\FunctionCallNode;
 use Latte\Compiler\Nodes\Php\ExpressionNode;
 use Latte\Compiler\Nodes\StatementNode;
@@ -166,9 +168,27 @@ final class DataSerializationNode extends StatementNode
         // is a function call and convert it to JavaScript function call syntax
         $expression = $this->data;
 
+        // Older Latte 3.1 versions use a separate node for first-class callables.
+        if ($expression::class === 'Latte\\Compiler\\Nodes\\Php\\Expression\\FunctionCallableNode') {
+            throw new CompileException(
+                'JavaScript data attributes require function arguments',
+                $this->position,
+            );
+        }
+
         if ($expression instanceof FunctionCallNode) {
             $functionName = $expression->name->name ?? 'unknown';
-            $args = $expression->args;
+            $args = [];
+            foreach ($expression->args as $arg) {
+                if (!$arg instanceof ArgumentNode) {
+                    throw new CompileException(
+                        'JavaScript data attributes require function arguments',
+                        $this->position,
+                    );
+                }
+
+                $args[] = $arg;
+            }
 
             if (count($args) === 1) {
                 // Single parameter: functionName(serializedParam)
@@ -177,7 +197,9 @@ final class DataSerializationNode extends StatementNode
                     $functionName,
                     $args[0]->value,
                 );
-            } elseif (count($args) > 1) {
+            }
+
+            if (count($args) > 1) {
                 // Multiple parameters: functionName(param1, param2, ...)
                 $paramCode = '';
                 foreach ($args as $i => $arg) {

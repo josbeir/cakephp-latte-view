@@ -33,10 +33,25 @@ class CacheCommandTest extends TestCase
 
     public function testCacheClearCommand(): void
     {
+        $cacheFile = CACHE . 'latte_view' . DS . 'compiled.php';
+        file_put_contents($cacheFile, '<?php');
         $this->exec('latte clear');
 
         $this->assertExitCode(CacheCommand::CODE_SUCCESS);
         $this->assertOutputContains('Cache directory cleared successfully.');
+        $this->assertFileDoesNotExist($cacheFile);
+    }
+
+    public function testCakeCacheClearAlsoClearsLatteCache(): void
+    {
+        $cacheFile = CACHE . 'latte_view' . DS . 'compiled.php';
+        file_put_contents($cacheFile, '<?php');
+
+        $this->exec('cache clear_all');
+
+        $this->assertExitCode(CacheCommand::CODE_SUCCESS);
+        $this->assertOutputContains('Cache directory cleared successfully.');
+        $this->assertFileDoesNotExist($cacheFile);
     }
 
     public function testInvalidClass(): void

@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace LatteView\Command;
 
-use Cake\Console\Arguments;
-use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Core\App;
 use Latte\Tools\Linter;
@@ -37,20 +35,18 @@ class LinterCommand extends AbstractCommand
     /**
      * @inheritDoc
      */
-    public function execute(Arguments $args, ConsoleIo $io): int
+    public function execute(): int
     {
-        $engine = $this->getViewClass($args)->getEngine();
+        $engine = $this->getViewClass()->getEngine();
         $linter = new Linter($engine);
-
-        $plugin = (string)$args->getOption('plugin');
+        $plugin = (string)$this->args->getOption('plugin');
         $paths = App::path('templates', $plugin ?: null);
-
         $results = [];
         foreach ($paths as $path) {
             ob_start();
             $results[$path] = $linter->scanDirectory($path);
             $captured_output = ob_get_clean();
-            $io->out((string)$captured_output);
+            $this->io->out((string)$captured_output);
         }
 
         if (in_array(false, $results, true)) {

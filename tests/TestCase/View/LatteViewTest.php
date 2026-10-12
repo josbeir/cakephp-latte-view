@@ -261,11 +261,11 @@ class LatteViewTest extends TestCase
         $reflection = new ReflectionClass($view);
         $method = $reflection->getMethod('layoutLookup');
 
-        // Create a mock template with reference type
-        $mockTemplate = $this->createMock(Template::class);
-        $mockTemplate->method('getReferenceType')->willReturn('block');
+        // Create a template stub with reference type
+        $templateStub = $this->createStub(Template::class);
+        $templateStub->method('getReferenceType')->willReturn('block');
 
-        $result = $method->invoke($view, $mockTemplate);
+        $result = $method->invoke($view, $templateStub);
         $this->assertNull($result);
     }
 
@@ -277,11 +277,11 @@ class LatteViewTest extends TestCase
         $reflection = new ReflectionClass($view);
         $method = $reflection->getMethod('layoutLookup');
 
-        // Create a mock template without reference type
-        $mockTemplate = $this->createMock(Template::class);
-        $mockTemplate->method('getReferenceType')->willReturn(null);
+        // Create a template stub without reference type
+        $templateStub = $this->createStub(Template::class);
+        $templateStub->method('getReferenceType')->willReturn(null);
 
-        $result = $method->invoke($view, $mockTemplate);
+        $result = $method->invoke($view, $templateStub);
         $this->assertStringContainsString('default.latte', $result);
     }
 

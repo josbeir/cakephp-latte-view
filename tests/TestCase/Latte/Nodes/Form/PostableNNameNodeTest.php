@@ -69,4 +69,16 @@ class PostableNNameNodeTest extends TestCase
         $this->assertStringContainsString('<button type="submit"><strong>Hello</strong></button>', $result);
         $this->assertStringContainsString('<button class="btn btn-primary" type="submit">Hi</button>', $result);
     }
+
+    public function testPostButtonEscapesAttributesAndPreservesContent(): void
+    {
+        $result = $this->latte->renderToString(<<<'LATTE'
+            {layout none}
+            <button n:post="[_name: 'display']" title="{$title}"><strong>Hello</strong></button>
+        LATTE, ['title' => 'A "quoted" title']);
+
+        $this->assertStringContainsString('title="A &quot;quoted&quot; title"', $result);
+        $this->assertStringContainsString('<strong>Hello</strong></button>', $result);
+        $this->assertStringNotContainsString('escapeTitle=', $result);
+    }
 }
